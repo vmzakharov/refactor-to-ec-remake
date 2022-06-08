@@ -1,45 +1,50 @@
 package refactortoec.donutshop;
 
-import org.eclipse.collections.api.bag.Bag;
 import org.eclipse.collections.api.bag.MutableBag;
 import org.eclipse.collections.api.factory.Bags;
 import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
 import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.api.tuple.Pair;
 import org.eclipse.collections.api.tuple.primitive.ObjectIntPair;
 import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Multimaps;
-import org.eclipse.collections.impl.factory.primitive.ObjectIntMaps;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static refactortoec.donutshop.DonutDataFactory.*;
 
 public class DonutShopEcTest
-extends DonutShopTestAbstract
 {
-    private DonutShopEc donutShop;
+    private DonutShopEc donutShopEc;
 
-    @Override
-    public void setupShop()
+    @BeforeEach
+    public void setup()
     {
-        this.donutShop = new DonutShopEc();
+        this.setupShop();
+
+        addCustomers(this.donutShopEc);
+        addDonuts(this.donutShopEc);
+        addOrders(this.donutShopEc);
     }
 
-    @Override
-    public DonutShop donutShop()
+    public void setupShop()
     {
-        return this.donutShop;
+        this.donutShopEc = new DonutShopEc();
+    }
+
+    protected Customer customer(String name)
+    {
+        return this.donutShopEc.findCustomerByName(name);
     }
 
     @Test
     public void findCustomerByNameEc()
     {
-        assertEquals("Alice", this.donutShop.findCustomerByName("Alice").name());
-        assertNull(this.donutShop.findCustomerByName("Rupert"));
+        assertEquals("Alice", this.donutShopEc.findCustomerByName("Alice").name());
+        assertNull(this.donutShopEc.findCustomerByName("Rupert"));
 
         assertEquals("Bob", this.customer("Bob").name());
         assertNull(this.customer("Peggy"));
@@ -49,7 +54,7 @@ extends DonutShopTestAbstract
     public void customersByStateEc()
     {
         MutableSetMultimap<String, Customer> customersByState =
-                this.donutShop.customers().groupBy(Customer::state, Multimaps.mutable.set.of());
+                this.donutShopEc.customers().groupBy(Customer::state, Multimaps.mutable.set.of());
 
         MutableSetMultimap<String, Customer> expected = Multimaps.mutable.set.of();
         expected.put("NY", this.customer("Alice"));
@@ -63,11 +68,11 @@ extends DonutShopTestAbstract
     @Test
     public void customerNamesWithDeliveriesTomorrowEc()
     {
-        MutableSet<Customer> tomorrowsDeliveries = this.donutShop.orders()
-            .select(order -> order.deliveryDate() == this.tomorrow())
-            .collect(Order::customerId)
-            .collect(this.donutShop::findCustomerById)
-            .toSet();
+        MutableSet<Customer> tomorrowsDeliveries = this.donutShopEc.orders()
+                                                                   .select(order -> order.deliveryDate() == TOMORROW)
+                                                                   .collect(Order::customerId)
+                                                                   .collect(this.donutShopEc::findCustomerById)
+                                                                   .toSet();
 
         assertEquals(
             Sets.immutable.of(this.customer("Carol"), this.customer("Dave")),
@@ -77,14 +82,14 @@ extends DonutShopTestAbstract
     @Test
     public void orderPriceStatisticsForDateRangesEc()
     {
-        var stats1 = this.donutShop.orderPriceStatistics(this.yesterday(), this.yesterday());
+        var stats1 = this.donutShopEc.orderPriceStatistics(YESTERDAY, YESTERDAY);
         assertEquals(30.5, stats1.getSum());
         assertEquals(7.625, stats1.getAverage());
         assertEquals(4, stats1.getCount());
         assertEquals(1.5, stats1.getMin());
         assertEquals(21.0, stats1.getMax());
 
-        var stats2 = this.donutShop.orderPriceStatistics(this.yesterday(), this.tomorrow());
+        var stats2 = this.donutShopEc.orderPriceStatistics(YESTERDAY, TOMORROW);
         assertEquals(136.5, stats2.getSum());
         assertEquals(10.5, stats2.getAverage());
         assertEquals(13, stats2.getCount());
@@ -97,7 +102,7 @@ extends DonutShopTestAbstract
     {
         MutableBag<String> donutCounts = Bags.mutable.of();
 
-        this.donutShop
+        this.donutShopEc
                 .orders()
                 .flatCollect(Order::items)
                 .forEach(orderItem -> donutCounts.addOccurrences(orderItem.donutCode(), orderItem.count()));
@@ -105,7 +110,7 @@ extends DonutShopTestAbstract
         MutableList<String> popularity = donutCounts
                 .topOccurrences(donutCounts.sizeDistinct())
                 .collect(ObjectIntPair::getOne)
-                .collect(this.donutShop::findDonutByCode)
+                .collect(this.donutShopEc::findDonutByCode)
                 .collect(Donut::description);
         
         assertEquals(
@@ -116,10 +121,10 @@ extends DonutShopTestAbstract
     @Test
     public void countTheMoneyEc()
     {
-        double totalRevenue = this.donutShop
+        double totalRevenue = this.donutShopEc
                 .orders()
                 .flatCollect(Order::items)
-                .collectDouble(orderItem -> this.donutShop.getTotalPrice(orderItem.donutCode(), orderItem.count()))
+                .collectDouble(orderItem -> this.donutShopEc.getTotalPrice(orderItem.donutCode(), orderItem.count()))
                 .sum();
 
         assertEquals(136.5, totalRevenue);
@@ -128,11 +133,11 @@ extends DonutShopTestAbstract
     @Test
     public void countTheMoneyLazyEc()
     {
-        double totalRevenue = this.donutShop
+        double totalRevenue = this.donutShopEc
                 .orders()
                 .asLazy()
                 .flatCollect(Order::items)
-                .collectDouble(orderItem -> this.donutShop.getTotalPrice(orderItem.donutCode(), orderItem.count()))
+                .collectDouble(orderItem -> this.donutShopEc.getTotalPrice(orderItem.donutCode(), orderItem.count()))
                 .sum();
 
         assertEquals(136.5, totalRevenue);

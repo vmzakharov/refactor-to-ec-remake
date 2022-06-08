@@ -1,5 +1,6 @@
 package refactortoec.donutshop;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -11,38 +12,46 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static refactortoec.donutshop.DonutDataFactory.*;
 
 public class DonutShopJdkTest
-extends DonutShopTestAbstract
 {
-    private DonutShopJdk donutShop;
+    private DonutShopJdk donutShopJdk;
 
-    @Override
-    public void setupShop()
+    @BeforeEach
+    public void setup()
     {
-        this.donutShop = new DonutShopJdk();
+        this.setupShop();
+
+        addCustomers(donutShopJdk);
+        addDonuts(donutShopJdk);
+        addOrders(donutShopJdk);
     }
 
-    @Override
-    public DonutShop donutShop()
+    public void setupShop()
     {
-        return this.donutShop;
+        this.donutShopJdk = new DonutShopJdk();
+    }
+
+    protected Customer customer(String name)
+    {
+        return this.donutShopJdk.findCustomerByName(name);
     }
 
     @Test
     public void findCustomerByNameJdk()
     {
-       assertEquals("Alice", this.donutShop.findCustomerByName("Alice").name());
-       assertNull(this.donutShop.findCustomerByName("Rupert"));
+       assertEquals("Alice", this.donutShopJdk.findCustomerByName("Alice").name());
+       assertNull(this.donutShopJdk.findCustomerByName("Rupert"));
     }
 
     @Test
     public void customersByStateJdk()
     {
         Map<String, Set<Customer>> customersByState =
-            this.donutShop.customers()
-               .stream()
-               .collect(
+            this.donutShopJdk.customers()
+                             .stream()
+                             .collect(
                        Collectors.groupingBy(
                                Customer::state,
                                Collectors.mapping(Function.identity(), Collectors.toSet())
@@ -60,12 +69,12 @@ extends DonutShopTestAbstract
     @Test
     public void customerNamesWithDeliveriesTomorrowJdk()
     {
-        Set<Customer> tomorrowsDeliveries = this.donutShop.orders()
-                .stream()
-                .filter(order -> order.deliveryDate() == this.tomorrow())
-                .map(Order::customerId)
-                .map(id -> this.donutShop.findCustomerById(id))
-                .collect(Collectors.toSet());
+        Set<Customer> tomorrowsDeliveries = this.donutShopJdk.orders()
+                                                             .stream()
+                                                             .filter(order -> order.deliveryDate() == TOMORROW)
+                                                             .map(Order::customerId)
+                                                             .map(id -> this.donutShopJdk.findCustomerById(id))
+                                                             .collect(Collectors.toSet());
 
         assertEquals(
                 Set.of(this.customer("Carol"), this.customer("Dave")),
@@ -75,14 +84,14 @@ extends DonutShopTestAbstract
     @Test
     public void orderPriceStatisticsForDateRangesJdk()
     {
-        var stats1 = this.donutShop.orderPriceStatistics(this.yesterday(), this.yesterday());
+        var stats1 = this.donutShopJdk.orderPriceStatistics(YESTERDAY, YESTERDAY);
         assertEquals(30.5, stats1.getSum());
         assertEquals(7.625, stats1.getAverage());
         assertEquals(4, stats1.getCount());
         assertEquals(1.5, stats1.getMin());
         assertEquals(21.0, stats1.getMax());
 
-        var stats2 = this.donutShop.orderPriceStatistics(this.yesterday(), this.tomorrow());
+        var stats2 = this.donutShopJdk.orderPriceStatistics(YESTERDAY, TOMORROW);
         assertEquals(136.5, stats2.getSum());
         assertEquals(10.5, stats2.getAverage());
         assertEquals(13, stats2.getCount());
@@ -93,7 +102,7 @@ extends DonutShopTestAbstract
     @Test
     public void donutsInPopularityOrderJdk()
     {
-        Map<String, Integer> donutCounts = this.donutShop
+        Map<String, Integer> donutCounts = this.donutShopJdk
                 .orders()
                 .stream()
                 .flatMap(order -> order.items().stream())
@@ -107,7 +116,7 @@ extends DonutShopTestAbstract
                 .stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .map(Map.Entry::getKey)
-                .map(this.donutShop::findDonutByCode)
+                .map(this.donutShopJdk::findDonutByCode)
                 .map(Donut::description)
                 .toList();
 
@@ -119,11 +128,11 @@ extends DonutShopTestAbstract
     @Test
     public void countTheMoneyJdk()
     {
-        double totalRevenue = this.donutShop
+        double totalRevenue = this.donutShopJdk
                 .orders()
                 .stream()
                 .flatMap(order -> order.items().stream())
-                .mapToDouble(orderItem -> this.donutShop.getTotalPrice(orderItem.donutCode(), orderItem.count()))
+                .mapToDouble(orderItem -> this.donutShopJdk.getTotalPrice(orderItem.donutCode(), orderItem.count()))
                 .sum();
 
         assertEquals(136.5, totalRevenue);
@@ -132,12 +141,12 @@ extends DonutShopTestAbstract
     @Test
     public void countTheMoney2jdk()
     {
-        double totalRevenue = this.donutShop
+        double totalRevenue = this.donutShopJdk
                 .orders()
                 .stream()
                 .flatMap(order -> order.items().stream())
                 .collect(Collectors.summingDouble(
-                        orderItem -> this.donutShop.getTotalPrice(orderItem.donutCode(), orderItem.count()))
+                        orderItem -> this.donutShopJdk.getTotalPrice(orderItem.donutCode(), orderItem.count()))
                 );
 
         assertEquals(136.5, totalRevenue);
