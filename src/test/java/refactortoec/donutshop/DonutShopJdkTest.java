@@ -30,14 +30,14 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void findCustomerByName()
+    public void findCustomerByNameJdk()
     {
        assertEquals("Alice", this.donutShop.findCustomerByName("Alice").name());
        assertNull(this.donutShop.findCustomerByName("Rupert"));
     }
 
     @Test
-    public void customersByState()
+    public void customersByStateJdk()
     {
         Map<String, Set<Customer>> customersByState =
             this.donutShop.customers()
@@ -58,7 +58,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void customerNamesWithDeliveriesTomorrow()
+    public void customerNamesWithDeliveriesTomorrowJdk()
     {
         Set<Customer> tomorrowsDeliveries = this.donutShop.orders()
                 .stream()
@@ -73,7 +73,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void orderPriceStatisticsForDateRanges()
+    public void orderPriceStatisticsForDateRangesJdk()
     {
         var stats1 = this.donutShop.orderPriceStatistics(this.yesterday(), this.yesterday());
         assertEquals(30.5, stats1.getSum());
@@ -91,7 +91,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void donutsInPopularityOrder()
+    public void donutsInPopularityOrderJdk()
     {
         Map<String, Integer> donutCounts = this.donutShop
                 .orders()
@@ -117,7 +117,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void countTheMoney()
+    public void countTheMoneyJdk()
     {
         double totalRevenue = this.donutShop
                 .orders()
@@ -130,7 +130,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void countTheMoney2()
+    public void countTheMoney2jdk()
     {
         double totalRevenue = this.donutShop
                 .orders()

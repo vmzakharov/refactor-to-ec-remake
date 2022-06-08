@@ -36,7 +36,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void findCustomerByName()
+    public void findCustomerByNameEc()
     {
         assertEquals("Alice", this.donutShop.findCustomerByName("Alice").name());
         assertNull(this.donutShop.findCustomerByName("Rupert"));
@@ -46,7 +46,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void customersByState()
+    public void customersByStateEc()
     {
         MutableSetMultimap<String, Customer> customersByState =
                 this.donutShop.customers().groupBy(Customer::state, Multimaps.mutable.set.of());
@@ -61,7 +61,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void custzomerNamesWithDeliveriesTomorrow()
+    public void customerNamesWithDeliveriesTomorrowEc()
     {
         MutableSet<Customer> tomorrowsDeliveries = this.donutShop.orders()
             .select(order -> order.deliveryDate() == this.tomorrow())
@@ -75,7 +75,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void orderPriceStatisticsForDateRanges()
+    public void orderPriceStatisticsForDateRangesEc()
     {
         var stats1 = this.donutShop.orderPriceStatistics(this.yesterday(), this.yesterday());
         assertEquals(30.5, stats1.getSum());
@@ -93,7 +93,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void donutsInPopularityOrder()
+    public void donutsInPopularityOrderEc()
     {
         MutableBag<String> donutCounts = Bags.mutable.of();
 
@@ -114,7 +114,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void countTheMoney()
+    public void countTheMoneyEc()
     {
         double totalRevenue = this.donutShop
                 .orders()
@@ -126,7 +126,7 @@ extends DonutShopTestAbstract
     }
 
     @Test
-    public void countTheMoneyLazy()
+    public void countTheMoneyLazyEc()
     {
         double totalRevenue = this.donutShop
                 .orders()
