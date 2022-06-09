@@ -1,27 +1,35 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class Donut
+{
+code: String
+description: String
+price: double
+discountPrice: double
+}
+class DonutShop
+class Order
+{
+customerId: int
+deliveryDate: LocalDate
+}
+class OrderItem
+{
+    donutCode: String
+    count: int
+}
+class Customer
+{
+id: int
+name:  String
+streetAddress: String
+state: String
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
-}
+DonutShop --> " * " Donut
+DonutShop --> " * " Order
+DonutShop --> " * " Customer
 
+Order --> " * " OrderItem
 @enduml
