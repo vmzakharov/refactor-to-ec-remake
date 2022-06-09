@@ -35,7 +35,7 @@ public class DonutShopEcTest
         this.donutShopEc = new DonutShopEc();
     }
 
-    protected Customer customer(String name)
+    private Customer customer(String name)
     {
         return this.donutShopEc.findCustomerByName(name);
     }
@@ -98,7 +98,7 @@ public class DonutShopEcTest
     }
 
     @Test
-    public void donutsInPopularityOrderEc()
+    public void top3SellersEc()
     {
         MutableBag<String> donutCounts = Bags.mutable.of();
 
@@ -108,13 +108,12 @@ public class DonutShopEcTest
                 .forEach(orderItem -> donutCounts.addOccurrences(orderItem.donutCode(), orderItem.count()));
 
         MutableList<String> popularity = donutCounts
-                .topOccurrences(donutCounts.sizeDistinct())
+                .topOccurrences(3)
                 .collect(ObjectIntPair::getOne)
-                .collect(this.donutShopEc::findDonutByCode)
-                .collect(Donut::description);
-        
+                .collect(code -> this.donutShopEc.findDonutByCode(code).description());
+
         assertEquals(
-                Lists.immutable.of("Old Fashioned", "Blueberry", "Pumpkin Spice", "Glazed", "Jelly"),
+                Lists.immutable.of("Old Fashioned", "Blueberry", "Pumpkin Spice"),
                 popularity);
     }
 

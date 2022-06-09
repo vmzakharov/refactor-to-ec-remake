@@ -33,7 +33,7 @@ public class DonutShopJdkTest
         this.donutShopJdk = new DonutShopJdk();
     }
 
-    protected Customer customer(String name)
+    private Customer customer(String name)
     {
         return this.donutShopJdk.findCustomerByName(name);
     }
@@ -70,11 +70,11 @@ public class DonutShopJdkTest
     public void customerNamesWithDeliveriesTomorrowJdk()
     {
         Set<Customer> tomorrowsDeliveries = this.donutShopJdk.orders()
-                                                             .stream()
-                                                             .filter(order -> order.deliveryDate() == TOMORROW)
-                                                             .map(Order::customerId)
-                                                             .map(id -> this.donutShopJdk.findCustomerById(id))
-                                                             .collect(Collectors.toSet());
+            .stream()
+            .filter(order -> order.deliveryDate() == TOMORROW)
+            .map(Order::customerId)
+            .map(id -> this.donutShopJdk.findCustomerById(id))
+            .collect(Collectors.toSet());
 
         assertEquals(
                 Set.of(this.customer("Carol"), this.customer("Dave")),
@@ -100,7 +100,7 @@ public class DonutShopJdkTest
     }
 
     @Test
-    public void donutsInPopularityOrderJdk()
+    public void top3SellersJdk()
     {
         Map<String, Integer> donutCounts = this.donutShopJdk
                 .orders()
@@ -111,18 +111,18 @@ public class DonutShopJdkTest
                         Collectors.summingInt(OrderItem::count)
                 ));
 
-        List<String> popularity = donutCounts
+        List<String> popular = donutCounts
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(3)
                 .map(Map.Entry::getKey)
-                .map(this.donutShopJdk::findDonutByCode)
-                .map(Donut::description)
+                .map(code -> this.donutShopJdk.findDonutByCode(code).description())
                 .toList();
 
         assertEquals(
-                List.of("Old Fashioned", "Blueberry", "Pumpkin Spice", "Glazed", "Jelly"),
-                popularity);
+                List.of("Old Fashioned", "Blueberry", "Pumpkin Spice"),
+                popular);
     }
 
     @Test
