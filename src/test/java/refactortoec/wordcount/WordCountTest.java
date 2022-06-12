@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class WordCountTest
 {
     private static List<String> words;
+    private static ImmutableList<String> wordsEc;
 
     @BeforeAll
     static public void loadData()
@@ -33,24 +35,9 @@ public class WordCountTest
                 That cries in the lane
                 """.split("[ ,\n?]+")
         );
+
+        wordsEc = Lists.immutable.withAll(words);
     }
-
-/*
-Humpty Dumpty sat on a wall,
-Humpty Dumpty had a great fall.
-All the king's horses and all the king's men
-Couldn't put Humpty together again.
-
-Rock-a-bye baby, on the treetop,
-When the wind blows, the cradle will rock,
-When the bough breaks, the cradle will fall,
-And down will come baby, cradle and all.
-
-There was an old woman who lived in a shoe.
-She had so many children, she didn't know what to do;
-She gave them some broth without any bread;
-Then whipped them all soundly and put them to bed.
-*/
 
     @Test
     public void countJdkNaive()
@@ -62,8 +49,6 @@ Then whipped them all soundly and put them to bed.
             count++;
             wordCount.put(w, count);
         });
-
-//        System.out.println(wordCount);
 
         assertEquals(2, wordCount.get("Bah").intValue());
         assertEquals(3, wordCount.get("for").intValue());
@@ -83,52 +68,23 @@ Then whipped them all soundly and put them to bed.
     }
 
     @Test
-    public void countJdkEfficient()
+    public void countJdkWithCounter()
     {
-        Map<String, Counter> wordCounts = new HashMap<>();
+        Map<String, LongAdder> wordCounts = new HashMap<>();
 
         words.forEach(
-                w -> {
-                    Counter counter = wordCounts.get(w);
-                    if (counter == null)
-                    {
-                        counter = new Counter();
-                        wordCounts.put(w, counter);
-                    }
-                    counter.increment();
-                }
+            w -> wordCounts.computeIfAbsent(w, key -> new LongAdder()).add(1)
         );
-
-//        System.out.println(wordCounts);
 
         assertEquals(2, wordCounts.get("Bah").intValue());
         assertEquals(3, wordCounts.get("for").intValue());
         assertEquals(1, wordCounts.get("Sheep").intValue());
     }
 
-    public static class Counter
-    {
-        private int value = 0;
-
-        public void increment()
-        {
-            this.value++;
-        }
-
-        public int intValue()
-        {
-            return this.value;
-        }
-    }
-
     @Test
     public void countEc()
     {
-        ImmutableList<String> wordList = Lists.immutable.ofAll(words);
-
-        MutableBag<String> bagOfWords = wordList.toBag();
-
-//        bagOfWords.forEachWithOccurrences((word, count) -> System.out.println(word + ": " + count));
+        MutableBag<String> bagOfWords = wordsEc.toBag();
 
         assertEquals(2, bagOfWords.occurrencesOf("Bah"));
         assertEquals(3, bagOfWords.occurrencesOf("for"));
