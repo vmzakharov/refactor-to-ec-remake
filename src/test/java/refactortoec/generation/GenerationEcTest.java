@@ -1,6 +1,7 @@
 package refactortoec.generation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,8 +12,14 @@ import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.set.ImmutableSetMultimap;
+import org.eclipse.collections.api.set.ImmutableSet;
+import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.set.primitive.MutableIntSet;
 import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.list.Interval;
+import org.eclipse.collections.impl.list.primitive.IntInterval;
 import org.junit.jupiter.api.Test;
+import org.openjdk.jol.info.GraphLayout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -56,6 +63,9 @@ public class GenerationEcTest
                 .withOccurrences(27, 1)
                 .withOccurrences(1843, 1);
         assertEquals(expected, generationCountByYears);
+
+        // ImmutableArrayBag (232)
+        System.out.println(GraphLayout.parseInstance(generationCountByYears).toFootprint());
     }
 
     @Test
@@ -74,7 +84,11 @@ public class GenerationEcTest
     public void filtering()
     {
         var expected = Sets.mutable.with(GenerationEc.X, GenerationEc.MILLENNIAL, GenerationEc.Z);
-        assertEquals(expected, GenerationEc.ALL.selectWith(GenerationEc::yearsCountEquals, 16));
+        ImmutableSet<GenerationEc> filtered = GenerationEc.ALL.selectWith(GenerationEc::yearsCountEquals, 16);
+        assertEquals(expected, filtered);
+
+        // ImmutableTripletonSet (536)
+        System.out.println(GraphLayout.parseInstance(filtered).toFootprint());
     }
 
     @Test
@@ -92,6 +106,9 @@ public class GenerationEcTest
                 .newWithAll(1843, Set.of(GenerationEc.UNCLASSIFIED));
         assertEquals(expected, generationByYears);
         assertTrue(generationByYears.get(30).isEmpty());
+
+        // ImmutableSetMultimapImpl (2368)
+        System.out.println(GraphLayout.parseInstance(generationByYears).toFootprint());
     }
 
     @Test
@@ -99,6 +116,11 @@ public class GenerationEcTest
     {
         MutableList<GenerationEc> mutableList = GenerationEc.ALL.toList();
         ImmutableList<GenerationEc> immutableList = GenerationEc.ALL.toImmutableList();
+
+        // FastList (2016)
+        System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
+        // ImmutableArrayList (1992)
+        System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
 
         MutableList<GenerationEc> sortedMutableList =
                 mutableList.toSortedListBy(gen -> gen.years().getFirst());

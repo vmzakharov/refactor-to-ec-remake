@@ -65,7 +65,7 @@ implements DonutShop
     {
         if (this.donutsByCode == null)
         {
-            this.donutsByCode = this.donuts().toMap(Donut::code, Functions.identity());
+            this.donutsByCode = this.donuts().groupByUniqueKey(Donut::code);
         }
         return this.donutsByCode;
     }
