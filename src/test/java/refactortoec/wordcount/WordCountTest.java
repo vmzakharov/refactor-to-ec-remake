@@ -5,6 +5,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.openjdk.jol.info.GraphLayout;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,6 +54,8 @@ public class WordCountTest
         assertEquals(2, wordCount.get("Bah").intValue());
         assertEquals(3, wordCount.get("for").intValue());
         assertEquals(1, wordCount.get("Sheep").intValue());
+
+        System.out.println(GraphLayout.parseInstance(wordCount).toFootprint());
     }
 
 
@@ -65,6 +68,8 @@ public class WordCountTest
         assertEquals(2, wordCounts.get("Bah").intValue());
         assertEquals(3, wordCounts.get("for").intValue());
         assertEquals(1, wordCounts.get("Sheep").intValue());
+
+        System.out.println(GraphLayout.parseInstance(wordCounts).toFootprint());
     }
 
     @Test
@@ -79,6 +84,8 @@ public class WordCountTest
         assertEquals(2, wordCounts.get("Bah").intValue());
         assertEquals(3, wordCounts.get("for").intValue());
         assertEquals(1, wordCounts.get("Sheep").intValue());
+
+        System.out.println(GraphLayout.parseInstance(wordCounts).toFootprint());
     }
 
     @Test
@@ -90,5 +97,7 @@ public class WordCountTest
         assertEquals(3, bagOfWords.occurrencesOf("for"));
         assertEquals(1, bagOfWords.occurrencesOf("Sheep"));
         assertEquals(0, bagOfWords.occurrencesOf("Cheburashka"));
+
+        System.out.println(GraphLayout.parseInstance(bagOfWords).toFootprint());
     }
 }
