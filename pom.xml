@@ -12,6 +12,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <eclipseCollections.version>13.0.0</eclipseCollections.version>
+        <jol.version>0.17</jol.version>
     </properties>
 
     <dependencies>
@@ -26,6 +27,12 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.13.4</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+            <version>${jol.version}</version>
         </dependency>
     </dependencies>
 </project>

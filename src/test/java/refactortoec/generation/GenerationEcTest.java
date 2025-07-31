@@ -1,6 +1,7 @@
 package refactortoec.generation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,8 +12,13 @@ import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.set.ImmutableSetMultimap;
+import org.eclipse.collections.api.set.MutableSet;
+import org.eclipse.collections.api.set.primitive.MutableIntSet;
 import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.list.Interval;
+import org.eclipse.collections.impl.list.primitive.IntInterval;
 import org.junit.jupiter.api.Test;
+import org.openjdk.jol.info.GraphLayout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -108,5 +114,12 @@ public class GenerationEcTest
         ImmutableList<GenerationEc> sortedImmutableList =
                 immutableList.toImmutableSortedListBy(gen -> gen.years().getFirst());
         assertEquals(expected, sortedImmutableList);
+    }
+
+    @Test
+    public void toFootprint()
+    {
+        System.out.println(GraphLayout.parseInstance(GenerationEc.ALL).toFootprint());
+        System.out.println(GraphLayout.parseInstance(GenerationEc.BY_YEAR).toFootprint());
     }
 }

@@ -22,7 +22,7 @@ public enum GenerationJdk
     public static final Set<GenerationJdk> ALL =
             Set.of(GenerationJdk.values());
 
-    private static final Map<Integer, GenerationJdk> BY_YEAR =
+    public static final Map<Integer, GenerationJdk> BY_YEAR =
             GenerationJdk.groupEachByYear();
 
     private static Map<Integer, GenerationJdk> groupEachByYear()

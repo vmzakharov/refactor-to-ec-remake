@@ -2,6 +2,7 @@ package refactortoec.donutshop;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openjdk.jol.info.GraphLayout;
 
 import java.util.HashMap;
 import java.util.List;
@@ -150,5 +151,13 @@ public class DonutShopJdkTest
                 );
 
         assertEquals(136.5, totalRevenue);
+    }
+
+    @Test
+    public void toFootprint()
+    {
+        this.donutShopJdk.donutsByCode();
+        // donutShopEc (3000)
+        System.out.println(GraphLayout.parseInstance(this.donutShopJdk).toFootprint());
     }
 }

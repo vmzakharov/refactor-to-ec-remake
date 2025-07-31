@@ -24,7 +24,7 @@ public enum GenerationEc
     public static final ImmutableSet<GenerationEc> ALL =
             Sets.immutable.with(GenerationEc.values());
 
-    private static final ImmutableIntObjectMap<GenerationEc> BY_YEAR =
+    public static final ImmutableIntObjectMap<GenerationEc> BY_YEAR =
             GenerationEc.groupEachByYear();
 
     private static ImmutableIntObjectMap<GenerationEc> groupEachByYear()

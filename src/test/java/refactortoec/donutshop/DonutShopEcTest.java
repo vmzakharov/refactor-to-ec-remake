@@ -11,6 +11,9 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.Multimaps;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openjdk.jol.info.GraphLayout;
+import refactortoec.generation.GenerationEc;
+import refactortoec.generation.GenerationJdk;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -140,5 +143,13 @@ public class DonutShopEcTest
                 .sum();
 
         assertEquals(136.5, totalRevenue);
+    }
+
+    @Test
+    public void toFootprint()
+    {
+        this.donutShopEc.donutsByCode();
+        // donutShopEc (2840)
+        System.out.println(GraphLayout.parseInstance(this.donutShopEc).toFootprint());
     }
 }
