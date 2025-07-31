@@ -89,7 +89,7 @@ public class GenerationJdkTest
                 .collect(Collectors.toSet());
         assertEquals(expected, filtered);
 
-        // java.util.HashSet (712)
+        // java.util.HashSet (760)
         System.out.println(GraphLayout.parseInstance(filtered).toFootprint());
     }
 
@@ -111,7 +111,7 @@ public class GenerationJdkTest
         assertEquals(expected, generationByYears);
         assertNull(generationByYears.get(30L));
 
-        // java.util.HashMap (3656)
+        // java.util.HashMap (3832)
         System.out.println(GraphLayout.parseInstance(generationByYears).toFootprint());
     }
 
@@ -121,9 +121,9 @@ public class GenerationJdkTest
         List<GenerationJdk> mutableList = new ArrayList<>(GenerationJdk.ALL);
         List<GenerationJdk> immutableList = GenerationJdk.ALL.stream().toList();
 
-        // ArrayList (1736)
+        // ArrayList (1912)
         System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
-        // ImmutableCollections$ListN (1736)
+        // ImmutableCollections$ListN (1912)
         System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
 
         List<GenerationJdk> sortedMutableList =
