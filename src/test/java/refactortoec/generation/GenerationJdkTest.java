@@ -58,6 +58,9 @@ public class GenerationJdkTest
         expected.put(1843L, 1L);
         assertEquals(expected, generationCountByYears);
         assertNull(generationCountByYears.get(30L));
+
+        // java.util.HashMap (592)
+        System.out.println(GraphLayout.parseInstance(generationCountByYears).toFootprint());
     }
 
     @Test
@@ -81,11 +84,13 @@ public class GenerationJdkTest
     public void filtering()
     {
         var expected = Set.of(GenerationJdk.X, GenerationJdk.MILLENNIAL, GenerationJdk.Z);
-        assertEquals(
-                expected,
-                GenerationJdk.ALL.stream()
-                        .filter(generation -> generation.yearsCountEquals(16))
-                        .collect(Collectors.toSet()));
+        Set<GenerationJdk> filtered = GenerationJdk.ALL.stream()
+                .filter(generation -> generation.yearsCountEquals(16))
+                .collect(Collectors.toSet());
+        assertEquals(expected, filtered);
+
+        // java.util.HashSet (712)
+        System.out.println(GraphLayout.parseInstance(filtered).toFootprint());
     }
 
     @Test
@@ -105,6 +110,9 @@ public class GenerationJdkTest
         expected.put(1843L, Set.of(GenerationJdk.UNCLASSIFIED));
         assertEquals(expected, generationByYears);
         assertNull(generationByYears.get(30L));
+
+        // java.util.HashMap (3656)
+        System.out.println(GraphLayout.parseInstance(generationByYears).toFootprint());
     }
 
     @Test
@@ -113,6 +121,11 @@ public class GenerationJdkTest
         List<GenerationJdk> mutableList = new ArrayList<>(GenerationJdk.ALL);
         List<GenerationJdk> immutableList = GenerationJdk.ALL.stream().toList();
 
+        // ArrayList (1736)
+        System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
+        // ImmutableCollections$ListN (1736)
+        System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
+
         List<GenerationJdk> sortedMutableList =
                 mutableList.stream().sorted(Comparator.comparing(gen -> gen.years().findFirst().getAsInt()))
                         .collect(Collectors.toList());
@@ -120,7 +133,7 @@ public class GenerationJdkTest
         assertEquals(expected, sortedMutableList);
 
         List<GenerationJdk> sortedImmutableList =
-                mutableList.stream().sorted(Comparator.comparing(gen -> gen.years().findFirst().getAsInt()))
+                immutableList.stream().sorted(Comparator.comparing(gen -> gen.years().findFirst().getAsInt()))
                         .toList();
         assertEquals(expected, sortedImmutableList);
     }
