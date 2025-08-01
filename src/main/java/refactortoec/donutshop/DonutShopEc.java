@@ -12,9 +12,9 @@ import java.util.Map;
 public class DonutShopEc
 implements DonutShop
 {
-    private final MutableList<Order> orders = Lists.mutable.of();
-    private final MutableList<Customer> customers = Lists.mutable.of();
-    private final MutableList<Donut> donuts = Lists.mutable.of();
+    private final MutableList<Order> orders = Lists.mutable.empty();
+    private final MutableList<Customer> customers = Lists.mutable.empty();
+    private final MutableList<Donut> donuts = Lists.mutable.empty();
 
     private MutableMap<String, Donut> donutsByCode = null;
 
