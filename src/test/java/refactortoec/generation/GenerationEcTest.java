@@ -1,8 +1,5 @@
 package refactortoec.generation;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -13,11 +10,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.set.ImmutableSetMultimap;
 import org.eclipse.collections.api.set.ImmutableSet;
-import org.eclipse.collections.api.set.MutableSet;
-import org.eclipse.collections.api.set.primitive.MutableIntSet;
 import org.eclipse.collections.impl.factory.Multimaps;
-import org.eclipse.collections.impl.list.Interval;
-import org.eclipse.collections.impl.list.primitive.IntInterval;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jol.info.GraphLayout;
 
@@ -54,7 +47,7 @@ public class GenerationEcTest
     {
         assertEquals(1, GenerationEc.ALL.countWith(GenerationEc::contains, 1995));
         ImmutableBag<Integer> generationCountByYears =
-                GenerationEc.ALL.countBy(generation -> generation.years().size());
+                GenerationEc.ALL.countBy(generation -> generation.yearsInterval().size());
         var expected = Bags.mutable.withOccurrences(17, 2)
                 .withOccurrences(16, 3)
                 .withOccurrences(19, 1)
@@ -87,7 +80,7 @@ public class GenerationEcTest
         ImmutableSet<GenerationEc> filtered = GenerationEc.ALL.selectWith(GenerationEc::yearsCountEquals, 16);
         assertEquals(expected, filtered);
 
-        // ImmutableTripletonSet (536)
+        // ImmutableTripletonSet (512)
         System.out.println(GraphLayout.parseInstance(filtered).toFootprint());
     }
 
@@ -95,7 +88,7 @@ public class GenerationEcTest
     public void grouping()
     {
         ImmutableSetMultimap<Integer, GenerationEc> generationByYears =
-                GenerationEc.ALL.groupBy(generation -> generation.years().size());
+                GenerationEc.ALL.groupBy(generation -> generation.yearsInterval().size());
         var expected = Multimaps.immutable.set.empty()
                 .newWithAll(17, Set.of(GenerationEc.ALPHA, GenerationEc.PROGRESSIVE))
                 .newWithAll(16, Set.of(GenerationEc.X, GenerationEc.MILLENNIAL, GenerationEc.Z))
@@ -107,7 +100,7 @@ public class GenerationEcTest
         assertEquals(expected, generationByYears);
         assertTrue(generationByYears.get(30).isEmpty());
 
-        // ImmutableSetMultimapImpl (2368)
+        // ImmutableSetMultimapImpl (2280)
         System.out.println(GraphLayout.parseInstance(generationByYears).toFootprint());
     }
 
@@ -117,18 +110,34 @@ public class GenerationEcTest
         MutableList<GenerationEc> mutableList = GenerationEc.ALL.toList();
         ImmutableList<GenerationEc> immutableList = GenerationEc.ALL.toImmutableList();
 
-        // FastList (2016)
+        // FastList (1928)
         System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
-        // ImmutableArrayList (1992)
+        // ImmutableArrayList (1904)
         System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
 
         MutableList<GenerationEc> sortedMutableList =
-                mutableList.toSortedListBy(gen -> gen.years().getFirst());
+                mutableList.toSortedListBy(gen -> gen.yearsInterval().getFirst());
         var expected = Lists.mutable.with(GenerationEc.values());
         assertEquals(expected, sortedMutableList);
 
         ImmutableList<GenerationEc> sortedImmutableList =
-                immutableList.toImmutableSortedListBy(gen -> gen.years().getFirst());
+                immutableList.toImmutableSortedListBy(gen -> gen.yearsInterval().getFirst());
         assertEquals(expected, sortedImmutableList);
+    }
+
+    @Test
+    public void transforming()
+    {
+        ImmutableSet<String> names = GenerationEc.ALL.collect(GenerationEc::getName);
+        var expected = Sets.immutable.with("Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
+                "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
+                "Generation Alpha", "Missionary Generation");
+        assertEquals(expected, names);
+        // ImmutableUnifiedSet (840)
+        System.out.println(GraphLayout.parseInstance(names).toFootprint());
+        Set<String> mutableNames = names.toSet();
+        assertEquals(expected, mutableNames);
+        // UnifiedSet (824)
+        System.out.println(GraphLayout.parseInstance(mutableNames).toFootprint());
     }
 }

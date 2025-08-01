@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.factory.Sets;
+import org.eclipse.collections.api.set.ImmutableSet;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jol.info.GraphLayout;
 
@@ -46,7 +48,7 @@ public class GenerationJdkTest
 
         Map<Long, Long> generationCountByYears =
                 GenerationJdk.ALL.stream()
-                        .collect(Collectors.groupingBy(generation -> generation.years().count(),
+                        .collect(Collectors.groupingBy(generation -> generation.yearsStream().count(),
                                 Collectors.counting()));
         var expected = new HashMap<>();
         expected.put(17L, 2L);
@@ -98,7 +100,7 @@ public class GenerationJdkTest
     {
         Map<Long, Set<GenerationJdk>> generationByYears =
                 GenerationJdk.ALL.stream()
-                        .collect(Collectors.groupingBy(generation -> generation.years().count(),
+                        .collect(Collectors.groupingBy(generation -> generation.yearsStream().count(),
                                 Collectors.toSet()));
         var expected = new HashMap<>();
         expected.put(17L, Set.of(GenerationJdk.ALPHA, GenerationJdk.PROGRESSIVE));
@@ -118,23 +120,39 @@ public class GenerationJdkTest
     @Test
     public void converting()
     {
-        List<GenerationJdk> mutableList = new ArrayList<>(GenerationJdk.ALL);
+        List<GenerationJdk> mutableList = GenerationJdk.ALL.stream().collect(Collectors.toList());
         List<GenerationJdk> immutableList = GenerationJdk.ALL.stream().toList();
 
-        // ArrayList (1912)
+        // ArrayList (1928)
         System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
         // ImmutableCollections$ListN (1912)
         System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
 
         List<GenerationJdk> sortedMutableList =
-                mutableList.stream().sorted(Comparator.comparing(gen -> gen.years().findFirst().getAsInt()))
+                mutableList.stream().sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .collect(Collectors.toList());
         var expected = Lists.mutable.with(GenerationJdk.values());
         assertEquals(expected, sortedMutableList);
 
         List<GenerationJdk> sortedImmutableList =
-                immutableList.stream().sorted(Comparator.comparing(gen -> gen.years().findFirst().getAsInt()))
+                immutableList.stream().sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .toList();
         assertEquals(expected, sortedImmutableList);
+    }
+
+    @Test
+    public void transforming()
+    {
+        Set<String> names = GenerationJdk.ALL.stream().map(GenerationJdk::getName).collect(Collectors.toUnmodifiableSet());
+        var expected = Sets.immutable.with("Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
+                "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
+                "Generation Alpha", "Missionary Generation");
+        assertEquals(expected, names);
+        // ImmutableCollections$SetN (776)
+        System.out.println(GraphLayout.parseInstance(names).toFootprint());
+        Set<String> mutableNames = names.stream().collect(Collectors.toSet());
+        assertEquals(expected, mutableNames);
+        // java.util.HashSet (1176)
+        System.out.println(GraphLayout.parseInstance(mutableNames).toFootprint());
     }
 }

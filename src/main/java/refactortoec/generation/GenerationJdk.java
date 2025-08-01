@@ -30,7 +30,7 @@ public enum GenerationJdk
         record YearToGeneration(int year, GenerationJdk generation) {}
         return Map.copyOf(GenerationJdk.ALL.stream()
                 .flatMap(gen ->
-                        gen.years().mapToObj(year -> new YearToGeneration(year, gen)))
+                        gen.yearsStream().mapToObj(year -> new YearToGeneration(year, gen)))
                 .collect(Collectors.toMap(YearToGeneration::year, YearToGeneration::generation)));
     }
 
@@ -39,34 +39,16 @@ public enum GenerationJdk
         return BY_YEAR.getOrDefault(year, UNCLASSIFIED);
     }
 
-    public record Years(int from, int to)
-    {
-        public int count()
-        {
-            return this.to - this.from + 1;
-        }
-
-        public boolean contains(int year)
-        {
-            return this.from <= year && year <= this.to;
-        }
-
-        public IntStream stream()
-        {
-            return IntStream.rangeClosed(this.from, this.to);
-        }
-    };
-
     private final String name;
-    private final Years years;
+    private final YearRange years;
 
     GenerationJdk(String name, int from, int to)
     {
         this.name = name;
-        this.years = new Years(from, to);
+        this.years = new YearRange(from, to);
     }
 
-    public IntStream years()
+    public IntStream yearsStream()
     {
         return this.years.stream();
     }
@@ -78,12 +60,12 @@ public enum GenerationJdk
 
     public boolean yearsCountEquals(int years)
     {
-        return this.years.count() == years;
+        return this.yearsStream().count() == years;
     }
 
     public boolean contains(int year)
     {
         return this.years.contains(year);
-        // return this.years().anyMatch(i -> i == year);
+        // return this.yearsStream().anyMatch(i -> i == year);
     }
 }

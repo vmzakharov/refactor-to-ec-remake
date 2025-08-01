@@ -32,7 +32,7 @@ public enum GenerationEc
         MutableIntObjectMap<GenerationEc> map = IntObjectMaps.mutable.empty();
         return GenerationEc.ALL.injectInto(
                         map, (map1, generation) ->
-                                generation.years().injectInto(
+                                generation.yearsInterval().injectInto(
                                         map1, (map2, year) ->
                                                 map2.withKeyValue(year, generation)))
                 .toImmutable();
@@ -44,17 +44,17 @@ public enum GenerationEc
     }
 
     private final String name;
-    private final IntInterval years;
+    private final YearRange years;
 
     GenerationEc(String name, int from, int to)
     {
         this.name = name;
-        this.years = IntInterval.fromTo(from, to);
+        this.years = new YearRange(from, to);
     }
 
-    public IntInterval years()
+    public IntInterval yearsInterval()
     {
-        return this.years;
+        return this.years.interval();
     }
 
     public String getName()
@@ -64,11 +64,11 @@ public enum GenerationEc
 
     public boolean yearsCountEquals(int years)
     {
-        return this.years.size() == years;
+        return this.yearsInterval().size() == years;
     }
 
     public boolean contains(int year)
     {
-        return this.years().contains(year);
+        return this.years.contains(year);
     }
 }
