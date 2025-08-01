@@ -1,7 +1,6 @@
 package refactortoec.generation;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.eclipse.collections.impl.factory.primitive.IntObjectMaps;

@@ -69,6 +69,7 @@ public class WordCountTest
         assertEquals(3, wordCounts.get("for").intValue());
         assertEquals(1, wordCounts.get("Sheep").intValue());
 
+        // HashMap (2,632)
         System.out.println(GraphLayout.parseInstance(wordCounts).toFootprint());
     }
 
@@ -85,6 +86,7 @@ public class WordCountTest
         assertEquals(3, wordCounts.get("for").intValue());
         assertEquals(1, wordCounts.get("Sheep").intValue());
 
+        // HashMap (3,456)
         System.out.println(GraphLayout.parseInstance(wordCounts).toFootprint());
     }
 
@@ -98,6 +100,7 @@ public class WordCountTest
         assertEquals(1, bagOfWords.occurrencesOf("Sheep"));
         assertEquals(0, bagOfWords.occurrencesOf("Cheburashka"));
 
+        // HashBag (1,944)
         System.out.println(GraphLayout.parseInstance(bagOfWords).toFootprint());
     }
 }
