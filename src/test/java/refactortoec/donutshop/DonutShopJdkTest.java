@@ -1,9 +1,5 @@
 package refactortoec.donutshop;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.openjdk.jol.info.GraphLayout;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +7,17 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.openjdk.jol.info.GraphLayout;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static refactortoec.donutshop.DonutDataFactory.*;
+import static refactortoec.donutshop.DonutDataFactory.TOMORROW;
+import static refactortoec.donutshop.DonutDataFactory.YESTERDAY;
+import static refactortoec.donutshop.DonutDataFactory.addCustomers;
+import static refactortoec.donutshop.DonutDataFactory.addDonuts;
+import static refactortoec.donutshop.DonutDataFactory.addOrders;
 
 public class DonutShopJdkTest
 {
