@@ -20,6 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GenerationEcTest
 {
+    /**
+     * Use JOL to output memory for an object
+     */
+    private void outputMemory(Object instance)
+    {
+        System.out.println(GraphLayout.parseInstance(instance).toFootprint());
+    }
+
     @Test
     public void counting()
     {
@@ -40,7 +48,7 @@ public class GenerationEcTest
         assertEquals(expected, generationCountByYears);
 
         // ImmutableArrayBag (232)
-        System.out.println(GraphLayout.parseInstance(generationCountByYears).toFootprint());
+        this.outputMemory(generationCountByYears);
     }
 
     @Test
@@ -77,7 +85,7 @@ public class GenerationEcTest
         assertEquals(expected, filtered);
 
         // ImmutableTripletonSet (512)
-        System.out.println(GraphLayout.parseInstance(filtered).toFootprint());
+        this.outputMemory(filtered);
     }
 
     @Test
@@ -98,7 +106,7 @@ public class GenerationEcTest
         assertTrue(generationByYears.get(30).isEmpty());
 
         // ImmutableSetMultimapImpl (2280)
-        System.out.println(GraphLayout.parseInstance(generationByYears).toFootprint());
+        this.outputMemory(generationByYears);
     }
 
     @Test
@@ -108,9 +116,9 @@ public class GenerationEcTest
         ImmutableList<GenerationEc> immutableList = GenerationEc.ALL.toImmutableList();
 
         // FastList (1928)
-        System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
+        this.outputMemory(mutableList);
         // ImmutableArrayList (1904)
-        System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
+        this.outputMemory(immutableList);
 
         MutableList<GenerationEc> sortedMutableList =
                 mutableList.toSortedListBy(gen -> gen.yearsInterval().getFirst());
@@ -134,10 +142,10 @@ public class GenerationEcTest
         assertEquals(expected, names);
 
         // ImmutableUnifiedSet (840)
-        System.out.println(GraphLayout.parseInstance(names).toFootprint());
+        this.outputMemory(names);
         Set<String> mutableNames = names.toSet();
         assertEquals(expected, mutableNames);
         // UnifiedSet (824)
-        System.out.println(GraphLayout.parseInstance(mutableNames).toFootprint());
+        this.outputMemory(mutableNames);
     }
 }

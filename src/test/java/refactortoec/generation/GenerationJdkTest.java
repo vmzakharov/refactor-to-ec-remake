@@ -19,6 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GenerationJdkTest
 {
+    /**
+     * Use JOL to output memory for an object
+     */
+    private void outputMemory(Object instance)
+    {
+        System.out.println(GraphLayout.parseInstance(instance).toFootprint());
+    }
+
     @Test
     public void counting()
     {
@@ -45,7 +53,7 @@ public class GenerationJdkTest
         assertNull(generationCountByYears.get(30L));
 
         // java.util.HashMap (592)
-        System.out.println(GraphLayout.parseInstance(generationCountByYears).toFootprint());
+        this.outputMemory(generationCountByYears);
     }
 
     @Test
@@ -85,7 +93,7 @@ public class GenerationJdkTest
         assertEquals(expected, filtered);
 
         // java.util.HashSet (760)
-        System.out.println(GraphLayout.parseInstance(filtered).toFootprint());
+        this.outputMemory(filtered);
     }
 
     @Test
@@ -108,7 +116,7 @@ public class GenerationJdkTest
         assertNull(generationByYears.get(30L));
 
         // java.util.HashMap (3832)
-        System.out.println(GraphLayout.parseInstance(generationByYears).toFootprint());
+        this.outputMemory(generationByYears);
     }
 
     @Test
@@ -120,9 +128,9 @@ public class GenerationJdkTest
                 .toList();
 
         // ArrayList (1928)
-        System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
+        this.outputMemory(mutableList);
         // ImmutableCollections$ListN (1912)
-        System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
+        this.outputMemory(immutableList);
 
         List<GenerationJdk> sortedMutableList =
                 mutableList.stream()
@@ -152,11 +160,11 @@ public class GenerationJdkTest
         assertEquals(expected, names);
 
         // ImmutableCollections$SetN (776)
-        System.out.println(GraphLayout.parseInstance(names).toFootprint());
+        this.outputMemory(names);
         Set<String> mutableNames = names.stream()
                 .collect(Collectors.toSet());
         assertEquals(expected, mutableNames);
         // java.util.HashSet (1176)
-        System.out.println(GraphLayout.parseInstance(mutableNames).toFootprint());
+        this.outputMemory(mutableNames);
     }
 }
