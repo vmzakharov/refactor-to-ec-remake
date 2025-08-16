@@ -77,7 +77,8 @@ public class GenerationJdkTest
                 GenerationJdk.MILLENNIAL,
                 GenerationJdk.ALL.stream()
                         .filter(generation -> generation.contains(1995))
-                        .findFirst().orElse(null));
+                        .findFirst()
+                        .orElse(null));
     }
 
     @Test
@@ -118,8 +119,10 @@ public class GenerationJdkTest
     @Test
     public void converting()
     {
-        List<GenerationJdk> mutableList = GenerationJdk.ALL.stream().collect(Collectors.toList());
-        List<GenerationJdk> immutableList = GenerationJdk.ALL.stream().toList();
+        List<GenerationJdk> mutableList = GenerationJdk.ALL.stream()
+                .collect(Collectors.toList());
+        List<GenerationJdk> immutableList = GenerationJdk.ALL.stream()
+                .toList();
 
         // ArrayList (1928)
         System.out.println(GraphLayout.parseInstance(mutableList).toFootprint());
@@ -127,13 +130,15 @@ public class GenerationJdkTest
         System.out.println(GraphLayout.parseInstance(immutableList).toFootprint());
 
         List<GenerationJdk> sortedMutableList =
-                mutableList.stream().sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
+                mutableList.stream()
+                        .sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .collect(Collectors.toList());
         var expected = Lists.mutable.with(GenerationJdk.values());
         assertEquals(expected, sortedMutableList);
 
         List<GenerationJdk> sortedImmutableList =
-                immutableList.stream().sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
+                immutableList.stream()
+                        .sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .toList();
         assertEquals(expected, sortedImmutableList);
     }
@@ -148,7 +153,8 @@ public class GenerationJdkTest
         assertEquals(expected, names);
         // ImmutableCollections$SetN (776)
         System.out.println(GraphLayout.parseInstance(names).toFootprint());
-        Set<String> mutableNames = names.stream().collect(Collectors.toSet());
+        Set<String> mutableNames = names.stream()
+                .collect(Collectors.toSet());
         assertEquals(expected, mutableNames);
         // java.util.HashSet (1176)
         System.out.println(GraphLayout.parseInstance(mutableNames).toFootprint());
