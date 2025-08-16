@@ -20,22 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class GenerationJdkTest
 {
     @Test
-    public void contains()
-    {
-        assertTrue(GenerationJdk.ALPHA.contains(2024));
-        assertFalse(GenerationJdk.ALPHA.contains(2000));
-        assertTrue(GenerationJdk.MILLENNIAL.contains(1985));
-        assertFalse(GenerationJdk.MILLENNIAL.contains(1960));
-    }
-
-    @Test
-    public void find()
-    {
-        assertEquals(GenerationJdk.MILLENNIAL, GenerationJdk.find(1985));
-        assertEquals(GenerationJdk.ALPHA, GenerationJdk.find(2016));
-    }
-
-    @Test
     public void counting()
     {
         assertEquals(
@@ -48,6 +32,7 @@ public class GenerationJdkTest
                 GenerationJdk.ALL.stream()
                         .collect(Collectors.groupingBy(generation -> generation.yearsStream().count(),
                                 Collectors.counting()));
+
         var expected = new HashMap<>();
         expected.put(17L, 2L);
         expected.put(16L, 3L);
@@ -68,26 +53,35 @@ public class GenerationJdkTest
     {
         assertTrue(GenerationJdk.ALL.stream()
                 .anyMatch(generation -> generation.contains(1995)));
+
+        assertTrue(GenerationJdk.ALPHA.contains(2024));
+        assertFalse(GenerationJdk.ALPHA.contains(2000));
+        assertTrue(GenerationJdk.MILLENNIAL.contains(1985));
+        assertFalse(GenerationJdk.MILLENNIAL.contains(1960));
     }
 
     @Test
     public void finding()
     {
-        assertEquals(
-                GenerationJdk.MILLENNIAL,
-                GenerationJdk.ALL.stream()
-                        .filter(generation -> generation.contains(1995))
-                        .findFirst()
-                        .orElse(null));
+        GenerationJdk findFirst = GenerationJdk.ALL.stream()
+                .filter(generation -> generation.contains(1995))
+                .findFirst()
+                .orElse(null);
+
+        assertEquals(GenerationJdk.MILLENNIAL, findFirst);
+
+        assertEquals(GenerationJdk.MILLENNIAL, GenerationJdk.find(1985));
+        assertEquals(GenerationJdk.ALPHA, GenerationJdk.find(2016));
     }
 
     @Test
     public void filtering()
     {
-        var expected = Set.of(GenerationJdk.X, GenerationJdk.MILLENNIAL, GenerationJdk.Z);
         Set<GenerationJdk> filtered = GenerationJdk.ALL.stream()
                 .filter(generation -> generation.yearsCountEquals(16))
                 .collect(Collectors.toSet());
+
+        var expected = Set.of(GenerationJdk.X, GenerationJdk.MILLENNIAL, GenerationJdk.Z);
         assertEquals(expected, filtered);
 
         // java.util.HashSet (760)
@@ -101,6 +95,7 @@ public class GenerationJdkTest
                 GenerationJdk.ALL.stream()
                         .collect(Collectors.groupingBy(generation -> generation.yearsStream().count(),
                                 Collectors.toSet()));
+
         var expected = new HashMap<>();
         expected.put(17L, Set.of(GenerationJdk.ALPHA, GenerationJdk.PROGRESSIVE));
         expected.put(16L, Set.of(GenerationJdk.X, GenerationJdk.MILLENNIAL, GenerationJdk.Z));
@@ -133,6 +128,7 @@ public class GenerationJdkTest
                 mutableList.stream()
                         .sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .collect(Collectors.toList());
+
         var expected = Lists.mutable.with(GenerationJdk.values());
         assertEquals(expected, sortedMutableList);
 
@@ -146,11 +142,15 @@ public class GenerationJdkTest
     @Test
     public void transforming()
     {
-        Set<String> names = GenerationJdk.ALL.stream().map(GenerationJdk::getName).collect(Collectors.toUnmodifiableSet());
+        Set<String> names = GenerationJdk.ALL.stream()
+                .map(GenerationJdk::getName)
+                .collect(Collectors.toUnmodifiableSet());
+
         var expected = Sets.immutable.with("Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
                 "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
                 "Generation Alpha", "Missionary Generation");
         assertEquals(expected, names);
+
         // ImmutableCollections$SetN (776)
         System.out.println(GraphLayout.parseInstance(names).toFootprint());
         Set<String> mutableNames = names.stream()

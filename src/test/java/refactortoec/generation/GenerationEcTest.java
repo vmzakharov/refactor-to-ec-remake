@@ -21,33 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class GenerationEcTest
 {
     @Test
-    public void contains()
-    {
-        assertTrue(GenerationEc.ALPHA.contains(2024));
-        assertFalse(GenerationEc.ALPHA.contains(2000));
-        assertTrue(GenerationEc.MILLENNIAL.contains(1985));
-        assertFalse(GenerationEc.MILLENNIAL.contains(1960));
-    }
-
-    @Test
-    public void find()
-    {
-        assertEquals(GenerationEc.MILLENNIAL, GenerationEc.find(1985));
-        assertEquals(GenerationEc.ALPHA, GenerationEc.find(2016));
-    }
-
-    @Test
-    public void anySatisfyWith()
-    {
-        assertTrue(GenerationEc.ALL.anySatisfyWith(GenerationEc::contains, 1995));
-    }
-
-    @Test
     public void counting()
     {
         assertEquals(1, GenerationEc.ALL.countWith(GenerationEc::contains, 1995));
+
         ImmutableBag<Integer> generationCountByYears =
                 GenerationEc.ALL.countBy(generation -> generation.yearsInterval().size());
+
         var expected = Bags.mutable.withOccurrences(17, 2)
                 .withOccurrences(16, 3)
                 .withOccurrences(19, 1)
@@ -64,20 +44,34 @@ public class GenerationEcTest
     @Test
     public void testing()
     {
-        assertTrue(GenerationEc.ALL.anySatisfyWith(GenerationEc::contains, 1995));
+        ImmutableSet<GenerationEc> generations = GenerationEc.ALL;
+        assertTrue(generations.anySatisfyWith(GenerationEc::contains, 1995));
+        assertFalse(generations.allSatisfyWith(GenerationEc::contains, 1995));
+        assertFalse(generations.noneSatisfyWith(GenerationEc::contains, 1995));
+
+        assertTrue(GenerationEc.ALPHA.contains(2024));
+        assertFalse(GenerationEc.ALPHA.contains(2000));
+        assertTrue(GenerationEc.MILLENNIAL.contains(1985));
+        assertFalse(GenerationEc.MILLENNIAL.contains(1960));
     }
 
     @Test
     public void finding()
     {
-        assertEquals(GenerationEc.MILLENNIAL, GenerationEc.ALL.detectWith(GenerationEc::contains, 1995));
+        GenerationEc detected = GenerationEc.ALL.detectWith(GenerationEc::contains, 1995);
+
+        assertEquals(GenerationEc.MILLENNIAL, detected);
+
+        assertEquals(GenerationEc.MILLENNIAL, GenerationEc.find(1985));
+        assertEquals(GenerationEc.ALPHA, GenerationEc.find(2016));
     }
 
     @Test
     public void filtering()
     {
-        var expected = Sets.mutable.with(GenerationEc.X, GenerationEc.MILLENNIAL, GenerationEc.Z);
         ImmutableSet<GenerationEc> filtered = GenerationEc.ALL.selectWith(GenerationEc::yearsCountEquals, 16);
+
+        var expected = Sets.mutable.with(GenerationEc.X, GenerationEc.MILLENNIAL, GenerationEc.Z);
         assertEquals(expected, filtered);
 
         // ImmutableTripletonSet (512)
@@ -89,6 +83,7 @@ public class GenerationEcTest
     {
         ImmutableSetMultimap<Integer, GenerationEc> generationByYears =
                 GenerationEc.ALL.groupBy(generation -> generation.yearsInterval().size());
+
         var expected = Multimaps.immutable.set.empty()
                 .newWithAll(17, Set.of(GenerationEc.ALPHA, GenerationEc.PROGRESSIVE))
                 .newWithAll(16, Set.of(GenerationEc.X, GenerationEc.MILLENNIAL, GenerationEc.Z))
@@ -117,6 +112,7 @@ public class GenerationEcTest
 
         MutableList<GenerationEc> sortedMutableList =
                 mutableList.toSortedListBy(gen -> gen.yearsInterval().getFirst());
+
         var expected = Lists.mutable.with(GenerationEc.values());
         assertEquals(expected, sortedMutableList);
 
@@ -129,10 +125,12 @@ public class GenerationEcTest
     public void transforming()
     {
         ImmutableSet<String> names = GenerationEc.ALL.collect(GenerationEc::getName);
+
         var expected = Sets.immutable.with("Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
                 "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
                 "Generation Alpha", "Missionary Generation");
         assertEquals(expected, names);
+
         // ImmutableUnifiedSet (840)
         System.out.println(GraphLayout.parseInstance(names).toFootprint());
         Set<String> mutableNames = names.toSet();
