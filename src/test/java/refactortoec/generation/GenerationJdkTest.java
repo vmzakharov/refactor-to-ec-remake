@@ -22,11 +22,11 @@ public class GenerationJdkTest
     @Test
     public void counting()
     {
-        assertEquals(
-                1L,
-                GenerationJdk.ALL.stream()
-                        .filter(generation -> generation.contains(1995))
-                        .count());
+        long count = GenerationJdk.ALL.stream()
+                .filter(generation -> generation.contains(1995))
+                .count();
+
+        assertEquals(1L, count);
 
         Map<Long, Long> generationCountByYears =
                 GenerationJdk.ALL.stream()

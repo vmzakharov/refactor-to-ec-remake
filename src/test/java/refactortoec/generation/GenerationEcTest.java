@@ -23,7 +23,9 @@ public class GenerationEcTest
     @Test
     public void counting()
     {
-        assertEquals(1, GenerationEc.ALL.countWith(GenerationEc::contains, 1995));
+        int count = GenerationEc.ALL.countWith(GenerationEc::contains, 1995);
+
+        assertEquals(1, count);
 
         ImmutableBag<Integer> generationCountByYears =
                 GenerationEc.ALL.countBy(generation -> generation.yearsInterval().size());
