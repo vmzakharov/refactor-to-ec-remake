@@ -9,39 +9,48 @@ import org.openjdk.jol.info.GraphLayout;
 
 public class GenerationMemoryTest
 {
+    /**
+     * Use JOL to output memory for an object
+     */
+    private void outputMemory(Object instance)
+    {
+        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        // this.outputMemory(instance);
+    }
+
     @Test
     public void toFootprintImmutableAll()
     {
         // ImmutableUnifiedSet (2,016)
-        System.out.println(GraphLayout.parseInstance(GenerationEc.ALL).toFootprint());
+        this.outputMemory(GenerationEc.ALL);
         // ImmutableCollections$SetN (1,952)
-        System.out.println(GraphLayout.parseInstance(GenerationJdk.ALL).toFootprint());
+        this.outputMemory(GenerationJdk.ALL);
     }
 
     @Test
     public void toFootprintImmutableByYear()
     {
         // ImmutableIntObjectHashMap (34,704)
-        System.out.println(GraphLayout.parseInstance(GenerationEc.BY_YEAR).toFootprint());
+        this.outputMemory(GenerationEc.BY_YEAR);
         // ImmutableCollections$MapN (66,832)
-        System.out.println(GraphLayout.parseInstance(GenerationJdk.BY_YEAR).toFootprint());
+        this.outputMemory(GenerationJdk.BY_YEAR);
     }
 
     @Test
     public void toFootprintMutableAll()
     {
         // UnifiedSet (2,000)
-        System.out.println(GraphLayout.parseInstance(GenerationEc.ALL.toSet()).toFootprint());
+        this.outputMemory(GenerationEc.ALL.toSet());
         // HashSet (2,336)
-        System.out.println(GraphLayout.parseInstance(GenerationJdk.ALL.stream().collect(Collectors.toSet())).toFootprint());
+        this.outputMemory(GenerationJdk.ALL.stream().collect(Collectors.toSet()));
     }
 
     @Test
     public void toFootprintMutableByYear()
     {
         // IntObjectHashMap (34,688)
-        System.out.println(GraphLayout.parseInstance(IntObjectMaps.mutable.withAll(GenerationEc.BY_YEAR)).toFootprint());
+        this.outputMemory(IntObjectMaps.mutable.withAll(GenerationEc.BY_YEAR));
         // HashMap (115,712)
-        System.out.println(GraphLayout.parseInstance(new HashMap<>(GenerationJdk.BY_YEAR)).toFootprint());
+        this.outputMemory(new HashMap<>(GenerationJdk.BY_YEAR));
     }
 }

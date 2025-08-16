@@ -25,7 +25,8 @@ public class GenerationEcTest
      */
     private void outputMemory(Object instance)
     {
-        System.out.println(GraphLayout.parseInstance(instance).toFootprint());
+        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
     }
 
     @Test
@@ -141,10 +142,11 @@ public class GenerationEcTest
                 "Generation Alpha", "Missionary Generation");
         assertEquals(expected, names);
 
-        // ImmutableUnifiedSet (840)
-        this.outputMemory(names);
         Set<String> mutableNames = names.toSet();
         assertEquals(expected, mutableNames);
+
+        // ImmutableUnifiedSet (840)
+        this.outputMemory(names);
         // UnifiedSet (824)
         this.outputMemory(mutableNames);
     }

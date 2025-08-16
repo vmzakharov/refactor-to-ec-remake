@@ -24,7 +24,8 @@ public class GenerationJdkTest
      */
     private void outputMemory(Object instance)
     {
-        System.out.println(GraphLayout.parseInstance(instance).toFootprint());
+        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
     }
 
     @Test
@@ -159,11 +160,12 @@ public class GenerationJdkTest
                 "Generation Alpha", "Missionary Generation");
         assertEquals(expected, names);
 
-        // ImmutableCollections$SetN (776)
-        this.outputMemory(names);
         Set<String> mutableNames = names.stream()
                 .collect(Collectors.toSet());
         assertEquals(expected, mutableNames);
+
+        // ImmutableCollections$SetN (776)
+        this.outputMemory(names);
         // java.util.HashSet (1176)
         this.outputMemory(mutableNames);
     }

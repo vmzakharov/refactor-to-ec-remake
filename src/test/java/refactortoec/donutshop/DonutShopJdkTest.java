@@ -23,6 +23,15 @@ public class DonutShopJdkTest
 {
     private DonutShopJdk donutShopJdk;
 
+    /**
+     * Use JOL to output memory for an object
+     */
+    private void outputMemory(Object instance)
+    {
+        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
+    }
+
     @BeforeEach
     public void setup()
     {
@@ -162,6 +171,6 @@ public class DonutShopJdkTest
     {
         this.donutShopJdk.donutsByCode();
         // donutShopEc (3000)
-        System.out.println(GraphLayout.parseInstance(this.donutShopJdk).toFootprint());
+        this.outputMemory(this.donutShopJdk);
     }
 }

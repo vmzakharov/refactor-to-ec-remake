@@ -21,6 +21,16 @@ public class WordCountTest
     private static List<String> words;
     private static ImmutableList<String> wordsEc;
 
+
+    /**
+     * Use JOL to output memory for an object
+     */
+    private void outputMemory(Object instance)
+    {
+        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        // this.outputMemory(instance).toFootprint());
+    }
+
     @BeforeAll
     static public void loadData()
     {
@@ -55,7 +65,7 @@ public class WordCountTest
         assertEquals(3, wordCount.get("for").intValue());
         assertEquals(1, wordCount.get("Sheep").intValue());
 
-        System.out.println(GraphLayout.parseInstance(wordCount).toFootprint());
+        this.outputMemory(wordCount);
     }
 
 
@@ -70,7 +80,7 @@ public class WordCountTest
         assertEquals(1, wordCounts.get("Sheep").intValue());
 
         // HashMap (2,632)
-        System.out.println(GraphLayout.parseInstance(wordCounts).toFootprint());
+        this.outputMemory(wordCounts);
     }
 
     @Test
@@ -87,7 +97,7 @@ public class WordCountTest
         assertEquals(1, wordCounts.get("Sheep").intValue());
 
         // HashMap (3,456)
-        System.out.println(GraphLayout.parseInstance(wordCounts).toFootprint());
+        this.outputMemory(wordCounts);
     }
 
     @Test
@@ -101,6 +111,6 @@ public class WordCountTest
         assertEquals(0, bagOfWords.occurrencesOf("Cheburashka"));
 
         // HashBag (1,944)
-        System.out.println(GraphLayout.parseInstance(bagOfWords).toFootprint());
+        this.outputMemory(bagOfWords);
     }
 }
