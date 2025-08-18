@@ -17,7 +17,8 @@ import org.openjdk.jol.info.GraphLayout;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static refactortoec.generation.GenerationEc.*;
+import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
+import static refactortoec.generation.GenerationEc.find;
 
 public class GenerationEcTest
 {

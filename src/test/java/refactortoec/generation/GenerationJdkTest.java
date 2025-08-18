@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static refactortoec.generation.GenerationJdk.*;
+import static refactortoec.generation.GenerationJdk.GENERATION_SET;
+import static refactortoec.generation.GenerationJdk.find;
 
 public class GenerationJdkTest
 {
