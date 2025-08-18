@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static refactortoec.generation.GenerationJdk.*;
 
 public class GenerationJdkTest
 {
@@ -24,22 +25,25 @@ public class GenerationJdkTest
      */
     private void outputMemory(Object instance)
     {
-        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout
+                .parseInstance(instance)
+                .totalSize());
         // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
     }
 
     @Test
     public void counting()
     {
-        long count = GenerationJdk.ALL.stream()
+        long count = GENERATION_SET.stream()
                 .filter(generation -> generation.contains(1995))
                 .count();
 
         assertEquals(1L, count);
 
         Map<Long, Long> generationCountByYears =
-                GenerationJdk.ALL.stream()
-                        .collect(Collectors.groupingBy(generation -> generation.yearsStream().count(),
+                GENERATION_SET.stream()
+                        .collect(Collectors.groupingBy(
+                                generation -> generation.yearsStream().count(),
                                 Collectors.counting()));
 
         var expected = new HashMap<>();
@@ -60,37 +64,43 @@ public class GenerationJdkTest
     @Test
     public void testing()
     {
-        assertTrue(GenerationJdk.ALL.stream()
+        assertTrue(GENERATION_SET.stream()
                 .anyMatch(generation -> generation.contains(1995)));
+        assertFalse(GENERATION_SET.stream()
+                .allMatch(generation -> generation.contains(1995)));
+        assertFalse(GENERATION_SET.stream()
+                .noneMatch(generation -> generation.contains(1995)));
 
-        assertTrue(GenerationJdk.ALPHA.contains(2024));
-        assertFalse(GenerationJdk.ALPHA.contains(2000));
-        assertTrue(GenerationJdk.MILLENNIAL.contains(1985));
-        assertFalse(GenerationJdk.MILLENNIAL.contains(1960));
+        assertTrue(Generation.ALPHA.contains(2024));
+        assertFalse(Generation.ALPHA.contains(2000));
+        assertTrue(Generation.MILLENNIAL.contains(1985));
+        assertFalse(Generation.MILLENNIAL.contains(1960));
     }
 
     @Test
     public void finding()
     {
-        GenerationJdk findFirst = GenerationJdk.ALL.stream()
-                .filter(generation -> generation.contains(1995))
-                .findFirst()
-                .orElse(null);
+        Generation findFirst =
+                GENERATION_SET.stream()
+                        .filter(generation -> generation.contains(1995))
+                        .findFirst()
+                        .orElse(null);
 
-        assertEquals(GenerationJdk.MILLENNIAL, findFirst);
+        assertEquals(Generation.MILLENNIAL, findFirst);
 
-        assertEquals(GenerationJdk.MILLENNIAL, GenerationJdk.find(1985));
-        assertEquals(GenerationJdk.ALPHA, GenerationJdk.find(2016));
+        assertEquals(Generation.MILLENNIAL, find(1985));
+        assertEquals(Generation.ALPHA, find(2016));
     }
 
     @Test
     public void filtering()
     {
-        Set<GenerationJdk> filtered = GenerationJdk.ALL.stream()
-                .filter(generation -> generation.yearsCountEquals(16))
-                .collect(Collectors.toSet());
+        Set<Generation> filtered =
+                GENERATION_SET.stream()
+                        .filter(generation -> generation.yearsCountEqualsJdk(16))
+                        .collect(Collectors.toSet());
 
-        var expected = Set.of(GenerationJdk.X, GenerationJdk.MILLENNIAL, GenerationJdk.Z);
+        var expected = Set.of(Generation.X, Generation.MILLENNIAL, Generation.Z);
         assertEquals(expected, filtered);
 
         // java.util.HashSet (760)
@@ -100,19 +110,20 @@ public class GenerationJdkTest
     @Test
     public void grouping()
     {
-        Map<Long, Set<GenerationJdk>> generationByYears =
-                GenerationJdk.ALL.stream()
-                        .collect(Collectors.groupingBy(generation -> generation.yearsStream().count(),
+        Map<Long, Set<Generation>> generationByYears =
+                GENERATION_SET.stream()
+                        .collect(Collectors.groupingBy(
+                                generation -> generation.yearsStream().count(),
                                 Collectors.toSet()));
 
         var expected = new HashMap<>();
-        expected.put(17L, Set.of(GenerationJdk.ALPHA, GenerationJdk.PROGRESSIVE));
-        expected.put(16L, Set.of(GenerationJdk.X, GenerationJdk.MILLENNIAL, GenerationJdk.Z));
-        expected.put(19L, Set.of(GenerationJdk.BOOMER));
-        expected.put(18L, Set.of(GenerationJdk.SILENT, GenerationJdk.LOST));
-        expected.put(23L, Set.of(GenerationJdk.MISSIONARY));
-        expected.put(27L, Set.of(GenerationJdk.GREATEST));
-        expected.put(1843L, Set.of(GenerationJdk.UNCLASSIFIED));
+        expected.put(17L, Set.of(Generation.ALPHA, Generation.PROGRESSIVE));
+        expected.put(16L, Set.of(Generation.X, Generation.MILLENNIAL, Generation.Z));
+        expected.put(19L, Set.of(Generation.BOOMER));
+        expected.put(18L, Set.of(Generation.SILENT, Generation.LOST));
+        expected.put(23L, Set.of(Generation.MISSIONARY));
+        expected.put(27L, Set.of(Generation.GREATEST));
+        expected.put(1843L, Set.of(Generation.UNCLASSIFIED));
         assertEquals(expected, generationByYears);
         assertNull(generationByYears.get(30L));
 
@@ -123,25 +134,27 @@ public class GenerationJdkTest
     @Test
     public void converting()
     {
-        List<GenerationJdk> mutableList = GenerationJdk.ALL.stream()
-                .collect(Collectors.toList());
-        List<GenerationJdk> immutableList = GenerationJdk.ALL.stream()
-                .toList();
+        List<Generation> mutableList =
+                GENERATION_SET.stream()
+                        .collect(Collectors.toList());
+        List<Generation> immutableList =
+                GENERATION_SET.stream()
+                        .toList();
 
         // ArrayList (1928)
         this.outputMemory(mutableList);
         // ImmutableCollections$ListN (1912)
         this.outputMemory(immutableList);
 
-        List<GenerationJdk> sortedMutableList =
+        List<Generation> sortedMutableList =
                 mutableList.stream()
                         .sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .collect(Collectors.toList());
 
-        var expected = Lists.mutable.with(GenerationJdk.values());
+        var expected = Lists.mutable.with(Generation.values());
         assertEquals(expected, sortedMutableList);
 
-        List<GenerationJdk> sortedImmutableList =
+        List<Generation> sortedImmutableList =
                 immutableList.stream()
                         .sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .toList();
@@ -151,11 +164,13 @@ public class GenerationJdkTest
     @Test
     public void transforming()
     {
-        Set<String> names = GenerationJdk.ALL.stream()
-                .map(GenerationJdk::getName)
-                .collect(Collectors.toUnmodifiableSet());
+        Set<String> names =
+                GENERATION_SET.stream()
+                        .map(Generation::getName)
+                        .collect(Collectors.toUnmodifiableSet());
 
-        var expected = Sets.immutable.with("Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
+        var expected = Sets.immutable.with(
+                "Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
                 "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
                 "Generation Alpha", "Missionary Generation");
         assertEquals(expected, names);

@@ -22,9 +22,9 @@ public class GenerationMemoryTest
     public void toFootprintImmutableAll()
     {
         // ImmutableUnifiedSet (2,016)
-        this.outputMemory(GenerationEc.ALL);
+        this.outputMemory(GenerationEc.GENERATION_IMMUTABLE_SET);
         // ImmutableCollections$SetN (1,952)
-        this.outputMemory(GenerationJdk.ALL);
+        this.outputMemory(GenerationJdk.GENERATION_SET);
     }
 
     @Test
@@ -40,9 +40,9 @@ public class GenerationMemoryTest
     public void toFootprintMutableAll()
     {
         // UnifiedSet (2,000)
-        this.outputMemory(GenerationEc.ALL.toSet());
+        this.outputMemory(GenerationEc.GENERATION_IMMUTABLE_SET.toSet());
         // HashSet (2,336)
-        this.outputMemory(GenerationJdk.ALL.stream().collect(Collectors.toSet()));
+        this.outputMemory(GenerationJdk.GENERATION_SET.stream().collect(Collectors.toSet()));
     }
 
     @Test

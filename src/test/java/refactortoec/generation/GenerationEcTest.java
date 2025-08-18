@@ -17,6 +17,7 @@ import org.openjdk.jol.info.GraphLayout;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static refactortoec.generation.GenerationEc.*;
 
 public class GenerationEcTest
 {
@@ -32,12 +33,13 @@ public class GenerationEcTest
     @Test
     public void counting()
     {
-        int count = GenerationEc.ALL.countWith(GenerationEc::contains, 1995);
+        int count =
+                GENERATION_IMMUTABLE_SET.countWith(Generation::contains, 1995);
 
         assertEquals(1, count);
 
         ImmutableBag<Integer> generationCountByYears =
-                GenerationEc.ALL.countBy(generation -> generation.yearsInterval().size());
+                GENERATION_IMMUTABLE_SET.countBy(generation -> generation.yearsInterval().size());
 
         var expected = Bags.mutable.withOccurrences(17, 2)
                 .withOccurrences(16, 3)
@@ -55,34 +57,36 @@ public class GenerationEcTest
     @Test
     public void testing()
     {
-        ImmutableSet<GenerationEc> generations = GenerationEc.ALL;
-        assertTrue(generations.anySatisfyWith(GenerationEc::contains, 1995));
-        assertFalse(generations.allSatisfyWith(GenerationEc::contains, 1995));
-        assertFalse(generations.noneSatisfyWith(GenerationEc::contains, 1995));
+        ImmutableSet<Generation> generations = GENERATION_IMMUTABLE_SET;
+        assertTrue(generations.anySatisfyWith(Generation::contains, 1995));
+        assertFalse(generations.allSatisfyWith(Generation::contains, 1995));
+        assertFalse(generations.noneSatisfyWith(Generation::contains, 1995));
 
-        assertTrue(GenerationEc.ALPHA.contains(2024));
-        assertFalse(GenerationEc.ALPHA.contains(2000));
-        assertTrue(GenerationEc.MILLENNIAL.contains(1985));
-        assertFalse(GenerationEc.MILLENNIAL.contains(1960));
+        assertTrue(Generation.ALPHA.contains(2024));
+        assertFalse(Generation.ALPHA.contains(2000));
+        assertTrue(Generation.MILLENNIAL.contains(1985));
+        assertFalse(Generation.MILLENNIAL.contains(1960));
     }
 
     @Test
     public void finding()
     {
-        GenerationEc detected = GenerationEc.ALL.detectWith(GenerationEc::contains, 1995);
+        Generation detected =
+                GENERATION_IMMUTABLE_SET.detectWith(Generation::contains, 1995);
 
-        assertEquals(GenerationEc.MILLENNIAL, detected);
+        assertEquals(Generation.MILLENNIAL, detected);
 
-        assertEquals(GenerationEc.MILLENNIAL, GenerationEc.find(1985));
-        assertEquals(GenerationEc.ALPHA, GenerationEc.find(2016));
+        assertEquals(Generation.MILLENNIAL, find(1985));
+        assertEquals(Generation.ALPHA, find(2016));
     }
 
     @Test
     public void filtering()
     {
-        ImmutableSet<GenerationEc> filtered = GenerationEc.ALL.selectWith(GenerationEc::yearsCountEquals, 16);
+        ImmutableSet<Generation> filtered =
+                GENERATION_IMMUTABLE_SET.selectWith(Generation::yearsCountEqualsEc, 16);
 
-        var expected = Sets.mutable.with(GenerationEc.X, GenerationEc.MILLENNIAL, GenerationEc.Z);
+        var expected = Sets.mutable.with(Generation.X, Generation.MILLENNIAL, Generation.Z);
         assertEquals(expected, filtered);
 
         // ImmutableTripletonSet (512)
@@ -92,17 +96,17 @@ public class GenerationEcTest
     @Test
     public void grouping()
     {
-        ImmutableSetMultimap<Integer, GenerationEc> generationByYears =
-                GenerationEc.ALL.groupBy(generation -> generation.yearsInterval().size());
+        ImmutableSetMultimap<Integer, Generation> generationByYears =
+                GENERATION_IMMUTABLE_SET.groupBy(generation -> generation.yearsInterval().size());
 
         var expected = Multimaps.immutable.set.empty()
-                .newWithAll(17, Set.of(GenerationEc.ALPHA, GenerationEc.PROGRESSIVE))
-                .newWithAll(16, Set.of(GenerationEc.X, GenerationEc.MILLENNIAL, GenerationEc.Z))
-                .newWithAll(19, Set.of(GenerationEc.BOOMER))
-                .newWithAll(18, Set.of(GenerationEc.SILENT, GenerationEc.LOST))
-                .newWithAll(23, Set.of(GenerationEc.MISSIONARY))
-                .newWithAll(27, Set.of(GenerationEc.GREATEST))
-                .newWithAll(1843, Set.of(GenerationEc.UNCLASSIFIED));
+                .newWithAll(17, Set.of(Generation.ALPHA, Generation.PROGRESSIVE))
+                .newWithAll(16, Set.of(Generation.X, Generation.MILLENNIAL, Generation.Z))
+                .newWithAll(19, Set.of(Generation.BOOMER))
+                .newWithAll(18, Set.of(Generation.SILENT, Generation.LOST))
+                .newWithAll(23, Set.of(Generation.MISSIONARY))
+                .newWithAll(27, Set.of(Generation.GREATEST))
+                .newWithAll(1843, Set.of(Generation.UNCLASSIFIED));
         assertEquals(expected, generationByYears);
         assertTrue(generationByYears.get(30).isEmpty());
 
@@ -113,21 +117,23 @@ public class GenerationEcTest
     @Test
     public void converting()
     {
-        MutableList<GenerationEc> mutableList = GenerationEc.ALL.toList();
-        ImmutableList<GenerationEc> immutableList = GenerationEc.ALL.toImmutableList();
+        MutableList<Generation> mutableList =
+                GENERATION_IMMUTABLE_SET.toList();
+        ImmutableList<Generation> immutableList =
+                GENERATION_IMMUTABLE_SET.toImmutableList();
 
         // FastList (1928)
         this.outputMemory(mutableList);
         // ImmutableArrayList (1904)
         this.outputMemory(immutableList);
 
-        MutableList<GenerationEc> sortedMutableList =
+        MutableList<Generation> sortedMutableList =
                 mutableList.toSortedListBy(gen -> gen.yearsInterval().getFirst());
 
-        var expected = Lists.mutable.with(GenerationEc.values());
+        var expected = Lists.mutable.with(Generation.values());
         assertEquals(expected, sortedMutableList);
 
-        ImmutableList<GenerationEc> sortedImmutableList =
+        ImmutableList<Generation> sortedImmutableList =
                 immutableList.toImmutableSortedListBy(gen -> gen.yearsInterval().getFirst());
         assertEquals(expected, sortedImmutableList);
     }
@@ -135,7 +141,8 @@ public class GenerationEcTest
     @Test
     public void transforming()
     {
-        ImmutableSet<String> names = GenerationEc.ALL.collect(GenerationEc::getName);
+        ImmutableSet<String> names =
+                GENERATION_IMMUTABLE_SET.collect(Generation::getName);
 
         var expected = Sets.immutable.with("Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
                 "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
