@@ -17,8 +17,9 @@ public class GenerationEc
     private static ImmutableIntObjectMap<Generation> groupEachByYear()
     {
         MutableIntObjectMap<Generation> map = IntObjectMaps.mutable.empty();
-        GENERATION_IMMUTABLE_SET.forEach(generation -> generation.yearsInterval()
-                .forEach(year -> map.put(year, generation)));
+        GENERATION_IMMUTABLE_SET.forEach(generation ->
+                generation.yearsInterval()
+                        .forEach(year -> map.put(year, generation)));
         return map.toImmutable();
     }
 

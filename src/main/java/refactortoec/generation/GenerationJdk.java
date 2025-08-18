@@ -16,7 +16,8 @@ public class GenerationJdk
     {
         Map<Integer, Generation> map = new HashMap<>();
         GENERATION_SET.forEach(generation ->
-                generation.yearsStream().forEach(year -> map.put(year, generation)));
+                generation.yearsStream()
+                        .forEach(year -> map.put(year, generation)));
         return Map.copyOf(map);
     }
 
