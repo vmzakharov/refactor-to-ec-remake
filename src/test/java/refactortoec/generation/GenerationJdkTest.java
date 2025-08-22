@@ -1,37 +1,20 @@
 package refactortoec.generation;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.Sets;
 import org.junit.jupiter.api.Test;
-import org.openjdk.jol.info.GraphLayout;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static refactortoec.generation.Generation.*;
 import static refactortoec.generation.GenerationJdk.GENERATION_SET;
 import static refactortoec.generation.GenerationJdk.find;
+import static refactortoec.util.MemoryMeter.outputMemory;
 
 public class GenerationJdkTest
 {
-    /**
-     * Use JOL to output memory for an object
-     */
-    private void outputMemory(Object instance)
-    {
-        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout
-                .parseInstance(instance)
-                .totalSize());
-        // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
-    }
-
     @Test
     public void counting()
     {
@@ -59,7 +42,7 @@ public class GenerationJdkTest
         assertNull(generationCountByYears.get(30L));
 
         // java.util.HashMap (592)
-        this.outputMemory(generationCountByYears);
+        outputMemory(generationCountByYears);
     }
 
     @Test
@@ -72,10 +55,10 @@ public class GenerationJdkTest
         assertFalse(GENERATION_SET.stream()
                 .noneMatch(generation -> generation.contains(1995)));
 
-        assertTrue(Generation.ALPHA.contains(2024));
-        assertFalse(Generation.ALPHA.contains(2000));
-        assertTrue(Generation.MILLENNIAL.contains(1985));
-        assertFalse(Generation.MILLENNIAL.contains(1960));
+        assertTrue(ALPHA.contains(2024));
+        assertFalse(ALPHA.contains(2000));
+        assertTrue(MILLENNIAL.contains(1985));
+        assertFalse(MILLENNIAL.contains(1960));
     }
 
     @Test
@@ -87,10 +70,10 @@ public class GenerationJdkTest
                         .findFirst()
                         .orElse(null);
 
-        assertEquals(Generation.MILLENNIAL, findFirst);
+        assertEquals(MILLENNIAL, findFirst);
 
-        assertEquals(Generation.MILLENNIAL, find(1985));
-        assertEquals(Generation.ALPHA, find(2016));
+        assertEquals(MILLENNIAL, find(1985));
+        assertEquals(ALPHA, find(2016));
     }
 
     @Test
@@ -101,11 +84,11 @@ public class GenerationJdkTest
                         .filter(generation -> generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toSet());
 
-        var expected = Set.of(Generation.X, Generation.MILLENNIAL, Generation.Z);
+        var expected = Set.of(X, MILLENNIAL, Z);
         assertEquals(expected, filtered);
 
         // java.util.HashSet (760)
-        this.outputMemory(filtered);
+        outputMemory(filtered);
     }
 
     @Test
@@ -118,18 +101,19 @@ public class GenerationJdkTest
                                 Collectors.toSet()));
 
         var expected = new HashMap<>();
-        expected.put(17L, Set.of(Generation.ALPHA, Generation.PROGRESSIVE));
-        expected.put(16L, Set.of(Generation.X, Generation.MILLENNIAL, Generation.Z));
-        expected.put(19L, Set.of(Generation.BOOMER));
-        expected.put(18L, Set.of(Generation.SILENT, Generation.LOST));
-        expected.put(23L, Set.of(Generation.MISSIONARY));
-        expected.put(27L, Set.of(Generation.GREATEST));
-        expected.put(1843L, Set.of(Generation.UNCLASSIFIED));
+        expected.put(17L, Set.of(ALPHA, PROGRESSIVE));
+        expected.put(16L, Set.of(X, MILLENNIAL, Z));
+        expected.put(19L, Set.of(BOOMER));
+        expected.put(18L, Set.of(SILENT, LOST));
+        expected.put(23L, Set.of(MISSIONARY));
+        expected.put(27L, Set.of(GREATEST));
+        expected.put(1843L, Set.of(UNCLASSIFIED));
+
         assertEquals(expected, generationByYears);
         assertNull(generationByYears.get(30L));
 
         // java.util.HashMap (3832)
-        this.outputMemory(generationByYears);
+        outputMemory(generationByYears);
     }
 
     @Test
@@ -143,16 +127,16 @@ public class GenerationJdkTest
                         .toList();
 
         // ArrayList (1928)
-        this.outputMemory(mutableList);
+        outputMemory(mutableList);
         // ImmutableCollections$ListN (1912)
-        this.outputMemory(immutableList);
+        outputMemory(immutableList);
 
         List<Generation> sortedMutableList =
                 mutableList.stream()
                         .sorted(Comparator.comparing(gen -> gen.yearsStream().findFirst().getAsInt()))
                         .collect(Collectors.toList());
 
-        var expected = Lists.mutable.with(Generation.values());
+        var expected = Lists.mutable.with(values());
         assertEquals(expected, sortedMutableList);
 
         List<Generation> sortedImmutableList =
@@ -181,8 +165,8 @@ public class GenerationJdkTest
         assertEquals(expected, mutableNames);
 
         // ImmutableCollections$SetN (776)
-        this.outputMemory(names);
+        outputMemory(names);
         // java.util.HashSet (1176)
-        this.outputMemory(mutableNames);
+        outputMemory(mutableNames);
     }
 }

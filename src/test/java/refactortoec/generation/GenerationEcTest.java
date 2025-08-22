@@ -1,7 +1,5 @@
 package refactortoec.generation;
 
-import java.util.Set;
-
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.factory.Bags;
 import org.eclipse.collections.api.factory.Lists;
@@ -12,25 +10,17 @@ import org.eclipse.collections.api.multimap.set.ImmutableSetMultimap;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.Multimaps;
 import org.junit.jupiter.api.Test;
-import org.openjdk.jol.info.GraphLayout;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static refactortoec.generation.Generation.*;
 import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
 import static refactortoec.generation.GenerationEc.find;
+import static refactortoec.util.MemoryMeter.outputMemory;
 
 public class GenerationEcTest
 {
-    /**
-     * Use JOL to output memory for an object
-     */
-    private void outputMemory(Object instance)
-    {
-        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
-        // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
-    }
-
     @Test
     public void counting()
     {
@@ -52,7 +42,7 @@ public class GenerationEcTest
         assertEquals(expected, generationCountByYears);
 
         // ImmutableArrayBag (232)
-        this.outputMemory(generationCountByYears);
+        outputMemory(generationCountByYears);
     }
 
     @Test
@@ -63,10 +53,10 @@ public class GenerationEcTest
         assertFalse(generations.allSatisfyWith(Generation::contains, 1995));
         assertFalse(generations.noneSatisfyWith(Generation::contains, 1995));
 
-        assertTrue(Generation.ALPHA.contains(2024));
-        assertFalse(Generation.ALPHA.contains(2000));
-        assertTrue(Generation.MILLENNIAL.contains(1985));
-        assertFalse(Generation.MILLENNIAL.contains(1960));
+        assertTrue(ALPHA.contains(2024));
+        assertFalse(ALPHA.contains(2000));
+        assertTrue(MILLENNIAL.contains(1985));
+        assertFalse(MILLENNIAL.contains(1960));
     }
 
     @Test
@@ -75,10 +65,10 @@ public class GenerationEcTest
         Generation detected =
                 GENERATION_IMMUTABLE_SET.detectWith(Generation::contains, 1995);
 
-        assertEquals(Generation.MILLENNIAL, detected);
+        assertEquals(MILLENNIAL, detected);
 
-        assertEquals(Generation.MILLENNIAL, find(1985));
-        assertEquals(Generation.ALPHA, find(2016));
+        assertEquals(MILLENNIAL, find(1985));
+        assertEquals(ALPHA, find(2016));
     }
 
     @Test
@@ -87,11 +77,11 @@ public class GenerationEcTest
         ImmutableSet<Generation> filtered =
                 GENERATION_IMMUTABLE_SET.selectWith(Generation::yearsCountEqualsEc, 16);
 
-        var expected = Sets.mutable.with(Generation.X, Generation.MILLENNIAL, Generation.Z);
+        var expected = Sets.mutable.with(X, MILLENNIAL, Z);
         assertEquals(expected, filtered);
 
         // ImmutableTripletonSet (512)
-        this.outputMemory(filtered);
+        outputMemory(filtered);
     }
 
     @Test
@@ -101,18 +91,19 @@ public class GenerationEcTest
                 GENERATION_IMMUTABLE_SET.groupBy(generation -> generation.yearsInterval().size());
 
         var expected = Multimaps.immutable.set.empty()
-                .newWithAll(17, Set.of(Generation.ALPHA, Generation.PROGRESSIVE))
-                .newWithAll(16, Set.of(Generation.X, Generation.MILLENNIAL, Generation.Z))
-                .newWithAll(19, Set.of(Generation.BOOMER))
-                .newWithAll(18, Set.of(Generation.SILENT, Generation.LOST))
-                .newWithAll(23, Set.of(Generation.MISSIONARY))
-                .newWithAll(27, Set.of(Generation.GREATEST))
-                .newWithAll(1843, Set.of(Generation.UNCLASSIFIED));
+                .newWithAll(17, Set.of(ALPHA, PROGRESSIVE))
+                .newWithAll(16, Set.of(X, MILLENNIAL, Z))
+                .newWithAll(19, Set.of(BOOMER))
+                .newWithAll(18, Set.of(SILENT, LOST))
+                .newWithAll(23, Set.of(MISSIONARY))
+                .newWithAll(27, Set.of(GREATEST))
+                .newWithAll(1843, Set.of(UNCLASSIFIED));
+
         assertEquals(expected, generationByYears);
         assertTrue(generationByYears.get(30).isEmpty());
 
         // ImmutableSetMultimapImpl (2280)
-        this.outputMemory(generationByYears);
+        outputMemory(generationByYears);
     }
 
     @Test
@@ -124,14 +115,14 @@ public class GenerationEcTest
                 GENERATION_IMMUTABLE_SET.toImmutableList();
 
         // FastList (1928)
-        this.outputMemory(mutableList);
+        outputMemory(mutableList);
         // ImmutableArrayList (1904)
-        this.outputMemory(immutableList);
+        outputMemory(immutableList);
 
         MutableList<Generation> sortedMutableList =
                 mutableList.toSortedListBy(gen -> gen.yearsInterval().getFirst());
 
-        var expected = Lists.mutable.with(Generation.values());
+        var expected = Lists.mutable.with(values());
         assertEquals(expected, sortedMutableList);
 
         ImmutableList<Generation> sortedImmutableList =
@@ -154,8 +145,8 @@ public class GenerationEcTest
         assertEquals(expected, mutableNames);
 
         // ImmutableUnifiedSet (840)
-        this.outputMemory(names);
+        outputMemory(names);
         // UnifiedSet (824)
-        this.outputMemory(mutableNames);
+        outputMemory(mutableNames);
     }
 }
