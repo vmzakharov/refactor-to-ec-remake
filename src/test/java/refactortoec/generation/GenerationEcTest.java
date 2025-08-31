@@ -1,5 +1,6 @@
 package refactortoec.generation;
 
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.factory.Bags;
 import org.eclipse.collections.api.factory.Lists;
@@ -148,5 +149,17 @@ public class GenerationEcTest
         outputMemory(names);
         // UnifiedSet (824)
         outputMemory(mutableNames);
+    }
+
+    @Test
+    public void grouping2()
+    {
+        RichIterable<RichIterable<Generation>> chunks =
+                GenerationEc.chunk(3);
+        String generationsAsString = chunks.makeString();
+
+        String expected =
+                "[UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], [BOOMER, X, MILLENNIAL], [Z, ALPHA]";
+        assertEquals(expected, generationsAsString);
     }
 }

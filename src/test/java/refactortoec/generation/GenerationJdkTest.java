@@ -1,11 +1,13 @@
 package refactortoec.generation;
 
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.Sets;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static refactortoec.generation.Generation.*;
@@ -168,5 +170,18 @@ public class GenerationJdkTest
         outputMemory(names);
         // java.util.HashSet (1176)
         outputMemory(mutableNames);
+    }
+
+    @Test
+    public void grouping2()
+    {
+        Stream<List<Generation>> chunks =
+                GenerationJdk.chunk(3);
+        String generationsAsString = chunks.map(Object::toString)
+                .collect(Collectors.joining(", "));
+
+        String expected =
+                "[UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], [BOOMER, X, MILLENNIAL], [Z, ALPHA]";
+        assertEquals(expected, generationsAsString);
     }
 }

@@ -1,10 +1,12 @@
 package refactortoec.generation;
 
+import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.map.primitive.ImmutableIntObjectMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.primitive.IntObjectMaps;
+import org.eclipse.collections.impl.utility.ArrayIterate;
 
 public class GenerationEc
 {
@@ -26,5 +28,10 @@ public class GenerationEc
     public static Generation find(int year)
     {
         return BY_YEAR.getIfAbsent(year, () -> Generation.UNCLASSIFIED);
+    }
+
+    public static RichIterable<RichIterable<Generation>> chunk(int size)
+    {
+        return ArrayIterate.chunk(Generation.values(), size);
     }
 }

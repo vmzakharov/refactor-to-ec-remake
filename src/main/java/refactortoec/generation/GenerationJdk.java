@@ -1,8 +1,12 @@
 package refactortoec.generation;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Gatherers;
+import java.util.stream.Stream;
 
 public class GenerationJdk
 {
@@ -24,5 +28,11 @@ public class GenerationJdk
     public static Generation find(int year)
     {
         return BY_YEAR.getOrDefault(year, Generation.UNCLASSIFIED);
+    }
+
+    public static Stream<List<Generation>> chunk(int size)
+    {
+        return Arrays.stream(Generation.values())
+                .gather(Gatherers.windowFixed(size));
     }
 }
