@@ -30,7 +30,7 @@ public class GenerationJdk
         return BY_YEAR.getOrDefault(year, Generation.UNCLASSIFIED);
     }
 
-    public static Stream<List<Generation>> chunk(int size)
+    public static Stream<List<Generation>> windowFixed(int size)
     {
         return Arrays.stream(Generation.values())
                 .gather(Gatherers.windowFixed(size));

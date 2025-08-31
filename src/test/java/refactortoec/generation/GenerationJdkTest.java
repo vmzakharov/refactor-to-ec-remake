@@ -175,9 +175,9 @@ public class GenerationJdkTest
     @Test
     public void grouping2()
     {
-        Stream<List<Generation>> chunks =
-                GenerationJdk.chunk(3);
-        String generationsAsString = chunks.map(Object::toString)
+        Stream<List<Generation>> windows =
+                GenerationJdk.windowFixed(3);
+        String generationsAsString = windows.map(Object::toString)
                 .collect(Collectors.joining(", "));
 
         String expected =
