@@ -173,10 +173,10 @@ public class GenerationJdkTest
     }
 
     @Test
-    public void grouping2()
+    public void gatheringWindowFixed()
     {
         Stream<List<Generation>> windows =
-                GenerationJdk.windowFixed(3);
+                GenerationJdk.windowFixedGenerations(3);
         String generationsAsString = windows.map(Object::toString)
                 .collect(Collectors.joining(", "));
 

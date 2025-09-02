@@ -152,10 +152,10 @@ public class GenerationEcTest
     }
 
     @Test
-    public void grouping2()
+    public void chunking()
     {
         RichIterable<RichIterable<Generation>> chunks =
-                GenerationEc.chunk(3);
+                GenerationEc.chunkGenerations(3);
         String generationsAsString = chunks.makeString();
 
         String expected =

@@ -30,7 +30,7 @@ public class GenerationEc
         return BY_YEAR.getIfAbsent(year, () -> Generation.UNCLASSIFIED);
     }
 
-    public static RichIterable<RichIterable<Generation>> chunk(int size)
+    public static RichIterable<RichIterable<Generation>> chunkGenerations(int size)
     {
         return ArrayIterate.chunk(Generation.values(), size);
     }
