@@ -1,5 +1,6 @@
 package refactortoec.generation;
 
+import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.factory.Bags;
@@ -154,12 +155,20 @@ public class GenerationEcTest
     @Test
     public void chunking()
     {
-        RichIterable<RichIterable<Generation>> chunks =
+        RichIterable<RichIterable<Generation>> chunkGenerations =
                 GenerationEc.chunkGenerations(3);
-        String generationsAsString = chunks.makeString();
+        String generationsAsString = chunkGenerations.makeString();
 
-        String expected =
+        String expectedGenerations =
                 "[UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], [BOOMER, X, MILLENNIAL], [Z, ALPHA]";
-        assertEquals(expected, generationsAsString);
+        assertEquals(expectedGenerations, generationsAsString);
+
+        RichIterable<IntIterable> chunkYears =
+                MILLENNIAL.yearsInterval().chunk(4);
+        String yearsAsString = chunkYears.makeString();
+
+        String expectedYears =
+                "[1981, 1982, 1983, 1984], [1985, 1986, 1987, 1988], [1989, 1990, 1991, 1992], [1993, 1994, 1995, 1996]";
+        assertEquals(expectedYears, yearsAsString);
     }
 }

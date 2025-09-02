@@ -1,5 +1,6 @@
 package refactortoec.generation;
 
+import org.eclipse.collections.api.IntIterable;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.Sets;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -175,13 +177,25 @@ public class GenerationJdkTest
     @Test
     public void gatheringWindowFixed()
     {
-        Stream<List<Generation>> windows =
+        Stream<List<Generation>> windowFixedGenerations =
                 GenerationJdk.windowFixedGenerations(3);
-        String generationsAsString = windows.map(Object::toString)
+        String generationsAsString = windowFixedGenerations.map(Object::toString)
                 .collect(Collectors.joining(", "));
 
         String expected =
                 "[UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], [BOOMER, X, MILLENNIAL], [Z, ALPHA]";
         assertEquals(expected, generationsAsString);
+
+        Stream<List<Integer>> windowFixedYears =
+                MILLENNIAL.yearsStream()
+                        .boxed()
+                        .gather(Gatherers.windowFixed(4));
+        String yearsAsString = windowFixedYears.map(Object::toString)
+                .collect(Collectors.joining(", "));
+
+        String expectedYears =
+                "[1981, 1982, 1983, 1984], [1985, 1986, 1987, 1988], [1989, 1990, 1991, 1992], [1993, 1994, 1995, 1996]";
+        assertEquals(expectedYears, yearsAsString);
+
     }
 }

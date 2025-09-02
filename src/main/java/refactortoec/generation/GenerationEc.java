@@ -6,7 +6,7 @@ import org.eclipse.collections.api.map.primitive.ImmutableIntObjectMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.primitive.IntObjectMaps;
-import org.eclipse.collections.impl.utility.ArrayIterate;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 
 public class GenerationEc
 {
@@ -32,6 +32,6 @@ public class GenerationEc
 
     public static RichIterable<RichIterable<Generation>> chunkGenerations(int size)
     {
-        return ArrayIterate.chunk(Generation.values(), size);
+        return ArrayAdapter.adapt(Generation.values()).chunk(size);
     }
 }
