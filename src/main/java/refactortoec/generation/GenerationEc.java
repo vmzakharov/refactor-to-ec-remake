@@ -1,6 +1,7 @@
 package refactortoec.generation;
 
 import org.eclipse.collections.api.RichIterable;
+import org.eclipse.collections.api.block.function.Function2;
 import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.map.primitive.ImmutableIntObjectMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
@@ -33,5 +34,10 @@ public class GenerationEc
     public static RichIterable<RichIterable<Generation>> chunkGenerations(int size)
     {
         return ArrayAdapter.adapt(Generation.values()).chunk(size);
+    }
+
+    public static <IV> IV injectInto(IV value, Function2<IV, Generation, IV> function)
+    {
+        return GENERATION_IMMUTABLE_SET.injectInto(value, function);
     }
 }

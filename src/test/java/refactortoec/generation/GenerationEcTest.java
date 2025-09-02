@@ -171,4 +171,19 @@ public class GenerationEcTest
                 "[1981, 1982, 1983, 1984], [1985, 1986, 1987, 1988], [1989, 1990, 1991, 1992], [1993, 1994, 1995, 1996]";
         assertEquals(expectedYears, yearsAsString);
     }
+
+    @Test
+    public void injectInto()
+    {
+        Integer maxYears = GenerationEc.injectInto(
+                Integer.MIN_VALUE,
+                (value, generation) -> Math.max(value, generation.yearsInterval().size()));
+
+        Integer minYears = GenerationEc.injectInto(
+                Integer.MAX_VALUE,
+                (value, generation) -> Math.min(value, generation.yearsInterval().size()));
+
+        assertEquals(1843, maxYears);
+        assertEquals(16, minYears);
+    }
 }

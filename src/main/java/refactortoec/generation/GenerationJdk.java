@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.stream.Gatherers;
 import java.util.stream.Stream;
+
+import org.eclipse.collections.api.block.function.Function2;
 
 public class GenerationJdk
 {
@@ -34,5 +37,13 @@ public class GenerationJdk
     {
         return Arrays.stream(Generation.values())
                 .gather(Gatherers.windowFixed(size));
+    }
+
+    public static <IV> IV fold(IV value, BiFunction<IV, Generation, IV> function)
+    {
+        return GENERATION_SET.stream()
+                .gather(Gatherers.fold(() -> value, function))
+                .findFirst()
+                .orElse(value);
     }
 }
