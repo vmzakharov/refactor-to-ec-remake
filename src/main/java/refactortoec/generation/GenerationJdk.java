@@ -9,8 +9,6 @@ import java.util.function.BiFunction;
 import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
-import org.eclipse.collections.api.block.function.Function2;
-
 public class GenerationJdk
 {
     public static final Set<Generation> GENERATION_SET =
