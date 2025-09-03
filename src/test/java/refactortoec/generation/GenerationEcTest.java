@@ -1,6 +1,7 @@
 package refactortoec.generation;
 
-import org.eclipse.collections.api.IntIterable;
+import java.util.Set;
+
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.bag.ImmutableBag;
 import org.eclipse.collections.api.factory.Bags;
@@ -13,10 +14,21 @@ import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.Multimaps;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static refactortoec.generation.Generation.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static refactortoec.generation.Generation.ALPHA;
+import static refactortoec.generation.Generation.BOOMER;
+import static refactortoec.generation.Generation.GREATEST;
+import static refactortoec.generation.Generation.LOST;
+import static refactortoec.generation.Generation.MILLENNIAL;
+import static refactortoec.generation.Generation.MISSIONARY;
+import static refactortoec.generation.Generation.PROGRESSIVE;
+import static refactortoec.generation.Generation.SILENT;
+import static refactortoec.generation.Generation.UNCLASSIFIED;
+import static refactortoec.generation.Generation.X;
+import static refactortoec.generation.Generation.Z;
+import static refactortoec.generation.Generation.values;
 import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
 import static refactortoec.generation.GenerationEc.find;
 import static refactortoec.util.MemoryMeter.outputMemory;
@@ -163,9 +175,9 @@ public class GenerationEcTest
                 "[UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], [BOOMER, X, MILLENNIAL], [Z, ALPHA]";
         assertEquals(expectedGenerations, generationsAsString);
 
-        RichIterable<IntIterable> chunkYears =
-                MILLENNIAL.yearsInterval().chunk(4);
-        String yearsAsString = chunkYears.makeString();
+        String yearsAsString = MILLENNIAL.yearsInterval()
+                .chunk(4)
+                .makeString();
 
         String expectedYears =
                 "[1981, 1982, 1983, 1984], [1985, 1986, 1987, 1988], [1989, 1990, 1991, 1992], [1993, 1994, 1995, 1996]";
@@ -183,7 +195,12 @@ public class GenerationEcTest
                 Integer.MAX_VALUE,
                 (value, generation) -> Math.min(value, generation.yearsInterval().size()));
 
+        Integer sumYears = GenerationEc.injectInto(
+                Integer.valueOf(0),
+                (value, generation) -> Integer.sum(value, generation.yearsInterval().size()));
+
         assertEquals(1843, maxYears);
         assertEquals(16, minYears);
+        assertEquals(2030, sumYears);
     }
 }

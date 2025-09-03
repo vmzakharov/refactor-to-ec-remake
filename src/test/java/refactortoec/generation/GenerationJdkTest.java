@@ -1,18 +1,34 @@
 package refactortoec.generation;
 
-import org.eclipse.collections.api.IntIterable;
-import org.eclipse.collections.api.RichIterable;
-import org.eclipse.collections.api.factory.Lists;
-import org.eclipse.collections.api.factory.Sets;
-import org.junit.jupiter.api.Test;
-
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static refactortoec.generation.Generation.*;
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.factory.Sets;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static refactortoec.generation.Generation.ALPHA;
+import static refactortoec.generation.Generation.BOOMER;
+import static refactortoec.generation.Generation.GREATEST;
+import static refactortoec.generation.Generation.LOST;
+import static refactortoec.generation.Generation.MILLENNIAL;
+import static refactortoec.generation.Generation.MISSIONARY;
+import static refactortoec.generation.Generation.PROGRESSIVE;
+import static refactortoec.generation.Generation.SILENT;
+import static refactortoec.generation.Generation.UNCLASSIFIED;
+import static refactortoec.generation.Generation.X;
+import static refactortoec.generation.Generation.Z;
+import static refactortoec.generation.Generation.values;
 import static refactortoec.generation.GenerationJdk.GENERATION_SET;
 import static refactortoec.generation.GenerationJdk.find;
 import static refactortoec.util.MemoryMeter.outputMemory;
@@ -186,11 +202,10 @@ public class GenerationJdkTest
                 "[UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], [BOOMER, X, MILLENNIAL], [Z, ALPHA]";
         assertEquals(expected, generationsAsString);
 
-        Stream<List<Integer>> windowFixedYears =
-                MILLENNIAL.yearsStream()
-                        .boxed()
-                        .gather(Gatherers.windowFixed(4));
-        String yearsAsString = windowFixedYears.map(Object::toString)
+        String yearsAsString = MILLENNIAL.yearsStream()
+                .boxed()
+                .gather(Gatherers.windowFixed(4))
+                .map(Object::toString)
                 .collect(Collectors.joining(", "));
 
         String expectedYears =
@@ -209,7 +224,12 @@ public class GenerationJdkTest
                 Integer.MAX_VALUE,
                 (value, generation) -> Math.min(value, generation.yearsInterval().size()));
 
+        Integer sumYears = GenerationJdk.fold(
+                Integer.valueOf(0),
+                (value, generation) -> Integer.sum(value, generation.yearsInterval().size()));
+
         assertEquals(1843, maxYears);
         assertEquals(16, minYears);
+        assertEquals(2030, sumYears);
     }
 }
