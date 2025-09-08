@@ -36,7 +36,7 @@ public class GenerationEc
         return ArrayIterate.chunk(Generation.values(), size);
     }
 
-    public static <IV> IV injectInto(IV value, Function2<IV, Generation, IV> function)
+    public static <IV> IV fold(IV value, Function2<IV, Generation, IV> function)
     {
         return GENERATION_IMMUTABLE_SET.injectInto(value, function);
     }

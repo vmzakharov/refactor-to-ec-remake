@@ -191,7 +191,7 @@ public class GenerationJdkTest
     }
 
     @Test
-    public void gatheringWindowFixed()
+    public void chunking()
     {
         Stream<List<Generation>> windowFixedGenerations =
                 GenerationJdk.windowFixedGenerations(3);
@@ -214,7 +214,7 @@ public class GenerationJdkTest
     }
 
     @Test
-    public void gatheringFold()
+    public void fold()
     {
         Integer maxYears = GenerationJdk.fold(
                 Integer.MIN_VALUE,

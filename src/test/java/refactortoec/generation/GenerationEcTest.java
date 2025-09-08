@@ -185,17 +185,17 @@ public class GenerationEcTest
     }
 
     @Test
-    public void injectInto()
+    public void fold()
     {
-        Integer maxYears = GenerationEc.injectInto(
+        Integer maxYears = GenerationEc.fold(
                 Integer.MIN_VALUE,
                 (value, generation) -> Math.max(value, generation.yearsInterval().size()));
 
-        Integer minYears = GenerationEc.injectInto(
+        Integer minYears = GenerationEc.fold(
                 Integer.MAX_VALUE,
                 (value, generation) -> Math.min(value, generation.yearsInterval().size()));
 
-        Integer sumYears = GenerationEc.injectInto(
+        Integer sumYears = GenerationEc.fold(
                 Integer.valueOf(0),
                 (value, generation) -> Integer.sum(value, generation.yearsInterval().size()));
 
