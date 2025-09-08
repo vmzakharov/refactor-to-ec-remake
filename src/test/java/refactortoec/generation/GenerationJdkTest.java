@@ -214,7 +214,7 @@ public class GenerationJdkTest
     }
 
     @Test
-    public void fold()
+    public void folding()
     {
         Integer maxYears = GenerationJdk.fold(
                 Integer.MIN_VALUE,

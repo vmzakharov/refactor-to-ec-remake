@@ -185,7 +185,7 @@ public class GenerationEcTest
     }
 
     @Test
-    public void fold()
+    public void folding()
     {
         Integer maxYears = GenerationEc.fold(
                 Integer.MIN_VALUE,
