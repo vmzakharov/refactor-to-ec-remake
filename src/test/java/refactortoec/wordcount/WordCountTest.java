@@ -65,6 +65,7 @@ public class WordCountTest
         assertEquals(3, wordCount.get("for").intValue());
         assertEquals(1, wordCount.get("Sheep").intValue());
 
+        // HashMap 2,608
         this.outputMemory(wordCount);
     }
 

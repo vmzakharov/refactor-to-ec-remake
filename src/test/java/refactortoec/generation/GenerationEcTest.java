@@ -128,9 +128,9 @@ public class GenerationEcTest
         ImmutableList<Generation> immutableList =
                 GENERATION_IMMUTABLE_SET.toImmutableList();
 
-        // FastList (1928)
+        // FastList (1,928)
         outputMemory(mutableList);
-        // ImmutableArrayList (1904)
+        // ImmutableArrayList (1,904)
         outputMemory(immutableList);
 
         MutableList<Generation> sortedMutableList =
