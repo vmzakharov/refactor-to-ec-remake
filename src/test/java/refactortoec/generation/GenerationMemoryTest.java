@@ -14,14 +14,14 @@ public class GenerationMemoryTest
      */
     private void outputMemory(Object instance)
     {
-        // System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
-        System.out.println(GraphLayout.parseInstance(instance).toFootprint());
+        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
     }
 
     @Test
     public void toFootprintImmutableAll()
     {
-        // ImmutableUnifiedSet (2,016)
+        // ImmutableUnifiedSet (2,048)
         this.outputMemory(GenerationEc.GENERATION_IMMUTABLE_SET);
         // ImmutableCollections$SetN (1,952)
         this.outputMemory(GenerationJdk.GENERATION_SET);
@@ -39,7 +39,7 @@ public class GenerationMemoryTest
     @Test
     public void toFootprintMutableAll()
     {
-        // UnifiedSet (2,000)
+        // UnifiedSet (2,032)
         this.outputMemory(GenerationEc.GENERATION_IMMUTABLE_SET.toSet());
         // HashSet (2,336)
         this.outputMemory(GenerationJdk.GENERATION_SET.stream().collect(Collectors.toSet()));
