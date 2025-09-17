@@ -1,0 +1,12 @@
+[cols="3,3"]
+.Donut Shop Memory
+|===
+|Type |Bytes
+
+|`DonutShopEc`
+|2,840
+
+|`DonutShopJdk`
+|3,000
+
+|===

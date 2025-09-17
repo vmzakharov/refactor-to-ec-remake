@@ -170,7 +170,7 @@ public class DonutShopJdkTest
     public void toFootprint()
     {
         this.donutShopJdk.donutsByCode();
-        // donutShopEc (3000)
+        // donutShopJdk (3000)
         this.outputMemory(this.donutShopJdk);
     }
 }
