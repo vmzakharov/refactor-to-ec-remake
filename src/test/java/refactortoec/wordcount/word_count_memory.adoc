@@ -1,22 +1,28 @@
-[cols="2,3,3"]
+[cols="2,3,2,2"]
 .Word Count Memory
 |===
-|Method |Type |Bytes
+|Method |Type |Bytes (JDK 25) | Bytes (JDK 25 COH)
 
 |`countJdkNaive`
 |`Map<String, Integer>`
-|2608
+|2,608
+|2,208
 
 |`countJdkStream`
-|`Map<String, Integer>`
-|2608
+|`Map<String, Long>`
+|2,632
+|2,208
 
 |`countJdkWithCounter`
 |`Map<String, LongAdder>`
-|3456
+|3,456
+|2,832
 
 |`countEc`
 |`MutableBag<String>`
-|1944
+|1,944
+|1,760
 
 |===
+
+*Note:* To use Compact Object Headers with Java 25 add `-XX:+UseCompactObjectHeaders` to Java command line

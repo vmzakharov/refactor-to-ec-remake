@@ -1,12 +1,16 @@
-[cols="3,3"]
+[cols="3,2,2"]
 .Donut Shop Memory
 |===
-|Type |Bytes
+|Type |Bytes (JDK 25) | Bytes (JDK 25 COH)
 
 |`DonutShopEc`
 |2,840
+|2,384
 
 |`DonutShopJdk`
 |3,000
+|2,528
 
 |===
+
+*Note:* To use Compact Object Headers with Java 25 add `-XX:+UseCompactObjectHeaders` to Java command line

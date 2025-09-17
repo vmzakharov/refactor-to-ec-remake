@@ -171,6 +171,7 @@ public class DonutShopJdkTest
     {
         this.donutShopJdk.donutsByCode();
         // donutShopJdk (3000)
+        // donutShopJdk Java 25 COH (2,528)
         this.outputMemory(this.donutShopJdk);
     }
 }
