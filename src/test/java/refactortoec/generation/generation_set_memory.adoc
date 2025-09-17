@@ -6,21 +6,21 @@
 |`immutableSetGenerationEc`
 |`ImmutableUnifiedSet<Generation>`
 |2,080
-|
+|1,816
 
 |`immutableSetGenerationJdk`
 |`ImmutableCollections$SetN<Generation>`
 |1,952
-|
+|1,744
 
 |`mutableSetGenerationEc`
 |`UnifiedSet<Generation>`
 |2,064
-|
+|1,800
 
 |`mutableSetGenerationJdk`
 |`HashSet<Generation>`
 |2,336
-|
+|2,032
 
 |===

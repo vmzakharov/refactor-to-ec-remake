@@ -6,21 +6,21 @@
 |`generationsByYearImmutableEc`
 |`ImmutableIntObjectHashMap<Generation>`
 |34,704
-|
+|34,496
 
 |`generationsByYearImmutableJdk`
 |`ImmutableCollections$MapN<Integer,Generation>`
 |66,832
-|
+|66,624
 
 |`generationsByYearMutableEc`
 |`IntObjectHashMap<Generation>`
 |34,688
-|
+|34,480
 
 |`generationsByYearMutableJdk`
 |`HashMap<Integer, Generation>`
 |115,712
-|
+|99,264
 
 |===
