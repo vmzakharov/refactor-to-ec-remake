@@ -24,3 +24,5 @@
 |2,032
 
 |===
+
+*Note:* To use Compact Object Headers with Java 25 add `-XX:+UseCompactObjectHeaders` to Java command line
