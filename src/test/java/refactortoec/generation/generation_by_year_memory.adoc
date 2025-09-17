@@ -1,0 +1,22 @@
+[cols="2,3,3"]
+.Generation By Year Memory
+|===
+|Method |Type |Bytes
+
+|`toFootprintImmutableByYear`
+|`ImmutableIntObjectHashMap<Generation>`
+|34,704
+
+|`toFootprintImmutableByYear`
+|`ImmutableCollections$MapN<Integer,Generation>`
+|66,832
+
+|`toFootprintMutableByYear`
+|`IntObjectHashMap<Generation>`
+|34,688
+
+|`toFootprintMutableByYear`
+|`HashMap<Integer, Generation>`
+|115,712
+
+|===

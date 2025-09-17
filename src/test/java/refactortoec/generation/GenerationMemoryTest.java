@@ -1,8 +1,14 @@
 package refactortoec.generation;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.collections.api.map.primitive.ImmutableIntObjectMap;
+import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
+import org.eclipse.collections.api.set.ImmutableSet;
+import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.primitive.IntObjectMaps;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jol.info.GraphLayout;
@@ -19,38 +25,46 @@ public class GenerationMemoryTest
     }
 
     @Test
-    public void toFootprintImmutableAll()
+    public void toFootprintImmutableSetAll()
     {
         // ImmutableUnifiedSet (2,048)
-        this.outputMemory(GenerationEc.GENERATION_IMMUTABLE_SET);
+        ImmutableSet<Generation> generationImmutableSet = GenerationEc.GENERATION_IMMUTABLE_SET;
+        this.outputMemory(generationImmutableSet);
         // ImmutableCollections$SetN (1,952)
-        this.outputMemory(GenerationJdk.GENERATION_SET);
+        Set<Generation> generationSet = GenerationJdk.GENERATION_SET;
+        this.outputMemory(generationSet);
     }
 
     @Test
     public void toFootprintImmutableByYear()
     {
         // ImmutableIntObjectHashMap (34,704)
-        this.outputMemory(GenerationEc.BY_YEAR);
+        ImmutableIntObjectMap<Generation> byYearEc = GenerationEc.BY_YEAR;
+        this.outputMemory(byYearEc);
         // ImmutableCollections$MapN (66,832)
-        this.outputMemory(GenerationJdk.BY_YEAR);
+        Map<Integer, Generation> byYearJdk = GenerationJdk.BY_YEAR;
+        this.outputMemory(byYearJdk);
     }
 
     @Test
-    public void toFootprintMutableAll()
+    public void toFootprintMutableSetAll()
     {
         // UnifiedSet (2,032)
-        this.outputMemory(GenerationEc.GENERATION_IMMUTABLE_SET.toSet());
+        MutableSet<Generation> ecSet = GenerationEc.GENERATION_IMMUTABLE_SET.toSet();
+        this.outputMemory(ecSet);
         // HashSet (2,336)
-        this.outputMemory(GenerationJdk.GENERATION_SET.stream().collect(Collectors.toSet()));
+        Set<Generation> jdkSet = GenerationJdk.GENERATION_SET.stream().collect(Collectors.toSet());
+        this.outputMemory(jdkSet);
     }
 
     @Test
     public void toFootprintMutableByYear()
     {
         // IntObjectHashMap (34,688)
-        this.outputMemory(IntObjectMaps.mutable.withAll(GenerationEc.BY_YEAR));
+        MutableIntObjectMap<Generation> byYearEc = IntObjectMaps.mutable.withAll(GenerationEc.BY_YEAR);
+        this.outputMemory(byYearEc);
         // HashMap (115,712)
-        this.outputMemory(new HashMap<>(GenerationJdk.BY_YEAR));
+        HashMap<Integer, Generation> byYearJdk = new HashMap<>(GenerationJdk.BY_YEAR);
+        this.outputMemory(byYearJdk);
     }
 }

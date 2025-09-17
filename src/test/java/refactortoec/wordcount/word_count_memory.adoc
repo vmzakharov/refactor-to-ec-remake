@@ -1,0 +1,22 @@
+[cols="2,3,3"]
+.Word Count Memory
+|===
+|Method |Type |Bytes
+
+|`countJdkNaive`
+|`Map<String, Integer>`
+|2608
+
+|`countJdkStream`
+|`Map<String, Integer>`
+|2608
+
+|`countJdkWithCounter`
+|`Map<String, LongAdder>`
+|3456
+
+|`countEc`
+|`MutableBag<String>`
+|1944
+
+|===

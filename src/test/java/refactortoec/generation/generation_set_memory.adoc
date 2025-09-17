@@ -1,0 +1,22 @@
+[cols="2,3,3"]
+.Generation Set Memory
+|===
+|Method |Type |Bytes
+
+|`toFootprintImmutableSetAll`
+|`ImmutableUnifiedSet<Generation>`
+|2,048
+
+|`toFootprintImmutableSetAll`
+|`ImmutableCollections$SetN<Generation>`
+|1,952
+
+|`toFootprintMutableSetAll`
+|`UnifiedSet<Generation>`
+|2,032
+
+|`toFootprintMutableSetAll`
+|`HashSet<Generation>`
+|2,336
+
+|===
