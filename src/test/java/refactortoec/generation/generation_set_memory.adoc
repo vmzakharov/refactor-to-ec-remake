@@ -1,22 +1,26 @@
-[cols="2,3,3"]
+[cols="3,3,2,2"]
 .Generation Set Memory
 |===
-|Method |Type |Bytes
+|Method |Type |Bytes (JDK 25) | Bytes (JDK 25 COH)
 
 |`immutableSetGenerationEc`
 |`ImmutableUnifiedSet<Generation>`
-|2,048
+|2,080
+|
 
 |`immutableSetGenerationJdk`
 |`ImmutableCollections$SetN<Generation>`
 |1,952
+|
 
 |`mutableSetGenerationEc`
 |`UnifiedSet<Generation>`
-|2,032
+|2,064
+|
 
 |`mutableSetGenerationJdk`
 |`HashSet<Generation>`
 |2,336
+|
 
 |===

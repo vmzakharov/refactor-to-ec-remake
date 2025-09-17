@@ -27,7 +27,8 @@ public class GenerationMemoryTest
     @Test
     public void immutableSetGenerationEc()
     {
-        // ImmutableUnifiedSet (2,048)
+        // ImmutableUnifiedSet
+        // Java 25 - 1,984
         ImmutableSet<Generation> generationImmutableSet = GenerationEc.GENERATION_IMMUTABLE_SET;
         this.outputMemory(generationImmutableSet);
     }
@@ -35,7 +36,8 @@ public class GenerationMemoryTest
     @Test
     public void immutableSetGenerationJdk()
     {
-        // ImmutableCollections$SetN (1,952)
+        // ImmutableCollections$SetN
+        // Java 25 - 1,952
         Set<Generation> generationSet = GenerationJdk.GENERATION_SET;
         this.outputMemory(generationSet);
     }
@@ -43,7 +45,8 @@ public class GenerationMemoryTest
     @Test
     public void generationsByYearImmutableEc()
     {
-        // ImmutableIntObjectHashMap (34,704)
+        // ImmutableIntObjectHashMap
+        // Java 25 - 34,704
         ImmutableIntObjectMap<Generation> byYearEc = GenerationEc.BY_YEAR;
         this.outputMemory(byYearEc);
     }
@@ -51,7 +54,8 @@ public class GenerationMemoryTest
     @Test
     public void generationsByYearImmutableJdk()
     {
-        // ImmutableCollections$MapN (66,832)
+        // ImmutableCollections$MapN
+        // Java 25 - 66,832
         Map<Integer, Generation> byYearJdk = GenerationJdk.BY_YEAR;
         this.outputMemory(byYearJdk);
     }
@@ -59,7 +63,8 @@ public class GenerationMemoryTest
     @Test
     public void mutableSetGenerationEc()
     {
-        // UnifiedSet (2,032)
+        // UnifiedSet
+        // Java 25 - 1,968
         MutableSet<Generation> ecSet = GenerationEc.GENERATION_IMMUTABLE_SET.toSet();
         this.outputMemory(ecSet);
     }
@@ -67,7 +72,8 @@ public class GenerationMemoryTest
     @Test
     public void mutableSetGenerationJdk()
     {
-        // HashSet (2,336)
+        // UnifiedSet
+        // Java 25 - 2,336
         Set<Generation> jdkSet = GenerationJdk.GENERATION_SET.stream().collect(Collectors.toSet());
         this.outputMemory(jdkSet);
     }
@@ -75,7 +81,8 @@ public class GenerationMemoryTest
     @Test
     public void generationBysYearMutableEc()
     {
-        // IntObjectHashMap (34,688)
+        // IntObjectHashMap
+        // Java 25 - 34,688
         MutableIntObjectMap<Generation> byYearEc = IntObjectMaps.mutable.withAll(GenerationEc.BY_YEAR);
         this.outputMemory(byYearEc);
     }
@@ -83,7 +90,8 @@ public class GenerationMemoryTest
     @Test
     public void generationBysYearMutableJdk()
     {
-        // HashMap (115,712)
+        // HashMap
+        // Java 25 - 115,712
         HashMap<Integer, Generation> byYearJdk = new HashMap<>(GenerationJdk.BY_YEAR);
         this.outputMemory(byYearJdk);
     }

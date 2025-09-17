@@ -1,22 +1,26 @@
-[cols="2,3,3"]
+[cols="3,3,2,2"]
 .Generation By Year Memory
 |===
-|Method |Type |Bytes
+|Method |Type |Bytes (JDK 25) | Bytes (JDK 25 COH)
 
 |`generationsByYearImmutableEc`
 |`ImmutableIntObjectHashMap<Generation>`
 |34,704
+|
 
 |`generationsByYearImmutableJdk`
 |`ImmutableCollections$MapN<Integer,Generation>`
 |66,832
+|
 
 |`generationsByYearMutableEc`
 |`IntObjectHashMap<Generation>`
 |34,688
+|
 
 |`generationsByYearMutableJdk`
 |`HashMap<Integer, Generation>`
 |115,712
+|
 
 |===
