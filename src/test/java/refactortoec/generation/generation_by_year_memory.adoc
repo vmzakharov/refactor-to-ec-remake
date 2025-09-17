@@ -3,19 +3,19 @@
 |===
 |Method |Type |Bytes
 
-|`toFootprintImmutableByYear`
+|`generationsByYearImmutableEc`
 |`ImmutableIntObjectHashMap<Generation>`
 |34,704
 
-|`toFootprintImmutableByYear`
+|`generationsByYearImmutableJdk`
 |`ImmutableCollections$MapN<Integer,Generation>`
 |66,832
 
-|`toFootprintMutableByYear`
+|`generationBysYearMutableEc`
 |`IntObjectHashMap<Generation>`
 |34,688
 
-|`toFootprintMutableByYear`
+|`generationBysYearMutableJdk`
 |`HashMap<Integer, Generation>`
 |115,712
 

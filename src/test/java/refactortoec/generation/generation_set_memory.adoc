@@ -3,19 +3,19 @@
 |===
 |Method |Type |Bytes
 
-|`toFootprintImmutableSetAll`
+|`immutableSetGenerationEc`
 |`ImmutableUnifiedSet<Generation>`
 |2,048
 
-|`toFootprintImmutableSetAll`
+|`immutableSetGenerationJdk`
 |`ImmutableCollections$SetN<Generation>`
 |1,952
 
-|`toFootprintMutableSetAll`
+|`mutableSetGenerationEc`
 |`UnifiedSet<Generation>`
 |2,032
 
-|`toFootprintMutableSetAll`
+|`mutableSetGenerationJdk`
 |`HashSet<Generation>`
 |2,336
 
