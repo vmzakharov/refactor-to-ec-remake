@@ -11,11 +11,11 @@
 |`ImmutableCollections$MapN<Integer,Generation>`
 |66,832
 
-|`generationBysYearMutableEc`
+|`generationsByYearMutableEc`
 |`IntObjectHashMap<Generation>`
 |34,688
 
-|`generationBysYearMutableJdk`
+|`generationsByYearMutableJdk`
 |`HashMap<Integer, Generation>`
 |115,712
 
