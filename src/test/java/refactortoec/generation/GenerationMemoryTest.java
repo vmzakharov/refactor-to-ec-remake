@@ -20,10 +20,56 @@ public class GenerationMemoryTest
      */
     private void outputMemory(Object instance)
     {
-        System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
-        // System.out.println(GraphLayout.parseInstance(instance).toFootprint());
+        // System.out.println(instance.getClass().getSimpleName() + ": " + GraphLayout.parseInstance(instance).totalSize());
+        System.out.println(GraphLayout.parseInstance(instance).toFootprint());
     }
 
+    /**
+     * JDK 25
+     * java.lang.Object@62230c58d footprint:
+     *      COUNT       AVG       SUM   DESCRIPTION
+     *          1        16        16   java.lang.Object
+     *          1                  16   (total)
+     *
+     * JDK 25 COH
+     * java.lang.Object@2e55dd0cd footprint:
+     *      COUNT       AVG       SUM   DESCRIPTION
+     *          1         8         8   java.lang.Object
+     *          1                   8   (total)
+     */
+    @Test
+    public void object()
+    {
+        this.outputMemory(new Object());
+    }
+
+    /**
+     * JDK
+     * org.eclipse.collections.impl.set.immutable.ImmutableUnifiedSet@2cb4893bd footprint:
+     *      COUNT       AVG       SUM   DESCRIPTION
+     *         22        30       680   [B
+     *          1        80        80   [Ljava.lang.Object;
+     *         22        24       528   java.lang.String
+     *          1        16        16   org.eclipse.collections.impl.set.immutable.ImmutableUnifiedSet
+     *          1        32        32   org.eclipse.collections.impl.set.mutable.UnifiedSet
+     *          2        32        64   org.eclipse.collections.impl.set.mutable.UnifiedSet$ChainedBucket
+     *         11        32       352   refactortoec.generation.Generation
+     *         11        24       264   refactortoec.generation.YearRange
+     *         71                2016   (total)
+     *
+     * JDK 25 COH
+     * org.eclipse.collections.impl.set.immutable.ImmutableUnifiedSet@413d1bafd footprint:
+     *      COUNT       AVG       SUM   DESCRIPTION
+     *         22        25       568   [B
+     *          1        80        80   [Ljava.lang.Object;
+     *         22        24       528   java.lang.String
+     *          1        16        16   org.eclipse.collections.impl.set.immutable.ImmutableUnifiedSet
+     *          1        24        24   org.eclipse.collections.impl.set.mutable.UnifiedSet
+     *          2        24        48   org.eclipse.collections.impl.set.mutable.UnifiedSet$ChainedBucket
+     *         11        32       352   refactortoec.generation.Generation
+     *         11        16       176   refactortoec.generation.YearRange
+     *         71                1792   (total)
+     */
     @Test
     public void immutableSetGenerationEc()
     {
@@ -33,6 +79,29 @@ public class GenerationMemoryTest
         this.outputMemory(generationImmutableSet);
     }
 
+    /**
+     * JDK 25
+     * java.util.ImmutableCollections$SetN@a3d8174d footprint:
+     *      COUNT       AVG       SUM   DESCRIPTION
+     *         22        30       680   [B
+     *          1       104       104   [Ljava.lang.Object;
+     *         22        24       528   java.lang.String
+     *          1        24        24   java.util.ImmutableCollections$SetN
+     *         11        32       352   refactortoec.generation.Generation
+     *         11        24       264   refactortoec.generation.YearRange
+     *         68                1952   (total)
+     *
+     * JDK 25 COH
+     * java.util.ImmutableCollections$SetN@732c2a62d footprint:
+     *      COUNT       AVG       SUM   DESCRIPTION
+     *         22        25       568   [B
+     *          1       104       104   [Ljava.lang.Object;
+     *         22        24       528   java.lang.String
+     *          1        16        16   java.util.ImmutableCollections$SetN
+     *         11        32       352   refactortoec.generation.Generation
+     *         11        16       176   refactortoec.generation.YearRange
+     *         68                1744   (total)
+     */
     @Test
     public void immutableSetGenerationJdk()
     {
