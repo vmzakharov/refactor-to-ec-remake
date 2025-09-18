@@ -62,6 +62,7 @@ public class GenerationJdkTest
         assertNull(generationCountByYears.get(30L));
 
         // java.util.HashMap (592)
+        // Java 25 COH (448)
         outputMemory(generationCountByYears);
     }
 
@@ -108,6 +109,7 @@ public class GenerationJdkTest
         assertEquals(expected, filtered);
 
         // java.util.HashSet (760)
+        // Java 25 COH (648)
         outputMemory(filtered);
     }
 
@@ -133,6 +135,7 @@ public class GenerationJdkTest
         assertNull(generationByYears.get(30L));
 
         // java.util.HashMap (3832)
+        // Java 25 COH (3360)
         outputMemory(generationByYears);
     }
 
@@ -147,8 +150,10 @@ public class GenerationJdkTest
                         .toList();
 
         // ArrayList (1928)
+        // Java 25 COH (1720)
         outputMemory(mutableList);
         // ImmutableCollections$ListN (1912)
+        // Java 25 COH (1696)
         outputMemory(immutableList);
 
         List<Generation> sortedMutableList =
@@ -185,8 +190,10 @@ public class GenerationJdkTest
         assertEquals(expected, mutableNames);
 
         // ImmutableCollections$SetN (776)
+        // Java 25 COH (712)
         outputMemory(names);
         // java.util.HashSet (1176)
+        // Java 25 COH (1016)
         outputMemory(mutableNames);
     }
 

@@ -56,6 +56,7 @@ public class GenerationEcTest
         assertEquals(expected, generationCountByYears);
 
         // ImmutableArrayBag (232)
+        // Java 25 COH (208)
         outputMemory(generationCountByYears);
     }
 
@@ -95,6 +96,7 @@ public class GenerationEcTest
         assertEquals(expected, filtered);
 
         // ImmutableTripletonSet (512)
+        // Java 25 COH (440)
         outputMemory(filtered);
     }
 
@@ -117,6 +119,7 @@ public class GenerationEcTest
         assertTrue(generationByYears.get(30).isEmpty());
 
         // ImmutableSetMultimapImpl (2280)
+        // Java 25 COH (2056)
         outputMemory(generationByYears);
     }
 
@@ -129,8 +132,10 @@ public class GenerationEcTest
                 GENERATION_IMMUTABLE_SET.toImmutableList();
 
         // FastList (1,928)
+        // Java 25 COH (1,720)
         outputMemory(mutableList);
         // ImmutableArrayList (1,904)
+        // Java 25 COH (1,696)
         outputMemory(immutableList);
 
         MutableList<Generation> sortedMutableList =
@@ -159,8 +164,10 @@ public class GenerationEcTest
         assertEquals(expected, mutableNames);
 
         // ImmutableUnifiedSet (840)
+        // Java 25 COH (760)
         outputMemory(names);
         // UnifiedSet (824)
+        // Java 25 COH (744)
         outputMemory(mutableNames);
     }
 
