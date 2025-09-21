@@ -21,7 +21,6 @@ public class WordCountTest
     private static List<String> words;
     private static ImmutableList<String> wordsEc;
 
-
     /**
      * Use JOL to output memory for an object
      */
@@ -90,7 +89,7 @@ public class WordCountTest
         Map<String, LongAdder> wordCounts = new HashMap<>();
 
         words.forEach(
-            w -> wordCounts.computeIfAbsent(w, key -> new LongAdder()).add(1)
+            w -> wordCounts.computeIfAbsent(w, _ -> new LongAdder()).add(1)
         );
 
         assertEquals(2, wordCounts.get("Bah").intValue());
