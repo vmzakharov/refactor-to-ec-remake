@@ -40,7 +40,8 @@ public class GenerationMemoryTest
     @Test
     public void object()
     {
-        this.outputMemory(new Object());
+        // this.outputMemory(new Object());
+        this.outputMemory("Hello World!");
     }
 
     /**
