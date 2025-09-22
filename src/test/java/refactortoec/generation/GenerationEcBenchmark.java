@@ -150,15 +150,18 @@ public class GenerationEcBenchmark
     {
         Integer maxYears = GenerationEc.fold(
                 Integer.MIN_VALUE,
-                (value, generation) -> Math.max(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Math.max(value, generation.yearsInterval().size()));
 
         Integer minYears = GenerationEc.fold(
                 Integer.MAX_VALUE,
-                (value, generation) -> Math.min(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Math.min(value, generation.yearsInterval().size()));
 
         Integer sumYears = GenerationEc.fold(
                 Integer.valueOf(0),
-                (value, generation) -> Integer.sum(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Integer.sum(value, generation.yearsInterval().size()));
 
         return Tuples.triplet(maxYears, minYears, sumYears);
     }

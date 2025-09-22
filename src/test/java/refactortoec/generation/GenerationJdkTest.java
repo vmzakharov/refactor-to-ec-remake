@@ -250,15 +250,18 @@ public class GenerationJdkTest
     {
         Integer maxYears = GenerationJdk.fold(
                 Integer.MIN_VALUE,
-                (value, generation) -> Math.max(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Math.max(value, generation.yearsInterval().size()));
 
         Integer minYears = GenerationJdk.fold(
                 Integer.MAX_VALUE,
-                (value, generation) -> Math.min(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Math.min(value, generation.yearsInterval().size()));
 
         Integer sumYears = GenerationJdk.fold(
                 Integer.valueOf(0),
-                (value, generation) -> Integer.sum(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Integer.sum(value, generation.yearsInterval().size()));
 
         assertEquals(1843, maxYears);
         assertEquals(16, minYears);
