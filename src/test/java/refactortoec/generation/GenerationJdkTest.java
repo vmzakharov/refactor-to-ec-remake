@@ -93,6 +93,14 @@ public class GenerationJdkTest
 
         assertEquals(MILLENNIAL, findFirst);
 
+        Generation notFound =
+                GENERATION_SET.stream()
+                        .filter(generation -> generation.contains(1795))
+                        .findFirst()
+                        .orElse(UNCLASSIFIED);
+
+        assertEquals(UNCLASSIFIED, notFound);
+
         assertEquals(MILLENNIAL, find(1985));
         assertEquals(ALPHA, find(2016));
     }
@@ -103,10 +111,27 @@ public class GenerationJdkTest
         Set<Generation> filtered =
                 GENERATION_SET.stream()
                         .filter(generation -> generation.yearsCountEqualsJdk(16))
-                        .collect(Collectors.toSet());
+                        .collect(Collectors.toUnmodifiableSet());
 
         var expected = Set.of(X, MILLENNIAL, Z);
         assertEquals(expected, filtered);
+
+        Set<Generation> filteredNot =
+                GENERATION_SET.stream()
+                        .filter(generation -> !generation.yearsCountEqualsJdk(16))
+                        .collect(Collectors.toUnmodifiableSet());
+
+        var expectedNot =
+                Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
+        assertEquals(expectedNot, filteredNot);
+
+        Map<Boolean, Set<Generation>> partition = GENERATION_SET.stream()
+                .collect(Collectors.partitioningBy(
+                        generation -> generation.yearsCountEqualsJdk(16),
+                        Collectors.toUnmodifiableSet()));
+
+        assertEquals(expected, partition.get(Boolean.TRUE));
+        assertEquals(expectedNot, partition.get(Boolean.FALSE));
 
         // java.util.HashSet (760)
         // Java 25 COH (648)

@@ -10,6 +10,7 @@ import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.multimap.set.ImmutableSetMultimap;
+import org.eclipse.collections.api.partition.set.PartitionImmutableSet;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.Multimaps;
 import org.junit.jupiter.api.Test;
@@ -82,6 +83,11 @@ public class GenerationEcTest
 
         assertEquals(MILLENNIAL, detected);
 
+        Generation notFound =
+                GENERATION_IMMUTABLE_SET.detectWithIfNone(Generation::contains, 1795, () -> UNCLASSIFIED);
+
+        assertEquals(UNCLASSIFIED, notFound);
+
         assertEquals(MILLENNIAL, find(1985));
         assertEquals(ALPHA, find(2016));
     }
@@ -94,6 +100,19 @@ public class GenerationEcTest
 
         var expected = Sets.mutable.with(X, MILLENNIAL, Z);
         assertEquals(expected, filtered);
+
+        ImmutableSet<Generation> filteredNot =
+                GENERATION_IMMUTABLE_SET.rejectWith(Generation::yearsCountEqualsEc, 16);
+
+        var expectedNot =
+                Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
+        assertEquals(expectedNot, filteredNot);
+
+        PartitionImmutableSet<Generation> partition =
+                GENERATION_IMMUTABLE_SET.partitionWith(Generation::yearsCountEqualsEc, 16);
+
+        assertEquals(expected, partition.getSelected());
+        assertEquals(expectedNot, partition.getRejected());
 
         // ImmutableTripletonSet (512)
         // Java 25 COH (440)
