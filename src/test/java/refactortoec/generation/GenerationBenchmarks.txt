@@ -1,0 +1,23 @@
+
+Benchmark                            Mode  Cnt      Score      Error   Units
+GenerationEcBenchmark.chunking      thrpt   20    651.569 ±   35.466  ops/ms
+GenerationEcBenchmark.converting    thrpt   20   1891.005 ±   62.926  ops/ms
+GenerationEcBenchmark.counting      thrpt   20   4428.722 ±  149.783  ops/ms
+GenerationEcBenchmark.filtering     thrpt   20   2082.995 ±  171.159  ops/ms
+GenerationEcBenchmark.finding       thrpt   20  24726.004 ± 5884.476  ops/ms
+GenerationEcBenchmark.folding       thrpt   20   4888.096 ± 1100.557  ops/ms
+GenerationEcBenchmark.grouping      thrpt   20   2990.627 ±  454.800  ops/ms
+GenerationEcBenchmark.testing       thrpt   20   4399.358 ±  267.798  ops/ms
+GenerationEcBenchmark.transforming  thrpt   20   3785.819 ±  367.836  ops/ms
+
+
+Benchmark                             Mode  Cnt      Score      Error   Units
+GenerationJdkBenchmark.chunking      thrpt   20   1094.616 ±   23.886  ops/ms
+GenerationJdkBenchmark.converting    thrpt   20    458.473 ±    1.789  ops/ms
+GenerationJdkBenchmark.counting      thrpt   20   1859.331 ±   65.973  ops/ms
+GenerationJdkBenchmark.filtering     thrpt   20   1332.741 ±   10.101  ops/ms
+GenerationJdkBenchmark.finding       thrpt   20  13566.799 ± 2533.796  ops/ms
+GenerationJdkBenchmark.folding       thrpt   20   2341.615 ±   48.814  ops/ms
+GenerationJdkBenchmark.grouping      thrpt   20   3191.372 ±   17.324  ops/ms
+GenerationJdkBenchmark.testing       thrpt   20  12873.614 ± 1370.531  ops/ms
+GenerationJdkBenchmark.transforming  thrpt   20   3052.537 ±   99.122  ops/ms
