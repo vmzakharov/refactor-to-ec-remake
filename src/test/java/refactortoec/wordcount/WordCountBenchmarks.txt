@@ -1,0 +1,5 @@
+Benchmark                                Mode  Cnt     Score    Error   Units
+WordCountBenchmark.countEc              thrpt   20  2418.878 ± 26.933  ops/ms
+WordCountBenchmark.countJdkNaive        thrpt   20  2223.613 ±  9.998  ops/ms
+WordCountBenchmark.countJdkStream       thrpt   20  1083.895 ±  8.328  ops/ms
+WordCountBenchmark.countJdkWithCounter  thrpt   20  2107.724 ±  3.354  ops/ms
