@@ -7,6 +7,7 @@ import org.eclipse.collections.api.map.primitive.ImmutableIntObjectMap;
 import org.eclipse.collections.api.map.primitive.MutableIntObjectMap;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.primitive.IntObjectMaps;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.eclipse.collections.impl.utility.ArrayIterate;
 
 public class GenerationEc
@@ -33,7 +34,9 @@ public class GenerationEc
 
     public static RichIterable<RichIterable<Generation>> chunkGenerations(int size)
     {
-        return ArrayIterate.chunk(Generation.values(), size);
+        return ArrayAdapter.adapt(Generation.values())
+                .asLazy()
+                .chunk(size);
     }
 
     public static <IV> IV fold(IV value, Function2<IV, Generation, IV> function)

@@ -1,3 +1,4 @@
+Before tuning EC:
 
 Benchmark                            Mode  Cnt      Score      Error   Units
 GenerationEcBenchmark.chunking      thrpt   20    651.569 ±   35.466  ops/ms
@@ -21,3 +22,29 @@ GenerationJdkBenchmark.folding       thrpt   20   2341.615 ±   48.814  ops/ms
 GenerationJdkBenchmark.grouping      thrpt   20   3191.372 ±   17.324  ops/ms
 GenerationJdkBenchmark.testing       thrpt   20  12873.614 ± 1370.531  ops/ms
 GenerationJdkBenchmark.transforming  thrpt   20   3052.537 ±   99.122  ops/ms
+
+After tuning EC chunking to use asLazy():
+
+Benchmark                            Mode  Cnt      Score      Error   Units
+GenerationEcBenchmark.chunking      thrpt   20   1042.688 ±   78.470  ops/ms
+GenerationEcBenchmark.converting    thrpt   20   2017.179 ±   65.041  ops/ms
+GenerationEcBenchmark.counting      thrpt   20   4635.523 ±  260.897  ops/ms
+GenerationEcBenchmark.filtering     thrpt   20   2169.223 ±  117.874  ops/ms
+GenerationEcBenchmark.finding       thrpt   20  24901.914 ± 5417.710  ops/ms
+GenerationEcBenchmark.folding       thrpt   20   6098.950 ±   10.304  ops/ms
+GenerationEcBenchmark.grouping      thrpt   20   2425.311 ±   60.056  ops/ms
+GenerationEcBenchmark.testing       thrpt   20   6859.008 ± 1176.515  ops/ms
+GenerationEcBenchmark.transforming  thrpt   20   4287.123 ±   50.766  ops/ms
+
+After tuning EC testing to use lambdas:
+
+Benchmark                            Mode  Cnt      Score       Error   Units
+GenerationEcBenchmark.chunking      thrpt   20   1062.159 ±    80.880  ops/ms
+GenerationEcBenchmark.converting    thrpt   20   1981.501 ±    73.176  ops/ms
+GenerationEcBenchmark.counting      thrpt   20   4312.771 ±   279.136  ops/ms
+GenerationEcBenchmark.filtering     thrpt   20   1971.792 ±    61.488  ops/ms
+GenerationEcBenchmark.finding       thrpt   20  31104.475 ±   113.828  ops/ms
+GenerationEcBenchmark.folding       thrpt   20   4805.072 ±  1169.136  ops/ms
+GenerationEcBenchmark.grouping      thrpt   20   2487.551 ±     6.717  ops/ms
+GenerationEcBenchmark.testing       thrpt   20  19807.093 ± 13407.729  ops/ms
+GenerationEcBenchmark.transforming  thrpt   20   4121.184 ±    49.399  ops/ms

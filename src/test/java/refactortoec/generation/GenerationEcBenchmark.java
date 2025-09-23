@@ -57,9 +57,12 @@ public class GenerationEcBenchmark
     public Triplet<Boolean> testing()
     {
         ImmutableSet<Generation> generations = GENERATION_IMMUTABLE_SET;
-        boolean any = generations.anySatisfyWith(Generation::contains, 1995);
-        boolean all = generations.allSatisfyWith(Generation::contains, 1995);
-        boolean none = generations.noneSatisfyWith(Generation::contains, 1995);
+        // boolean any = generations.anySatisfyWith(Generation::contains, 1995);
+        // boolean all = generations.allSatisfyWith(Generation::contains, 1995);
+        // boolean none = generations.noneSatisfyWith(Generation::contains, 1995);
+        boolean any = generations.anySatisfy(gen -> gen.contains(1995));
+        boolean all = generations.allSatisfy(gen -> gen.contains(1995));
+        boolean none = generations.noneSatisfy(gen -> gen.contains(1995));
 
         return Tuples.triplet(any, all, none);
     }
