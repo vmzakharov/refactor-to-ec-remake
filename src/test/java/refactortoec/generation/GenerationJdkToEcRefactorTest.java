@@ -15,12 +15,10 @@ import static refactortoec.generation.GenerationJdk.GENERATION_SET;
 import static refactortoec.generation.GenerationJdk.find;
 import static refactortoec.util.MemoryMeter.outputMemory;
 
-import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
-
 public class GenerationJdkToEcRefactorTest
 {
     @Test
-    public void counting() // 🐿️
+    public void counting()
     {
         long count = GENERATION_SET.stream()
                 .filter(generation -> generation.contains(1995))
@@ -51,7 +49,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void testing() // 🐿️
+    public void testing()
     {
         assertTrue(GENERATION_SET.stream()
                 .anyMatch(generation -> generation.contains(1995)));
@@ -77,6 +75,14 @@ public class GenerationJdkToEcRefactorTest
 
         assertEquals(MILLENNIAL, findFirst);
 
+        Generation notFound =
+                GENERATION_SET.stream()
+                        .filter(generation -> generation.contains(1795))
+                        .findFirst()
+                        .orElse(UNCLASSIFIED);
+
+        assertEquals(UNCLASSIFIED, notFound);
+
         assertEquals(MILLENNIAL, find(1985));
         assertEquals(ALPHA, find(2016));
     }
@@ -87,10 +93,27 @@ public class GenerationJdkToEcRefactorTest
         Set<Generation> filtered =
                 GENERATION_SET.stream()
                         .filter(generation -> generation.yearsCountEqualsJdk(16))
-                        .collect(Collectors.toSet());
+                        .collect(Collectors.toUnmodifiableSet());
 
         var expected = Set.of(X, MILLENNIAL, Z);
         assertEquals(expected, filtered);
+
+        Set<Generation> filteredNot =
+                GENERATION_SET.stream()
+                        .filter(generation -> !generation.yearsCountEqualsJdk(16))
+                        .collect(Collectors.toUnmodifiableSet());
+
+        var expectedNot =
+                Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
+        assertEquals(expectedNot, filteredNot);
+
+        Map<Boolean, Set<Generation>> partition = GENERATION_SET.stream()
+                .collect(Collectors.partitioningBy(
+                        generation -> generation.yearsCountEqualsJdk(16),
+                        Collectors.toUnmodifiableSet()));
+
+        assertEquals(expected, partition.get(Boolean.TRUE));
+        assertEquals(expectedNot, partition.get(Boolean.FALSE));
 
         // java.util.HashSet (760)
         // Java 25 COH (648)
@@ -209,15 +232,18 @@ public class GenerationJdkToEcRefactorTest
     {
         Integer maxYears = GenerationJdk.fold(
                 Integer.MIN_VALUE,
-                (value, generation) -> Math.max(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Math.max(value, generation.yearsInterval().size()));
 
         Integer minYears = GenerationJdk.fold(
                 Integer.MAX_VALUE,
-                (value, generation) -> Math.min(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Math.min(value, generation.yearsInterval().size()));
 
         Integer sumYears = GenerationJdk.fold(
                 Integer.valueOf(0),
-                (value, generation) -> Integer.sum(value, generation.yearsInterval().size()));
+                (Integer value, Generation generation) ->
+                        Integer.sum(value, generation.yearsInterval().size()));
 
         assertEquals(1843, maxYears);
         assertEquals(16, minYears);
