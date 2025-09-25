@@ -17,21 +17,29 @@ public class FactoriesTest
     public void setFactories()
     {
         // JDK Types
-        Set<String> jdkMutableSet = new HashSet<>(List.of("1", "2", "3"));
-        Set<String> jdkImmutableSet = Set.of("1", "2", "3");
+        Set<String> jdkMutableSet =
+                new HashSet<>(List.of("1", "2", "3"));
+        Set<String> jdkImmutableSet =
+                Set.of("1", "2", "3");
+
+        // Drop-in replacements
+        Set<String> ecMutableSet1 =
+                Sets.mutable.of("1", "2", "3");
+        Set<String> ecImmutableSet1 =
+                Sets.immutable.of("1", "2", "3").castToSet();
 
         // Eclipse Collections Types
-        MutableSet<String> ecMutableSet1 = Sets.mutable.of("1", "2", "3");
-        ImmutableSet<String> ecImmutableSet1 = Sets.immutable.of("1", "2", "3");
-
-        // Eclipse Collections using JDK Types
-        Set<String> ecMutableSet2 = ecMutableSet1;
-        Set<String> ecImmutableSet2 = ecImmutableSet1.castToSet();
+        MutableSet<String> ecMutableSet2 =
+                Sets.mutable.of("1", "2", "3");
+        ImmutableSet<String> ecImmutableSet2 =
+                Sets.immutable.of("1", "2", "3");
 
         // Testing JDK and Eclipse Collections Set Types for Equality
-        var jdkSets = Sets.mutable.of(jdkImmutableSet, jdkMutableSet);
-        var ecSets = Sets.mutable.of(ecMutableSet1, ecImmutableSet1, ecMutableSet2, ecImmutableSet2);
-        jdkSets.cartesianProduct(ecSets)
+        MutableSet<Iterable<String>>
+                ecSets = Sets.mutable.of(ecMutableSet1, ecImmutableSet1, ecMutableSet2, ecImmutableSet2);
+        MutableSet<Set<String>> jdkSets =
+                Sets.mutable.of(jdkImmutableSet, jdkMutableSet);
+        ecSets.cartesianProduct(jdkSets)
                 .forEach(pair -> assertEquals(pair.getOne(), pair.getTwo()));
     }
 }
