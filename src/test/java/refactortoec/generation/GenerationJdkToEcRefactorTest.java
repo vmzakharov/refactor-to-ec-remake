@@ -15,10 +15,12 @@ import static refactortoec.generation.GenerationJdk.GENERATION_SET;
 import static refactortoec.generation.GenerationJdk.find;
 import static refactortoec.util.MemoryMeter.outputMemory;
 
+import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
+
 public class GenerationJdkToEcRefactorTest
 {
     @Test
-    public void counting()
+    public void counting() // 🐿️
     {
         long count = GENERATION_SET.stream()
                 .filter(generation -> generation.contains(1995))
@@ -49,7 +51,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void testing()
+    public void testing() // 🦤
     {
         assertTrue(GENERATION_SET.stream()
                 .anyMatch(generation -> generation.contains(1995)));
@@ -65,7 +67,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void finding()
+    public void finding() // 🐿️
     {
         Generation findFirst =
                 GENERATION_SET.stream()
@@ -88,7 +90,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void filtering()
+    public void filtering() // 🦤
     {
         Set<Generation> filtered =
                 GENERATION_SET.stream()
@@ -121,7 +123,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void grouping()
+    public void grouping() // 🐿️
     {
         Map<Long, Set<Generation>> generationByYears =
                 GENERATION_SET.stream()
@@ -147,7 +149,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void converting()
+    public void converting() // 🦤
     {
         List<Generation> mutableList =
                 GENERATION_SET.stream()
@@ -179,7 +181,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void transforming()
+    public void transforming() // 🐿️
     {
         Set<String> names =
                 GENERATION_SET.stream()
@@ -205,7 +207,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void chunking()
+    public void chunking() // 🦤
     {
         Stream<List<Generation>> windowFixedGenerations =
                 GenerationJdk.windowFixedGenerations(3);
@@ -228,7 +230,7 @@ public class GenerationJdkToEcRefactorTest
     }
 
     @Test
-    public void folding()
+    public void folding() // 🐿️
     {
         Integer maxYears = GenerationJdk.fold(
                 Integer.MIN_VALUE,
