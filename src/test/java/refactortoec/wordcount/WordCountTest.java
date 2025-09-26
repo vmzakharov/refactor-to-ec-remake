@@ -58,6 +58,8 @@ public class WordCountTest
             int count = wordCount.getOrDefault(w, 0);
             count++;
             wordCount.put(w, count);
+
+//            wordCount.merge(w, 1, Integer::sum);
         });
 
         assertEquals(2, wordCount.get("Bah").intValue());
