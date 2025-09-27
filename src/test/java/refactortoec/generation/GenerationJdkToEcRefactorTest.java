@@ -19,15 +19,23 @@ import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
 
 public class GenerationJdkToEcRefactorTest
 {
+    /**
+     * There are two use cases for counting we will explore.
+     *
+     * 1. Counting with a Predicate -> return is a primitive value
+     * 2. Counting by a Function -> return is a Map<Long, Long>
+     */
     @Test
     public void counting() // 🐿️
     {
+        // Counting with Predicate -> Count of Generation instances that match
         long count = GENERATION_SET.stream()
                 .filter(generation -> generation.contains(1995))
                 .count();
 
         assertEquals(1L, count);
 
+        // Counting by a Function -> Number of years in a Generation -> Count of Generations
         Map<Long, Long> generationCountByYears =
                 GENERATION_SET.stream()
                         .collect(Collectors.groupingBy(
@@ -44,10 +52,6 @@ public class GenerationJdkToEcRefactorTest
         expected.put(1843L, 1L);
         assertEquals(expected, generationCountByYears);
         assertNull(generationCountByYears.get(30L));
-
-        // java.util.HashMap (592)
-        // Java 25 COH (448)
-        outputMemory(generationCountByYears);
     }
 
     @Test
@@ -116,10 +120,6 @@ public class GenerationJdkToEcRefactorTest
 
         assertEquals(expected, partition.get(Boolean.TRUE));
         assertEquals(expectedNot, partition.get(Boolean.FALSE));
-
-        // java.util.HashSet (760)
-        // Java 25 COH (648)
-        outputMemory(filtered);
     }
 
     @Test
@@ -142,10 +142,6 @@ public class GenerationJdkToEcRefactorTest
 
         assertEquals(expected, generationByYears);
         assertNull(generationByYears.get(30L));
-
-        // java.util.HashMap (3832)
-        // Java 25 COH (3360)
-        outputMemory(generationByYears);
     }
 
     @Test
@@ -197,13 +193,6 @@ public class GenerationJdkToEcRefactorTest
         Set<String> mutableNames = names.stream()
                 .collect(Collectors.toSet());
         assertEquals(expected, mutableNames);
-
-        // ImmutableCollections$SetN (776)
-        // Java 25 COH (712)
-        outputMemory(names);
-        // java.util.HashSet (1176)
-        // Java 25 COH (1016)
-        outputMemory(mutableNames);
     }
 
     @Test
