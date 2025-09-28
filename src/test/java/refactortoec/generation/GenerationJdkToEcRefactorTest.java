@@ -74,11 +74,12 @@ public class GenerationJdkToEcRefactorTest
 
     /**
      * Testing methods return a boolean. We will explore three testing methods. Testing methods
-     * are always eager.
+     * are always eager, but can often short-circuit execution, meaning they don't have to visit
+     * all elements of the collection if the condition is met.
      *
-     * 1. any(Predicate)
-     * 2. all(Predicate)
-     * 3. none(Predicate)
+     * 1. Stream.anyMatch(Predicate) / RichIterable.anySatisfy(Predicate)
+     * 2. Stream.allMatch(Predicate) / RichIterable.allSatisfy(Predicate)
+     * 3. Stream.noneMatch(Predicate) / RichIterable.noneSatisfy(Predicate)
      */
     @Test
     public void testing() // 🦤
@@ -138,6 +139,14 @@ public class GenerationJdkToEcRefactorTest
         assertEquals(X, minByYears);
     }
 
+    /**
+     * Filtering methods return another Stream or Collection based on a Predicate.
+     * Filtering can be eager or lazy. We will explore three filtering methods.
+     *
+     * 1. Stream.filter(Predicate) / RichIterable.select(Predicate)
+     * 2. Stream.filter(Predicate.not()) / RichIterable.reject(Predicate)
+     * 3. Collectors.partitioningBy(Predicate) / RichIterable.partition(Predicate)
+     */
     @Test
     public void filtering() // 🦤
     {
@@ -167,6 +176,12 @@ public class GenerationJdkToEcRefactorTest
         assertEquals(expectedNot, partition.get(Boolean.FALSE));
     }
 
+    /**
+     * Grouping methods return a Map with some key calculated by a Function and the values
+     * contained in a Collection. We will explore one grouping method.
+     *
+     * 1. Collectors.groupingBy(Function) / RichIterable.groupBy(Function)
+     */
     @Test
     public void grouping() // 🐿️
     {
