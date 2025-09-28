@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.factory.Sets;
-import org.eclipse.collections.impl.block.factory.Comparators;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,9 +30,24 @@ import static refactortoec.generation.Generation.X;
 import static refactortoec.generation.Generation.Z;
 import static refactortoec.generation.Generation.values;
 import static refactortoec.generation.GenerationJdk.GENERATION_SET;
-import static refactortoec.generation.GenerationJdk.find;
-import static refactortoec.util.MemoryMeter.outputMemory;
 
+/**
+ * In this test we will refactor from JDK patterns to Eclipse Collections patterns.
+ * The categories of patterns we will cover in this refactoring are:
+ *
+ * 1. Counting
+ * 2. Testing
+ * 3. Finding
+ * 4. Filtering
+ * 5. Grouping
+ * 6. Converting
+ * 7. Transforming
+ * 8. Chunking
+ * 9. Folding
+ *
+ * Note: We work with unit tests so we know code works to start, and continues to
+ * work after the refactoring is complete.
+ */
 public class GenerationJdkToEcRefactorTest
 {
     /**
@@ -204,6 +217,14 @@ public class GenerationJdkToEcRefactorTest
         assertNull(generationByYears.get(30L));
     }
 
+    /**
+     * Converting method convert from a source Collection type to a target Collection
+     * type. Converting methods in both Java and Eclipse Collections usually have
+     * a prefix of "to". We'll explore a few converting methods in this test.
+     *
+     * 1. Collectors.toList() -> RichIterable.toList()
+     * 2. Stream.toList() -> RichIterable.toImmutableList()
+     */
     @Test
     public void converting() // 🦤
     {
@@ -213,13 +234,6 @@ public class GenerationJdkToEcRefactorTest
         List<Generation> immutableList =
                 GENERATION_SET.stream()
                         .toList();
-
-        // ArrayList (1928)
-        // Java 25 COH (1720)
-        outputMemory(mutableList);
-        // ImmutableCollections$ListN (1912)
-        // Java 25 COH (1696)
-        outputMemory(immutableList);
 
         List<Generation> sortedMutableList =
                 mutableList.stream()
@@ -236,6 +250,17 @@ public class GenerationJdkToEcRefactorTest
         assertEquals(expected, sortedImmutableList);
     }
 
+    /**
+     * Transforming methods convert the elements of a collection to another type by
+     * applying a Function to each element. We'll explore the following methods.
+     *
+     * 1. Stream.map() -> RichIterable.collect()
+     * 2. Collectors.toUnmodifiableSet() -> ???
+     *
+     * Note: Certain methods on RichIterable are covariant, so return a type that
+     * makes sense for the source type.
+     * Hint: If we collect on an ImmutableSet, the return type is an ImmutableSet.
+     */
     @Test
     public void transforming() // 🐿️
     {
@@ -255,6 +280,14 @@ public class GenerationJdkToEcRefactorTest
         assertEquals(expected, mutableNames);
     }
 
+    /**
+     * Chunking is a kind of grouping method, but for our purposes we will put
+     * the methods in their own category. Chunking is great for breaking collections
+     * into smaller collections based on a size parameter. We'll explore the following methods.
+     *
+     * 1. Stream.gather(Gatherers.windowFixed()) -> RichIterable.chunk()
+     * 2. Collectors.joining() -> RichIterable.makeString()
+     */
     @Test
     public void chunking() // 🦤
     {
@@ -278,8 +311,14 @@ public class GenerationJdkToEcRefactorTest
         assertEquals(expectedYears, yearsAsString);
     }
 
+    /**
+     * Folding is a mechanism for reducing a type to some new result type. We'll explore
+     * folding to calculate a min, max, and sum. Methods we'll cover:
+     *
+     * 1. Stream.gather(Gatherers.fold() -> RichIterable.injectInto()
+     */
     @Test
-    public void folding() // 🐿️
+    public void aggregating() // 🐿️
     {
         Integer maxYears = GenerationJdk.fold(
                 Integer.MIN_VALUE,
