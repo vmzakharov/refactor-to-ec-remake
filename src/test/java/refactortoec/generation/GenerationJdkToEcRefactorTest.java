@@ -118,24 +118,23 @@ public class GenerationJdkToEcRefactorTest
 
         assertEquals(UNCLASSIFIED, notFound);
 
-        Supplier<Stream<Generation>> generationsNotUnclassified =
-                () -> Stream.of(Generation.values())
-                        .filter(gen -> !gen.equals(UNCLASSIFIED));
+        List<Generation> generationsNotUnclassified =
+                Stream.of(Generation.values())
+                        .filter(gen -> !gen.equals(UNCLASSIFIED))
+                        .toList();
 
         Generation maxByYears =
-                generationsNotUnclassified.get()
+                generationsNotUnclassified.stream()
                         .collect(Collectors.maxBy(
                                 Comparator.comparing(Generation::numberOfYears)))
                         .orElse(null);
-
         assertEquals(GREATEST, maxByYears);
 
         Generation minByYears =
-                generationsNotUnclassified.get()
+                generationsNotUnclassified.stream()
                         .collect(Collectors.minBy(
                                 Comparator.comparing(Generation::numberOfYears)))
                         .orElse(null);
-
         assertEquals(X, minByYears);
     }
 
