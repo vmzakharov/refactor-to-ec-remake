@@ -35,15 +35,15 @@ import static refactortoec.generation.GenerationJdk.GENERATION_SET;
  * In this test we will refactor from JDK patterns to Eclipse Collections patterns.
  * The categories of patterns we will cover in this refactoring are:
  *
- * 1. Counting
- * 2. Testing
- * 3. Finding
- * 4. Filtering
- * 5. Grouping
- * 6. Converting
- * 7. Transforming
- * 8. Chunking
- * 9. Folding
+ * 1. Counting - 🧮
+ * 2. Testing - 🧪
+ * 3. Finding - 🔎
+ * 4. Filtering - 🚰
+ * 5. Grouping - 🏘️
+ * 6. Converting - 🔌
+ * 7. Transforming - 🦋
+ * 8. Chunking - 🖖
+ * 9. Folding - 🪭
  *
  * Note: We work with unit tests so we know code works to start, and continues to
  * work after the refactoring is complete.
