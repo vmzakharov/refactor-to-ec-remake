@@ -1,6 +1,9 @@
 package refactortoec.generation;
 
+import java.util.Comparator;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.bag.ImmutableBag;
@@ -13,6 +16,7 @@ import org.eclipse.collections.api.multimap.set.ImmutableSetMultimap;
 import org.eclipse.collections.api.partition.set.PartitionImmutableSet;
 import org.eclipse.collections.api.set.ImmutableSet;
 import org.eclipse.collections.impl.factory.Multimaps;
+import org.eclipse.collections.impl.list.fixed.ArrayAdapter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -88,8 +92,15 @@ public class GenerationEcTest
 
         assertEquals(UNCLASSIFIED, notFound);
 
-        assertEquals(MILLENNIAL, find(1985));
-        assertEquals(ALPHA, find(2016));
+        MutableList<Generation> generationsNotUnclassified =
+                ArrayAdapter.adapt(values())
+                        .rejectWith(Generation::equals, UNCLASSIFIED);
+
+        Generation maxByYears = generationsNotUnclassified.maxBy(Generation::numberOfYears);
+        assertEquals(GREATEST, maxByYears);
+
+        Generation minByYears = generationsNotUnclassified.minBy(Generation::numberOfYears);
+        assertEquals(X, minByYears);
     }
 
     @Test
@@ -174,7 +185,8 @@ public class GenerationEcTest
         ImmutableSet<String> names =
                 GENERATION_IMMUTABLE_SET.collect(Generation::getName);
 
-        var expected = Sets.immutable.with("Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
+        var expected = Sets.immutable.with(
+                "Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
                 "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
                 "Generation Alpha", "Missionary Generation");
         assertEquals(expected, names);

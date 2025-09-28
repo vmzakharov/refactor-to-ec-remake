@@ -27,6 +27,11 @@ public enum Generation
         this.years = new YearRange(from, to);
     }
 
+    public int numberOfYears()
+    {
+        return this.years.count();
+    }
+
     public IntInterval yearsInterval()
     {
         return this.years.interval();

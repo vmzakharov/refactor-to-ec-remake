@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherers;
 import java.util.stream.Stream;
@@ -101,8 +102,23 @@ public class GenerationJdkTest
 
         assertEquals(UNCLASSIFIED, notFound);
 
-        assertEquals(MILLENNIAL, find(1985));
-        assertEquals(ALPHA, find(2016));
+        Supplier<Stream<Generation>> generationsNotUnclassified =
+                () -> Stream.of(Generation.values())
+                        .filter(gen -> !gen.equals(UNCLASSIFIED));
+
+        Generation maxByYears =
+                generationsNotUnclassified.get()
+                        .collect(Collectors.maxBy(
+                                Comparator.comparing(Generation::numberOfYears)))
+                        .orElse(null);
+        assertEquals(GREATEST, maxByYears);
+
+        Generation minByYears =
+                generationsNotUnclassified.get()
+                        .collect(Collectors.minBy(
+                                Comparator.comparing(Generation::numberOfYears)))
+                        .orElse(null);
+        assertEquals(X, minByYears);
     }
 
     @Test

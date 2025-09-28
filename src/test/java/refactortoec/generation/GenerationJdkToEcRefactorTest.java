@@ -1,21 +1,39 @@
 package refactortoec.generation;
 
-import org.eclipse.collections.api.factory.Lists;
-import org.eclipse.collections.api.factory.Sets;
-import org.junit.jupiter.api.Test;
-
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Gatherers;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static refactortoec.generation.Generation.*;
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.factory.Sets;
+import org.eclipse.collections.impl.block.factory.Comparators;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static refactortoec.generation.Generation.ALPHA;
+import static refactortoec.generation.Generation.BOOMER;
+import static refactortoec.generation.Generation.GREATEST;
+import static refactortoec.generation.Generation.LOST;
+import static refactortoec.generation.Generation.MILLENNIAL;
+import static refactortoec.generation.Generation.MISSIONARY;
+import static refactortoec.generation.Generation.PROGRESSIVE;
+import static refactortoec.generation.Generation.SILENT;
+import static refactortoec.generation.Generation.UNCLASSIFIED;
+import static refactortoec.generation.Generation.X;
+import static refactortoec.generation.Generation.Z;
+import static refactortoec.generation.Generation.values;
 import static refactortoec.generation.GenerationJdk.GENERATION_SET;
 import static refactortoec.generation.GenerationJdk.find;
 import static refactortoec.util.MemoryMeter.outputMemory;
-
-import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
 
 public class GenerationJdkToEcRefactorTest
 {
@@ -54,6 +72,14 @@ public class GenerationJdkToEcRefactorTest
         assertNull(generationCountByYears.get(30L));
     }
 
+    /**
+     * Testing methods return a boolean. We will explore three testing methods. Testing methods
+     * are always eager.
+     *
+     * 1. any(Predicate)
+     * 2. all(Predicate)
+     * 3. none(Predicate)
+     */
     @Test
     public void testing() // 🦤
     {
@@ -63,13 +89,16 @@ public class GenerationJdkToEcRefactorTest
                 .allMatch(generation -> generation.contains(1995)));
         assertFalse(GENERATION_SET.stream()
                 .noneMatch(generation -> generation.contains(1995)));
-
-        assertTrue(ALPHA.contains(2024));
-        assertFalse(ALPHA.contains(2000));
-        assertTrue(MILLENNIAL.contains(1985));
-        assertFalse(MILLENNIAL.contains(1960));
     }
 
+    /**
+     * Finding methods return some element of a collection. Finding methods are always
+     * eager.
+     *
+     * 1. Stream.filter(Predicate).findFirst() / RichIterable.detect(Predicate)
+     * 2. Collectors.maxBy(Comparator) / RichIterable.maxBy(Function)
+     * 3. Collectors.minBy(Comparator) / RichIterable.minBy(Function)
+     */
     @Test
     public void finding() // 🐿️
     {
@@ -89,8 +118,25 @@ public class GenerationJdkToEcRefactorTest
 
         assertEquals(UNCLASSIFIED, notFound);
 
-        assertEquals(MILLENNIAL, find(1985));
-        assertEquals(ALPHA, find(2016));
+        Supplier<Stream<Generation>> generationsNotUnclassified =
+                () -> Stream.of(Generation.values())
+                        .filter(gen -> !gen.equals(UNCLASSIFIED));
+
+        Generation maxByYears =
+                generationsNotUnclassified.get()
+                        .collect(Collectors.maxBy(
+                                Comparator.comparing(Generation::numberOfYears)))
+                        .orElse(null);
+
+        assertEquals(GREATEST, maxByYears);
+
+        Generation minByYears =
+                generationsNotUnclassified.get()
+                        .collect(Collectors.minBy(
+                                Comparator.comparing(Generation::numberOfYears)))
+                        .orElse(null);
+
+        assertEquals(X, minByYears);
     }
 
     @Test
