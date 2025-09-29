@@ -165,22 +165,22 @@ public class GenerationJdkToEcRefactorTest
     @Test
     public void filtering() // 🚰🦤
     {
-        Set<Generation> filtered =
+        Set<Generation> filteredSelected =
                 GENERATION_SET.stream()
                         .filter(generation -> generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
         var expectedSelected = Set.of(X, MILLENNIAL, Z);
-        assertEquals(expectedSelected, filtered);
+        assertEquals(expectedSelected, filteredSelected);
 
-        Set<Generation> filteredNot =
+        Set<Generation> filteredRejected =
                 GENERATION_SET.stream()
                         .filter(generation -> !generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
         var expectedRejected =
                 Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
-        assertEquals(expectedRejected, filteredNot);
+        assertEquals(expectedRejected, filteredRejected);
 
         Map<Boolean, Set<Generation>> partition = GENERATION_SET.stream()
                 .collect(Collectors.partitioningBy(

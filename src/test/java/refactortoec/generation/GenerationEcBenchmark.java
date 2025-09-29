@@ -85,23 +85,23 @@ public class GenerationEcBenchmark
     @Benchmark
     public Triple<ImmutableSet<Generation>, ImmutableSet<Generation>, PartitionImmutableSet<Generation>> filtering()
     {
-        ImmutableSet<Generation> filtered =
+        ImmutableSet<Generation> filteredSelected =
                 GENERATION_IMMUTABLE_SET.selectWith(Generation::yearsCountEqualsEc, 16);
 
-        ImmutableSet<Generation> filteredNot =
+        ImmutableSet<Generation> filteredRejected =
                 GENERATION_IMMUTABLE_SET.rejectWith(Generation::yearsCountEqualsEc, 16);
 
         PartitionImmutableSet<Generation> partition =
                 GENERATION_IMMUTABLE_SET.partitionWith(Generation::yearsCountEqualsEc, 16);
 
-        return Tuples.triple(filtered, filteredNot, partition);
+        return Tuples.triple(filteredSelected, filteredRejected, partition);
     }
 
     @Benchmark
     public ImmutableSetMultimap<Integer, Generation> grouping()
     {
         ImmutableSetMultimap<Integer, Generation> generationByYears =
-                GENERATION_IMMUTABLE_SET.groupBy(generation -> generation.yearsInterval().size());
+                GENERATION_IMMUTABLE_SET.groupBy(Generation::numberOfYears);
 
         return generationByYears;
     }

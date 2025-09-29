@@ -106,18 +106,18 @@ public class GenerationEcTest
     @Test
     public void filtering()
     {
-        ImmutableSet<Generation> filtered =
+        ImmutableSet<Generation> filteredSelected =
                 GENERATION_IMMUTABLE_SET.selectWith(Generation::yearsCountEqualsEc, 16);
 
         var expectedSelected = Sets.mutable.with(X, MILLENNIAL, Z);
-        assertEquals(expectedSelected, filtered);
+        assertEquals(expectedSelected, filteredSelected);
 
-        ImmutableSet<Generation> filteredNot =
+        ImmutableSet<Generation> filteredRejected =
                 GENERATION_IMMUTABLE_SET.rejectWith(Generation::yearsCountEqualsEc, 16);
 
         var expectedRejected =
                 Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
-        assertEquals(expectedRejected, filteredNot);
+        assertEquals(expectedRejected, filteredRejected);
 
         PartitionImmutableSet<Generation> partition =
                 GENERATION_IMMUTABLE_SET.partitionWith(Generation::yearsCountEqualsEc, 16);
@@ -127,7 +127,7 @@ public class GenerationEcTest
 
         // ImmutableTripletonSet (512)
         // Java 25 COH (440)
-        outputMemory(filtered);
+        outputMemory(filteredSelected);
     }
 
     @Test

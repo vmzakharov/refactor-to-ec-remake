@@ -94,12 +94,12 @@ public class GenerationJdkBenchmark
     @Benchmark
     public Triple<Set<Generation>, Set<Generation>, Map<Boolean, Set<Generation>>> filtering()
     {
-        Set<Generation> filtered =
+        Set<Generation> filteredSelected =
                 GENERATION_SET.stream()
                         .filter(generation -> generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
-        Set<Generation> filteredNot =
+        Set<Generation> filteredRejected =
                 GENERATION_SET.stream()
                         .filter(generation -> !generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
@@ -109,7 +109,7 @@ public class GenerationJdkBenchmark
                         generation -> generation.yearsCountEqualsJdk(16),
                         Collectors.toUnmodifiableSet()));
 
-        return Tuples.triple(filtered, filteredNot, partition);
+        return Tuples.triple(filteredSelected, filteredRejected, partition);
     }
 
     @Benchmark

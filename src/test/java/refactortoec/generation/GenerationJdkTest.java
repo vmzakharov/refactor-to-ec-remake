@@ -123,34 +123,34 @@ public class GenerationJdkTest
     @Test
     public void filtering()
     {
-        Set<Generation> filtered =
+        Set<Generation> filteredSelected =
                 GENERATION_SET.stream()
                         .filter(generation -> generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
-        var expected = Set.of(X, MILLENNIAL, Z);
-        assertEquals(expected, filtered);
+        var expectedSelected = Set.of(X, MILLENNIAL, Z);
+        assertEquals(expectedSelected, filteredSelected);
 
-        Set<Generation> filteredNot =
+        Set<Generation> filteredRejected =
                 GENERATION_SET.stream()
                         .filter(generation -> !generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
-        var expectedNot =
+        var expectedRejected =
                 Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
-        assertEquals(expectedNot, filteredNot);
+        assertEquals(expectedRejected, filteredRejected);
 
         Map<Boolean, Set<Generation>> partition = GENERATION_SET.stream()
                 .collect(Collectors.partitioningBy(
                         generation -> generation.yearsCountEqualsJdk(16),
                         Collectors.toUnmodifiableSet()));
 
-        assertEquals(expected, partition.get(Boolean.TRUE));
-        assertEquals(expectedNot, partition.get(Boolean.FALSE));
+        assertEquals(expectedSelected, partition.get(Boolean.TRUE));
+        assertEquals(expectedRejected, partition.get(Boolean.FALSE));
 
         // java.util.HashSet (760)
         // Java 25 COH (648)
-        outputMemory(filtered);
+        outputMemory(filteredSelected);
     }
 
     @Test
