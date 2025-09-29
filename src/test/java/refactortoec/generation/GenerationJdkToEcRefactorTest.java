@@ -170,25 +170,25 @@ public class GenerationJdkToEcRefactorTest
                         .filter(generation -> generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
-        var expected = Set.of(X, MILLENNIAL, Z);
-        assertEquals(expected, filtered);
+        var expectedSelected = Set.of(X, MILLENNIAL, Z);
+        assertEquals(expectedSelected, filtered);
 
         Set<Generation> filteredNot =
                 GENERATION_SET.stream()
                         .filter(generation -> !generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
-        var expectedNot =
+        var expectedRejected =
                 Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
-        assertEquals(expectedNot, filteredNot);
+        assertEquals(expectedRejected, filteredNot);
 
         Map<Boolean, Set<Generation>> partition = GENERATION_SET.stream()
                 .collect(Collectors.partitioningBy(
                         generation -> generation.yearsCountEqualsJdk(16),
                         Collectors.toUnmodifiableSet()));
 
-        assertEquals(expected, partition.get(Boolean.TRUE));
-        assertEquals(expectedNot, partition.get(Boolean.FALSE));
+        assertEquals(expectedSelected, partition.get(Boolean.TRUE));
+        assertEquals(expectedRejected, partition.get(Boolean.FALSE));
     }
 
     /**
@@ -200,23 +200,22 @@ public class GenerationJdkToEcRefactorTest
     @Test
     public void grouping() // 🏘️🐿️
     {
-        Map<Long, Set<Generation>> generationByYears =
+        Map<Integer, Set<Generation>> generationByYears =
                 GENERATION_SET.stream()
-                        .collect(Collectors.groupingBy(
-                                generation -> generation.yearsStream().count(),
+                        .collect(Collectors.groupingBy(Generation::numberOfYears,
                                 Collectors.toSet()));
 
         var expected = new HashMap<>();
-        expected.put(17L, Set.of(ALPHA, PROGRESSIVE));
-        expected.put(16L, Set.of(X, MILLENNIAL, Z));
-        expected.put(19L, Set.of(BOOMER));
-        expected.put(18L, Set.of(SILENT, LOST));
-        expected.put(23L, Set.of(MISSIONARY));
-        expected.put(27L, Set.of(GREATEST));
-        expected.put(1843L, Set.of(UNCLASSIFIED));
+        expected.put(17, Set.of(ALPHA, PROGRESSIVE));
+        expected.put(16, Set.of(X, MILLENNIAL, Z));
+        expected.put(19, Set.of(BOOMER));
+        expected.put(18, Set.of(SILENT, LOST));
+        expected.put(23, Set.of(MISSIONARY));
+        expected.put(27, Set.of(GREATEST));
+        expected.put(1843, Set.of(UNCLASSIFIED));
 
         assertEquals(expected, generationByYears);
-        assertNull(generationByYears.get(30L));
+        assertNull(generationByYears.get(30));
     }
 
     /**

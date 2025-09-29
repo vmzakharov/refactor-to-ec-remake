@@ -109,21 +109,21 @@ public class GenerationEcTest
         ImmutableSet<Generation> filtered =
                 GENERATION_IMMUTABLE_SET.selectWith(Generation::yearsCountEqualsEc, 16);
 
-        var expected = Sets.mutable.with(X, MILLENNIAL, Z);
-        assertEquals(expected, filtered);
+        var expectedSelected = Sets.mutable.with(X, MILLENNIAL, Z);
+        assertEquals(expectedSelected, filtered);
 
         ImmutableSet<Generation> filteredNot =
                 GENERATION_IMMUTABLE_SET.rejectWith(Generation::yearsCountEqualsEc, 16);
 
-        var expectedNot =
+        var expectedRejected =
                 Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
-        assertEquals(expectedNot, filteredNot);
+        assertEquals(expectedRejected, filteredNot);
 
         PartitionImmutableSet<Generation> partition =
                 GENERATION_IMMUTABLE_SET.partitionWith(Generation::yearsCountEqualsEc, 16);
 
-        assertEquals(expected, partition.getSelected());
-        assertEquals(expectedNot, partition.getRejected());
+        assertEquals(expectedSelected, partition.getSelected());
+        assertEquals(expectedRejected, partition.getRejected());
 
         // ImmutableTripletonSet (512)
         // Java 25 COH (440)
@@ -134,7 +134,7 @@ public class GenerationEcTest
     public void grouping()
     {
         ImmutableSetMultimap<Integer, Generation> generationByYears =
-                GENERATION_IMMUTABLE_SET.groupBy(generation -> generation.yearsInterval().size());
+                GENERATION_IMMUTABLE_SET.groupBy(Generation::numberOfYears);
 
         var expected = Multimaps.immutable.set.empty()
                 .newWithAll(17, Set.of(ALPHA, PROGRESSIVE))

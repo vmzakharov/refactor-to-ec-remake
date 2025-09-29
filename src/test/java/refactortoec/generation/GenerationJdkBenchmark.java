@@ -113,12 +113,11 @@ public class GenerationJdkBenchmark
     }
 
     @Benchmark
-    public Map<Long, Set<Generation>> grouping()
+    public Map<Integer, Set<Generation>> grouping()
     {
-        Map<Long, Set<Generation>> generationByYears =
+        Map<Integer, Set<Generation>> generationByYears =
                 GENERATION_SET.stream()
-                        .collect(Collectors.groupingBy(
-                                generation -> generation.yearsStream().count(),
+                        .collect(Collectors.groupingBy(Generation::numberOfYears,
                                 Collectors.toSet()));
 
         return generationByYears;

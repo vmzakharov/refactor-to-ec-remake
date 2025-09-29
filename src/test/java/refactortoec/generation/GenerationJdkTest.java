@@ -31,7 +31,6 @@ import static refactortoec.generation.Generation.X;
 import static refactortoec.generation.Generation.Z;
 import static refactortoec.generation.Generation.values;
 import static refactortoec.generation.GenerationJdk.GENERATION_SET;
-import static refactortoec.generation.GenerationJdk.find;
 import static refactortoec.util.MemoryMeter.outputMemory;
 
 public class GenerationJdkTest
@@ -157,25 +156,24 @@ public class GenerationJdkTest
     @Test
     public void grouping()
     {
-        Map<Long, Set<Generation>> generationByYears =
+        Map<Integer, Set<Generation>> generationByYears =
                 GENERATION_SET.stream()
-                        .collect(Collectors.groupingBy(
-                                generation -> generation.yearsStream().count(),
+                        .collect(Collectors.groupingBy(Generation::numberOfYears,
                                 Collectors.toSet()));
 
         var expected = new HashMap<>();
-        expected.put(17L, Set.of(ALPHA, PROGRESSIVE));
-        expected.put(16L, Set.of(X, MILLENNIAL, Z));
-        expected.put(19L, Set.of(BOOMER));
-        expected.put(18L, Set.of(SILENT, LOST));
-        expected.put(23L, Set.of(MISSIONARY));
-        expected.put(27L, Set.of(GREATEST));
-        expected.put(1843L, Set.of(UNCLASSIFIED));
+        expected.put(17, Set.of(ALPHA, PROGRESSIVE));
+        expected.put(16, Set.of(X, MILLENNIAL, Z));
+        expected.put(19, Set.of(BOOMER));
+        expected.put(18, Set.of(SILENT, LOST));
+        expected.put(23, Set.of(MISSIONARY));
+        expected.put(27, Set.of(GREATEST));
+        expected.put(1843, Set.of(UNCLASSIFIED));
 
         assertEquals(expected, generationByYears);
-        assertNull(generationByYears.get(30L));
+        assertNull(generationByYears.get(30));
 
-        // java.util.HashMap (3832)
+        // java.util.HashMap (3776)
         // Java 25 COH (3360)
         outputMemory(generationByYears);
     }
