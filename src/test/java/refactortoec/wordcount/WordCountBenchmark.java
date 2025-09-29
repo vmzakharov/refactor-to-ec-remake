@@ -77,6 +77,32 @@ public class WordCountBenchmark
         return wordCounts;
     }
 
+    static public class Counter
+    {
+        private long count;
+
+        public void increment()
+        {
+            this.count++;
+        }
+
+        public long getCount()
+        {
+            return this.count;
+        }
+    }
+
+    @Benchmark
+    public Map<String, Counter> countJdkWithHomeBrewCounter()
+    {
+        Map<String, Counter> wordCounts = new HashMap<>();
+
+        WORDS.forEach(
+                w -> wordCounts.computeIfAbsent(w, _ -> new Counter()).increment()
+        );
+        return wordCounts;
+    }
+
     @Benchmark
     public MutableBag<String> countEc()
     {
