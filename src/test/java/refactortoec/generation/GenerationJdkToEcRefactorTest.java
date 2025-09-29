@@ -91,9 +91,9 @@ public class GenerationJdkToEcRefactorTest
      * are always eager, but can often short-circuit execution, meaning they don't have to visit
      * all elements of the collection if the condition is met.
      *
-     * 1. Stream.anyMatch(Predicate) / RichIterable.anySatisfy(Predicate)
-     * 2. Stream.allMatch(Predicate) / RichIterable.allSatisfy(Predicate)
-     * 3. Stream.noneMatch(Predicate) / RichIterable.noneSatisfy(Predicate)
+     * 1. Stream.anyMatch(Predicate) -> RichIterable.anySatisfy(Predicate)
+     * 2. Stream.allMatch(Predicate) -> RichIterable.allSatisfy(Predicate)
+     * 3. Stream.noneMatch(Predicate) -> RichIterable.noneSatisfy(Predicate)
      */
     @Test
     public void testing() // 🧪🦤
@@ -110,9 +110,9 @@ public class GenerationJdkToEcRefactorTest
      * Finding methods return some element of a collection. Finding methods are always
      * eager.
      *
-     * 1. Stream.filter(Predicate).findFirst() / RichIterable.detect(Predicate)
-     * 2. Collectors.maxBy(Comparator) / RichIterable.maxBy(Function)
-     * 3. Collectors.minBy(Comparator) / RichIterable.minBy(Function)
+     * 1. Stream.filter(Predicate).findFirst() -> RichIterable.detect(Predicate) / detectOptional(Predicate)
+     * 2. Collectors.maxBy(Comparator) -> RichIterable.maxBy(Function)
+     * 3. Collectors.minBy(Comparator) -> RichIterable.minBy(Function)
      */
     @Test
     public void finding() // 🔎🐿️
@@ -157,9 +157,9 @@ public class GenerationJdkToEcRefactorTest
      * Filtering methods return another Stream or Collection based on a Predicate.
      * Filtering can be eager or lazy. We will explore three filtering methods.
      *
-     * 1. Stream.filter(Predicate) / RichIterable.select(Predicate)
-     * 2. Stream.filter(Predicate.not()) / RichIterable.reject(Predicate)
-     * 3. Collectors.partitioningBy(Predicate) / RichIterable.partition(Predicate)
+     * 1. Stream.filter(Predicate) -> RichIterable.select(Predicate)
+     * 2. Stream.filter(Predicate.not()) -> RichIterable.reject(Predicate)
+     * 3. Collectors.partitioningBy(Predicate) -> RichIterable.partition(Predicate)
      */
     @Test
     public void filtering() // 🚰🦤
@@ -194,7 +194,7 @@ public class GenerationJdkToEcRefactorTest
      * Grouping methods return a Map with some key calculated by a Function and the values
      * contained in a Collection. We will explore one grouping method.
      *
-     * 1. Collectors.groupingBy(Function) / RichIterable.groupBy(Function)
+     * 1. Collectors.groupingBy(Function) -> RichIterable.groupBy(Function)
      */
     @Test
     public void grouping() // 🏘️🐿️
