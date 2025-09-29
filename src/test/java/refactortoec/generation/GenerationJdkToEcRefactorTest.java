@@ -30,6 +30,7 @@ import static refactortoec.generation.Generation.X;
 import static refactortoec.generation.Generation.Z;
 import static refactortoec.generation.Generation.values;
 import static refactortoec.generation.GenerationJdk.GENERATION_SET;
+import static refactortoec.generation.GenerationEc.GENERATION_IMMUTABLE_SET;
 
 /**
  * In this test we will refactor from JDK patterns to Eclipse Collections patterns.
