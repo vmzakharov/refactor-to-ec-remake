@@ -114,6 +114,7 @@ public class GenerationJdkToEcRefactorTest
      * 1. Stream.filter(Predicate).findFirst() -> RichIterable.detect(Predicate) / detectOptional(Predicate)
      * 2. Collectors.maxBy(Comparator) -> RichIterable.maxBy(Function)
      * 3. Collectors.minBy(Comparator) -> RichIterable.minBy(Function)
+     * 4. Stream.filter(Predicate.not()) -> RichIterable.reject(Predicate)
      */
     @Test
     public void finding() // 🔎🐿️
