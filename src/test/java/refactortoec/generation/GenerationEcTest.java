@@ -228,17 +228,17 @@ public class GenerationEcTest
         Integer maxYears = GenerationEc.fold(
                 Integer.MIN_VALUE,
                 (Integer value, Generation generation) ->
-                        Math.max(value, generation.yearsInterval().size()));
+                        Math.max(value, generation.numberOfYears()));
 
         Integer minYears = GenerationEc.fold(
                 Integer.MAX_VALUE,
                 (Integer value, Generation generation) ->
-                        Math.min(value, generation.yearsInterval().size()));
+                        Math.min(value, generation.numberOfYears()));
 
         Integer sumYears = GenerationEc.fold(
                 Integer.valueOf(0),
                 (Integer value, Generation generation) ->
-                        Integer.sum(value, generation.yearsInterval().size()));
+                        Integer.sum(value, generation.numberOfYears()));
 
         assertEquals(1843, maxYears);
         assertEquals(16, minYears);
