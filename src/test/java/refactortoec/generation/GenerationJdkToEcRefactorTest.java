@@ -46,7 +46,7 @@ import static refactortoec.generation.GenerationJdk.GENERATION_SET;
  * <li>Chunking - 🖖</li>
  * <li>Folding - 🪭</li>
  * </ul>
- * 
+ *
  * Note: We work with unit tests so we know code works to start, and continues to
  * work after the refactoring is complete.
  */
@@ -69,20 +69,19 @@ public class GenerationJdkToEcRefactorTest
         assertEquals(1L, count);
 
         // Counting by a Function -> Number of years in a Generation -> Count of Generations
-        Map<Long, Long> generationCountByYears =
+        Map<Integer, Long> generationCountByYears =
                 GENERATION_SET.stream()
-                        .collect(Collectors.groupingBy(
-                                generation -> generation.yearsStream().count(),
+                        .collect(Collectors.groupingBy(Generation::numberOfYears,
                                 Collectors.counting()));
 
         var expected = new HashMap<>();
-        expected.put(17L, 2L);
-        expected.put(16L, 3L);
-        expected.put(19L, 1L);
-        expected.put(18L, 2L);
-        expected.put(23L, 1L);
-        expected.put(27L, 1L);
-        expected.put(1843L, 1L);
+        expected.put(17, 2L);
+        expected.put(16, 3L);
+        expected.put(19, 1L);
+        expected.put(18, 2L);
+        expected.put(23, 1L);
+        expected.put(27, 1L);
+        expected.put(1843, 1L);
         assertEquals(expected, generationCountByYears);
         assertNull(generationCountByYears.get(30L));
     }

@@ -43,16 +43,15 @@ import static refactortoec.generation.GenerationJdk.find;
 public class GenerationJdkBenchmark
 {
     @Benchmark
-    public LongObjectPair<Map<Long, Long>> counting()
+    public LongObjectPair<Map<Integer, Long>> counting()
     {
         long count = GENERATION_SET.stream()
                 .filter(generation -> generation.contains(1995))
                 .count();
 
-        Map<Long, Long> generationCountByYears =
+        Map<Integer, Long> generationCountByYears =
                 GENERATION_SET.stream()
-                        .collect(Collectors.groupingBy(
-                                generation -> generation.yearsStream().count(),
+                        .collect(Collectors.groupingBy(Generation::numberOfYears,
                                 Collectors.counting()));
 
         return PrimitiveTuples.pair(count, generationCountByYears);

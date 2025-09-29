@@ -49,7 +49,7 @@ public class GenerationEcTest
         assertEquals(1, count);
 
         ImmutableBag<Integer> generationCountByYears =
-                GENERATION_IMMUTABLE_SET.countBy(generation -> generation.yearsInterval().size());
+                GENERATION_IMMUTABLE_SET.countBy(Generation::numberOfYears);
 
         var expected = Bags.mutable.withOccurrences(17, 2)
                 .withOccurrences(16, 3)

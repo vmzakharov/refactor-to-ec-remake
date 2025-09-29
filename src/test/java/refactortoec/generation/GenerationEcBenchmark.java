@@ -48,7 +48,7 @@ public class GenerationEcBenchmark
                 GENERATION_IMMUTABLE_SET.countWith(Generation::contains, 1995);
 
         ImmutableBag<Integer> generationCountByYears =
-                GENERATION_IMMUTABLE_SET.countBy(generation -> generation.yearsInterval().size());
+                GENERATION_IMMUTABLE_SET.countBy(Generation::numberOfYears);
 
         return PrimitiveTuples.pair(count, generationCountByYears);
     }
