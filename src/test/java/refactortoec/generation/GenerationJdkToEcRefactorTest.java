@@ -35,16 +35,18 @@ import static refactortoec.generation.GenerationJdk.GENERATION_SET;
  * In this test we will refactor from JDK patterns to Eclipse Collections patterns.
  * The categories of patterns we will cover in this refactoring are:
  *
- * 1. Counting - 🧮
- * 2. Testing - 🧪
- * 3. Finding - 🔎
- * 4. Filtering - 🚰
- * 5. Grouping - 🏘️
- * 6. Converting - 🔌
- * 7. Transforming - 🦋
- * 8. Chunking - 🖖
- * 9. Folding - 🪭
- *
+ * <ul>
+ * <li>Counting - 🧮</li>
+ * <li>Testing - 🧪</li>
+ * <li>Finding - 🔎</li>
+ * <li>Filtering - 🚰</li>
+ * <li>Grouping - 🏘️</li>
+ * <li>Converting - 🔌</li>
+ * <li>Transforming - 🦋</li>
+ * <li>Chunking - 🖖</li>
+ * <li>Folding - 🪭</li>
+ * </ul>
+ * 
  * Note: We work with unit tests so we know code works to start, and continues to
  * work after the refactoring is complete.
  */
@@ -57,7 +59,7 @@ public class GenerationJdkToEcRefactorTest
      * 2. Counting by a Function -> return is a Map<Long, Long>
      */
     @Test
-    public void counting() // 🐿️
+    public void counting() // 🧮🐿️
     {
         // Counting with Predicate -> Count of Generation instances that match
         long count = GENERATION_SET.stream()
@@ -95,7 +97,7 @@ public class GenerationJdkToEcRefactorTest
      * 3. Stream.noneMatch(Predicate) / RichIterable.noneSatisfy(Predicate)
      */
     @Test
-    public void testing() // 🦤
+    public void testing() // 🧪🦤
     {
         assertTrue(GENERATION_SET.stream()
                 .anyMatch(generation -> generation.contains(1995)));
@@ -114,7 +116,7 @@ public class GenerationJdkToEcRefactorTest
      * 3. Collectors.minBy(Comparator) / RichIterable.minBy(Function)
      */
     @Test
-    public void finding() // 🐿️
+    public void finding() // 🔎🐿️
     {
         Generation findFirst =
                 GENERATION_SET.stream()
@@ -161,7 +163,7 @@ public class GenerationJdkToEcRefactorTest
      * 3. Collectors.partitioningBy(Predicate) / RichIterable.partition(Predicate)
      */
     @Test
-    public void filtering() // 🦤
+    public void filtering() // 🚰🦤
     {
         Set<Generation> filtered =
                 GENERATION_SET.stream()
@@ -196,7 +198,7 @@ public class GenerationJdkToEcRefactorTest
      * 1. Collectors.groupingBy(Function) / RichIterable.groupBy(Function)
      */
     @Test
-    public void grouping() // 🐿️
+    public void grouping() // 🏘️🐿️
     {
         Map<Long, Set<Generation>> generationByYears =
                 GENERATION_SET.stream()
@@ -226,7 +228,7 @@ public class GenerationJdkToEcRefactorTest
      * 2. Stream.toList() -> RichIterable.toImmutableList()
      */
     @Test
-    public void converting() // 🦤
+    public void converting() // 🔌🦤
     {
         List<Generation> mutableList =
                 GENERATION_SET.stream()
@@ -262,7 +264,7 @@ public class GenerationJdkToEcRefactorTest
      * Hint: If we collect on an ImmutableSet, the return type is an ImmutableSet.
      */
     @Test
-    public void transforming() // 🐿️
+    public void transforming() // 🦋🐿️
     {
         Set<String> names =
                 GENERATION_SET.stream()
@@ -289,7 +291,7 @@ public class GenerationJdkToEcRefactorTest
      * 2. Collectors.joining() -> RichIterable.makeString()
      */
     @Test
-    public void chunking() // 🦤
+    public void chunking() // 🖖🦤
     {
         Stream<List<Generation>> windowFixedGenerations =
                 GenerationJdk.windowFixedGenerations(3);
@@ -318,7 +320,7 @@ public class GenerationJdkToEcRefactorTest
      * 1. Stream.gather(Gatherers.fold() -> RichIterable.injectInto()
      */
     @Test
-    public void aggregating() // 🐿️
+    public void folding() // 🪭🐿️
     {
         Integer maxYears = GenerationJdk.fold(
                 Integer.MIN_VALUE,
