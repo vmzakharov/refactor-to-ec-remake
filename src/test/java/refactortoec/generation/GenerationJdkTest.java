@@ -60,7 +60,7 @@ public class GenerationJdkTest
         assertEquals(expected, generationCountByYears);
         assertNull(generationCountByYears.get(30));
 
-        // java.util.HashMap (592)
+        // java.util.HashMap (536)
         // Java 25 COH (448)
         outputMemory(generationCountByYears);
     }
