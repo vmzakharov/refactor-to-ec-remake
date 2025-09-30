@@ -12,6 +12,7 @@ import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.impl.factory.Lists;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jol.info.GraphLayout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,7 +71,6 @@ public class WordCountTest
         this.outputMemory(wordCount);
     }
 
-
     @Test
     public void countJdkStream()
     {
@@ -100,6 +100,35 @@ public class WordCountTest
 
         // HashMap (3,456)
         this.outputMemory(wordCounts);
+    }
+
+    static public class Counter
+    {
+        private long count;
+
+        public void increment()
+        {
+            this.count++;
+        }
+
+        public long getCount()
+        {
+            return this.count;
+        }
+    }
+
+    @Test
+    public void countJdkWithHomeBrewCounter()
+    {
+        Map<String, Counter> wordCounts = new HashMap<>();
+
+        words.forEach(
+                w -> wordCounts.computeIfAbsent(w, _ -> new Counter()).increment()
+        );
+
+        assertEquals(2, wordCounts.get("Bah").getCount());
+        assertEquals(3, wordCounts.get("for").getCount());
+        assertEquals(1, wordCounts.get("Sheep").getCount());
     }
 
     @Test
