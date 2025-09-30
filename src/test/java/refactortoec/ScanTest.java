@@ -18,8 +18,8 @@ public class ScanTest
     public void scanJdk()
     {
         var result = Stream.of(1, 2, 3, 4)
-                           .gather(Gatherers.scan(() -> "", (string, i) -> string + i))
-                           .toList();
+                .gather(Gatherers.scan(() -> "", (string, i) -> string + i))
+                .toList();
 
         assertEquals(List.of("1", "12", "123", "1234"), result);
     }
@@ -30,7 +30,7 @@ public class ScanTest
         MutableList<String> result = Lists.mutable.empty();
 
         IntLists.immutable.of(1, 2, 3, 4)
-                          .injectInto("", (bloop, i) -> result.with(bloop + i).getLast());
+                .injectInto("", (bloop, i) -> result.with(bloop + i).getLast());
 
         assertEquals(List.of("1", "12", "123", "1234"), result);
     }
@@ -39,10 +39,10 @@ public class ScanTest
     public void scanEcImmutable()
     {
         ImmutableList<String> result = IntLists.immutable.of(1, 2, 3, 4)
-                                       .injectInto(
-                                               Lists.immutable.empty(),
-                                               (bloop, i) -> bloop.newWith(bloop.getLastOptional().orElse("") + i)
-                                       );
+                .injectInto(
+                        Lists.immutable.empty(),
+                        (bloop, i) -> bloop.newWith(bloop.getLastOptional().orElse("") + i)
+                );
 
         assertEquals(List.of("1", "12", "123", "1234"), result);
     }
