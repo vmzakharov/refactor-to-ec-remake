@@ -55,9 +55,10 @@ public class GenerationJdkToEcRefactorTest
 {
     /**
      * There are two use cases for counting we will explore.
-     *
-     * 1. Counting with a Predicate -> return is a primitive value
-     * 2. Counting by a Function -> return is a Map<Long, Long>
+     * <ol>
+     * <li>Counting with a Predicate -> return is a primitive value</li>
+     * <li>Counting by a Function -> return is a Map<Long, Long></li>
+     * </ol>
      */
     @Test
     public void counting() // 🧮🐿️
@@ -91,10 +92,11 @@ public class GenerationJdkToEcRefactorTest
      * Testing methods return a boolean. We will explore three testing methods. Testing methods
      * are always eager, but can often short-circuit execution, meaning they don't have to visit
      * all elements of the collection if the condition is met.
-     *
-     * 1. Stream.anyMatch(Predicate) -> RichIterable.anySatisfy(Predicate)
-     * 2. Stream.allMatch(Predicate) -> RichIterable.allSatisfy(Predicate)
-     * 3. Stream.noneMatch(Predicate) -> RichIterable.noneSatisfy(Predicate)
+     *<ol>
+     *<li>Stream.anyMatch(Predicate) -> RichIterable.anySatisfy(Predicate)</li>
+     *<li>Stream.allMatch(Predicate) -> RichIterable.allSatisfy(Predicate)</li>
+     *<li>Stream.noneMatch(Predicate) -> RichIterable.noneSatisfy(Predicate)</li>
+     *</ol>
      */
     @Test
     public void testing() // 🧪🦤
@@ -110,11 +112,12 @@ public class GenerationJdkToEcRefactorTest
     /**
      * Finding methods return some element of a collection. Finding methods are always
      * eager.
-     *
-     * 1. Stream.filter(Predicate).findFirst() -> RichIterable.detect(Predicate) / detectOptional(Predicate)
-     * 2. Collectors.maxBy(Comparator) -> RichIterable.maxBy(Function)
-     * 3. Collectors.minBy(Comparator) -> RichIterable.minBy(Function)
-     * 4. Stream.filter(Predicate.not()) -> RichIterable.reject(Predicate)
+     * <ol>
+     * <li>Stream.filter(Predicate).findFirst() -> RichIterable.detect(Predicate) / detectOptional(Predicate)</li>
+     * <li>Collectors.maxBy(Comparator) -> RichIterable.maxBy(Function)</li>
+     * <li>Collectors.minBy(Comparator) -> RichIterable.minBy(Function)</li>
+     * <li>Stream.filter(Predicate.not()) -> RichIterable.reject(Predicate)</li>
+     * </ol>
      */
     @Test
     public void finding() // 🔎🐿️
@@ -158,10 +161,11 @@ public class GenerationJdkToEcRefactorTest
     /**
      * Filtering methods return another Stream or Collection based on a Predicate.
      * Filtering can be eager or lazy. We will explore three filtering methods.
-     *
-     * 1. Stream.filter(Predicate) -> RichIterable.select(Predicate)
-     * 2. Stream.filter(Predicate.not()) -> RichIterable.reject(Predicate)
-     * 3. Collectors.partitioningBy(Predicate) -> RichIterable.partition(Predicate)
+     * <ol>
+     * <li>Stream.filter(Predicate) -> RichIterable.select(Predicate)</li>
+     * <li>Stream.filter(Predicate.not()) -> RichIterable.reject(Predicate)</li>
+     * <li>Collectors.partitioningBy(Predicate) -> RichIterable.partition(Predicate)</li>
+     * </ol>
      */
     @Test
     public void filtering() // 🚰🦤
@@ -179,8 +183,9 @@ public class GenerationJdkToEcRefactorTest
                         .filter(generation -> !generation.yearsCountEqualsJdk(16))
                         .collect(Collectors.toUnmodifiableSet());
 
-        var expectedRejected =
-                Sets.mutable.with(ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST, MISSIONARY, PROGRESSIVE, SILENT);
+        var expectedRejected = Sets.mutable.with(
+                ALPHA, UNCLASSIFIED, BOOMER, GREATEST, LOST,
+                MISSIONARY, PROGRESSIVE, SILENT);
         assertEquals(expectedRejected, filteredRejected);
 
         Map<Boolean, Set<Generation>> partition = GENERATION_SET.stream()
@@ -195,8 +200,9 @@ public class GenerationJdkToEcRefactorTest
     /**
      * Grouping methods return a Map with some key calculated by a Function and the values
      * contained in a Collection. We will explore one grouping method.
-     *
-     * 1. Collectors.groupingBy(Function) -> RichIterable.groupBy(Function)
+     * <ol>
+     * <li>Collectors.groupingBy(Function) -> RichIterable.groupBy(Function)</li>
+     * </ol>
      */
     @Test
     public void grouping() // 🏘️🐿️
@@ -223,9 +229,10 @@ public class GenerationJdkToEcRefactorTest
      * Converting method convert from a source Collection type to a target Collection
      * type. Converting methods in both Java and Eclipse Collections usually have
      * a prefix of "to". We'll explore a few converting methods in this test.
-     *
-     * 1. Collectors.toList() -> RichIterable.toList()
-     * 2. Stream.toList() -> RichIterable.toImmutableList()
+     * <ol>
+     * <li>Collectors.toList() -> RichIterable.toList()</li>
+     * <li>Stream.toList() -> RichIterable.toImmutableList()</li>
+     * </ol>
      */
     @Test
     public void converting() // 🔌🦤
@@ -256,8 +263,10 @@ public class GenerationJdkToEcRefactorTest
      * Transforming methods convert the elements of a collection to another type by
      * applying a Function to each element. We'll explore the following methods.
      *
-     * 1. Stream.map() -> RichIterable.collect()
-     * 2. Collectors.toUnmodifiableSet() -> ???
+     * <ol>
+     * <li>Stream.map() -> RichIterable.collect()</li>
+     * <li>Collectors.toUnmodifiableSet() -> ???</li>
+     * </ol>
      *
      * Note: Certain methods on RichIterable are covariant, so return a type that
      * makes sense for the source type.
@@ -273,8 +282,8 @@ public class GenerationJdkToEcRefactorTest
 
         var expected = Sets.immutable.with(
                 "Unclassified", "Greatest Generation", "Lost Generation", "Millennials",
-                "Generation X", "Baby Boomers", "Generation Z", "Silent Generation", "Progressive Generation",
-                "Generation Alpha", "Missionary Generation");
+                "Generation X", "Baby Boomers", "Generation Z", "Silent Generation",
+                "Progressive Generation", "Generation Alpha", "Missionary Generation");
         assertEquals(expected, names);
 
         Set<String> mutableNames = names.stream()
@@ -286,9 +295,10 @@ public class GenerationJdkToEcRefactorTest
      * Chunking is a kind of grouping method, but for our purposes we will put
      * the methods in their own category. Chunking is great for breaking collections
      * into smaller collections based on a size parameter. We'll explore the following methods.
-     *
-     * 1. Stream.gather(Gatherers.windowFixed()) -> RichIterable.chunk()
-     * 2. Collectors.joining() -> RichIterable.makeString()
+     * <ol>
+     * <li>Stream.gather(Gatherers.windowFixed()) -> RichIterable.chunk()</li>
+     * <li>Collectors.joining() -> RichIterable.makeString()</li>
+     * </ol>
      */
     @Test
     public void chunking() // 🖖🦤
@@ -298,8 +308,10 @@ public class GenerationJdkToEcRefactorTest
         String generationsAsString = windowFixedGenerations.map(Object::toString)
                 .collect(Collectors.joining(", "));
 
-        String expected =
-                "[UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], [BOOMER, X, MILLENNIAL], [Z, ALPHA]";
+        String expected = """
+                [UNCLASSIFIED, PROGRESSIVE, MISSIONARY], [LOST, GREATEST, SILENT], \
+                [BOOMER, X, MILLENNIAL], [Z, ALPHA]""";
+
         assertEquals(expected, generationsAsString);
 
         String yearsAsString = MILLENNIAL.yearsStream()
@@ -308,16 +320,18 @@ public class GenerationJdkToEcRefactorTest
                 .map(Object::toString)
                 .collect(Collectors.joining(", "));
 
-        String expectedYears =
-                "[1981, 1982, 1983, 1984], [1985, 1986, 1987, 1988], [1989, 1990, 1991, 1992], [1993, 1994, 1995, 1996]";
+        String expectedYears = """
+                        [1981, 1982, 1983, 1984], [1985, 1986, 1987, 1988], \
+                        [1989, 1990, 1991, 1992], [1993, 1994, 1995, 1996]""";
         assertEquals(expectedYears, yearsAsString);
     }
 
     /**
      * Folding is a mechanism for reducing a type to some new result type. We'll explore
      * folding to calculate a min, max, and sum. Methods we'll cover:
-     *
-     * 1. Stream.gather(Gatherers.fold() -> RichIterable.injectInto()
+     * <ol>
+     * <li>Stream.gather(Gatherers.fold() -> RichIterable.injectInto()</li>
+     * </ol>
      */
     @Test
     public void folding() // 🪭🐿️
