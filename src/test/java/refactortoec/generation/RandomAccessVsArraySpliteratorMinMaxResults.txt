@@ -1,0 +1,7 @@
+Benchmark                                                            Mode  Cnt     Score    Error  Units
+RandomAccessVsArraySpliteratorBenchmark.minMaxArrayList             thrpt   20   158.375 ±  3.787  ops/s
+RandomAccessVsArraySpliteratorBenchmark.minMaxArraysAsList          thrpt   20   208.214 ±  0.686  ops/s
+RandomAccessVsArraySpliteratorBenchmark.minMaxListN                 thrpt   20    97.352 ±  0.717  ops/s
+RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxArrayList     thrpt   20  1149.748 ± 60.342  ops/s
+RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxArraysAsList  thrpt   20  1387.468 ±  8.229  ops/s
+RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxListN         thrpt   20  1062.055 ± 15.685  ops/s

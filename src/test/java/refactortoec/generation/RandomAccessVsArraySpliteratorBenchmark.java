@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.collections.api.tuple.primitive.IntIntPair;
 import org.eclipse.collections.impl.list.Interval;
+import org.eclipse.collections.impl.tuple.primitive.PrimitiveTuples;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -20,65 +22,84 @@ import org.openjdk.jmh.annotations.Warmup;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 @Fork(2)
-@Warmup(iterations = 10, time = 2)
+@Warmup(iterations = 20, time = 2)
 @Measurement(iterations = 10, time = 2)
 public class RandomAccessVsArraySpliteratorBenchmark
 {
-    private final List<Integer> listN = List.copyOf(Interval.oneTo(1_000_000));
-    private final List<Integer> arrayList = new ArrayList<>(Interval.oneTo(1_000_000));
-    private final List<Integer> arraysAsList = Arrays.asList(Interval.oneTo(1_000_000).toArray());
+    private final Interval interval = Interval.oneTo(1_000_000);
+    private final List<Integer> listN = List.copyOf(interval);
+    private final List<Integer> arrayList = new ArrayList<>(interval);
+    private final List<Integer> arraysAsList = Arrays.asList(interval.toArray());
 
     @Benchmark
-    public long summingListN()
+    public IntIntPair minMaxListN()
     {
-        long sum = this.listN.stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return sum;
+        int min = this.listN.stream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.listN.stream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
     }
 
     @Benchmark
-    public long summingArrayList()
+    public IntIntPair minMaxArrayList()
     {
-        long sum = this.arrayList.stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return sum;
+        int min = this.arrayList.stream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.arrayList.stream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
     }
 
     @Benchmark
-    public long summingArraysAsList()
+    public IntIntPair minMaxArraysAsList()
     {
-        long sum = this.arraysAsList.stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return sum;
+        int min = this.arraysAsList.stream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.arraysAsList.stream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
     }
 
     @Benchmark
-    public long parallelSummingListN()
+    public IntIntPair parallelMinMaxListN()
     {
-        long sum = this.listN.parallelStream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return sum;
+        int min = this.listN.parallelStream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.listN.parallelStream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
     }
 
     @Benchmark
-    public long parallelSummingArrayList()
+    public IntIntPair parallelMinMaxArrayList()
     {
-        long sum = this.arrayList.parallelStream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return sum;
+        int min = this.arrayList.parallelStream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.arrayList.parallelStream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
     }
 
     @Benchmark
-    public long parallelSummingArraysAsList()
+    public IntIntPair parallelMinMaxArraysAsList()
     {
-        long sum = this.arraysAsList.parallelStream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        return sum;
+        int min = this.arraysAsList.parallelStream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.arraysAsList.parallelStream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
     }
 }
