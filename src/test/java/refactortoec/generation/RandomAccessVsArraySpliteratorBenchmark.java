@@ -54,4 +54,31 @@ public class RandomAccessVsArraySpliteratorBenchmark
                 .sum();
         return sum;
     }
+
+    @Benchmark
+    public long parallelSummingListN()
+    {
+        long sum = this.listN.parallelStream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        return sum;
+    }
+
+    @Benchmark
+    public long parallelSummingArrayList()
+    {
+        long sum = this.arrayList.parallelStream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        return sum;
+    }
+
+    @Benchmark
+    public long parallelSummingArraysAsList()
+    {
+        long sum = this.arraysAsList.parallelStream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        return sum;
+    }
 }
