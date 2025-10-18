@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.tuple.primitive.IntIntPair;
 import org.eclipse.collections.impl.list.Interval;
 import org.eclipse.collections.impl.tuple.primitive.PrimitiveTuples;
@@ -30,9 +31,30 @@ public class RandomAccessVsArraySpliteratorBenchmark
     private final List<Integer> listN = List.copyOf(interval);
     private final List<Integer> arrayList = new ArrayList<>(interval);
     private final List<Integer> arraysAsList = Arrays.asList(interval.toArray());
+    private final ImmutableList<Integer> immutableList = interval.toImmutableList();
 
     @Benchmark
-    public IntIntPair minMaxListN()
+    public IntIntPair eagerMinMaxImmutableList()
+    {
+        int min = this.immutableList.min();
+        int max = this.immutableList.max();
+        return PrimitiveTuples.pair(min, max);
+    }
+
+    @Benchmark
+    public IntIntPair streamMinMaxImmutableList()
+    {
+        int min = this.immutableList.stream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.immutableList.stream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
+    }
+
+    @Benchmark
+    public IntIntPair streamMinMaxListN()
     {
         int min = this.listN.stream()
                 .reduce(Math::min)
@@ -44,7 +66,7 @@ public class RandomAccessVsArraySpliteratorBenchmark
     }
 
     @Benchmark
-    public IntIntPair minMaxArrayList()
+    public IntIntPair streamMinMaxArrayList()
     {
         int min = this.arrayList.stream()
                 .reduce(Math::min)
@@ -56,12 +78,24 @@ public class RandomAccessVsArraySpliteratorBenchmark
     }
 
     @Benchmark
-    public IntIntPair minMaxArraysAsList()
+    public IntIntPair streamMinMaxArraysAsList()
     {
         int min = this.arraysAsList.stream()
                 .reduce(Math::min)
                 .orElse(0);
         int max = this.arraysAsList.stream()
+                .reduce(Math::max)
+                .orElse(0);
+        return PrimitiveTuples.pair(min, max);
+    }
+
+    @Benchmark
+    public IntIntPair parallelMinMaxImmutableList()
+    {
+        int min = this.immutableList.parallelStream()
+                .reduce(Math::min)
+                .orElse(0);
+        int max = this.immutableList.parallelStream()
                 .reduce(Math::max)
                 .orElse(0);
         return PrimitiveTuples.pair(min, max);

@@ -5,3 +5,15 @@ RandomAccessVsArraySpliteratorBenchmark.minMaxListN                 thrpt   20  
 RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxArrayList     thrpt   20  1149.748 ± 60.342  ops/s
 RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxArraysAsList  thrpt   20  1387.468 ±  8.229  ops/s
 RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxListN         thrpt   20  1062.055 ± 15.685  ops/s
+
+
+Benchmark                                                             Mode  Cnt     Score    Error  Units
+RandomAccessVsArraySpliteratorBenchmark.eagerMinMaxImmutableList     thrpt   20   684.601 ± 15.290  ops/s
+RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxArrayList      thrpt   20  1154.991 ± 11.291  ops/s
+RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxArraysAsList   thrpt   20  1347.281 ± 22.010  ops/s
+RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxImmutableList  thrpt   20  1336.800 ± 28.832  ops/s
+RandomAccessVsArraySpliteratorBenchmark.parallelMinMaxListN          thrpt   20  1041.776 ±  6.494  ops/s
+RandomAccessVsArraySpliteratorBenchmark.streamMinMaxArrayList        thrpt   20   161.380 ±  1.451  ops/s
+RandomAccessVsArraySpliteratorBenchmark.streamMinMaxArraysAsList     thrpt   20   201.815 ±  4.567  ops/s
+RandomAccessVsArraySpliteratorBenchmark.streamMinMaxImmutableList    thrpt   20   203.787 ±  2.792  ops/s
+RandomAccessVsArraySpliteratorBenchmark.streamMinMaxListN            thrpt   20    98.538 ±  1.685  ops/s
