@@ -30,6 +30,22 @@ public class SmallStreamLazyIterableTest
 
     @ParameterizedTest
     @ValueSource(ints = {1, 5, 10, 50, 100})
+    public void arrayListForLoopFilterCount(int size)
+    {
+        ArrayList<Integer> arrayList = new ArrayList<>(Interval.oneTo(size));
+        long count = 0L;
+        for (Integer each : arrayList)
+        {
+            if (each % 2 == 0)
+            {
+                count++;
+            }
+        }
+        Assertions.assertEquals(IntInterval.oneTo(size).count(i -> i % 2 == 0), count);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 5, 10, 50, 100})
     public void fastListLazyIterableSelectSize(int size)
     {
         FastList<Integer> fastList = new FastList<>(Interval.oneTo(size));
@@ -67,6 +83,22 @@ public class SmallStreamLazyIterableTest
                 .filter(i -> i % 2 == 0)
                 .mapToLong(Integer::longValue);
         long sum = stream.sum();
+        Assertions.assertEquals(IntInterval.evensFromTo(1, size).sum(), sum);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1, 5, 10, 50, 100})
+    public void arrayListForLoopFilterMapSum(int size)
+    {
+        ArrayList<Integer> arrayList = new ArrayList<>(Interval.oneTo(size));
+        long sum = 0L;
+        for (Integer each : arrayList)
+        {
+            if (each % 2 == 0)
+            {
+                sum += each.longValue();
+            }
+        }
         Assertions.assertEquals(IntInterval.evensFromTo(1, size).sum(), sum);
     }
 
