@@ -62,6 +62,20 @@ public class SmallStreamLazyIterableBenchmark
     }
 
     @Benchmark
+    public void arrayListForLoopFilterCount(Blackhole bh)
+    {
+        long count = 0L;
+        for (Integer each : arrayList)
+        {
+            if (each % 2 == 0)
+            {
+                count++;
+            }
+        }
+        bh.consume(count);
+    }
+
+    @Benchmark
     public void fastListLazyIterableSelectSize(Blackhole bh)
     {
         LazyIterable<Integer> lazyIterable = fastList.asLazy()
@@ -92,6 +106,20 @@ public class SmallStreamLazyIterableBenchmark
                 .filter(i -> i % 2 == 0)
                 .mapToLong(Integer::longValue);
         long sum = stream.sum();
+        bh.consume(sum);
+    }
+
+    @Benchmark
+    public void arrayListForLoopFilterMapSum(Blackhole bh)
+    {
+        long sum = 0L;
+        for (Integer each : arrayList)
+        {
+            if (each % 2 == 0)
+            {
+                sum += each.longValue();
+            }
+        }
         bh.consume(sum);
     }
 
