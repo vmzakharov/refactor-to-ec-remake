@@ -29,11 +29,11 @@ import org.openjdk.jmh.infra.Blackhole;
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Fork(2)
-@Warmup(iterations = 20, time = 2)
-@Measurement(iterations = 10, time = 2)
+@Warmup(iterations = 5, time = 2)
+@Measurement(iterations = 5, time = 4)
 public class SmallStreamLazyIterableBenchmark
 {
-    @Param({"1", "5", "10", "50", "100"})
+    @Param({"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"})
     int size;
 
     ArrayList<Integer> arrayList;
