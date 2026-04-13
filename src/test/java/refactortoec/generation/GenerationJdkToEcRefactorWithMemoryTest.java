@@ -66,7 +66,7 @@ public class GenerationJdkToEcRefactorWithMemoryTest
         // Counting with Predicate -> Count of Generation instances that match
         Stream<Generation> stream = GENERATION_SET.stream()
                 .filter(generation -> generation.contains(1995));
-        // Calculate memory of stream minus memory requred for GENERATION_SET
+        // Calculate memory of stream minus memory required for GENERATION_SET
         JolMemoryTestUtil.assertGraphMemoryEqualsAdjusted(160L, 144L, stream, GENERATION_SET);
         // Execute terminal method count
         long count = stream.count();
@@ -108,7 +108,7 @@ public class GenerationJdkToEcRefactorWithMemoryTest
     public void testing() // 🧪🦤
     {
         Stream<Generation> stream = GENERATION_SET.stream();
-        // Calculate memory of stream minus memory requred for GENERATION_SET
+        // Calculate memory of stream minus memory required for GENERATION_SET
         JolMemoryTestUtil.assertGraphMemoryEqualsAdjusted(88L, 80L, stream, GENERATION_SET);
         assertTrue(stream
                 .anyMatch(generation -> generation.contains(1995)));
@@ -133,7 +133,7 @@ public class GenerationJdkToEcRefactorWithMemoryTest
     {
         Stream<Generation> stream = GENERATION_SET.stream()
                 .filter(generation -> generation.contains(1995));
-        // Calculate memory of stream minus memory requred for GENERATION_SET
+        // Calculate memory of stream minus memory required for GENERATION_SET
         JolMemoryTestUtil.assertGraphMemoryEqualsAdjusted(160L, 144L, stream, GENERATION_SET);
         Generation findFirst = stream
                 .findFirst()
@@ -224,7 +224,7 @@ public class GenerationJdkToEcRefactorWithMemoryTest
         JolMemoryTestUtil.assertClassMemoryEquals(32L, 32L, collector);
         JolMemoryTestUtil.outputClassLayoutPrintable(collector);
 
-        // Calculate memory of stream minus memory requred for GENERATION_SET
+        // Calculate memory of stream minus memory required for GENERATION_SET
         Stream<Generation> stream = GENERATION_SET.stream();
         JolMemoryTestUtil.assertGraphMemoryEqualsAdjusted(88L, 80L, stream, GENERATION_SET);
         JolMemoryTestUtil.outputClassLayoutPrintable(stream);
@@ -297,7 +297,7 @@ public class GenerationJdkToEcRefactorWithMemoryTest
     {
         Stream<String> stream = GENERATION_SET.stream()
                 .map(Generation::getName);
-        // Calculate memory of stream minus memory requred for GENERATION_SET
+        // Calculate memory of stream minus memory required for GENERATION_SET
         JolMemoryTestUtil.assertGraphMemoryEqualsAdjusted(160L, 144L, stream, GENERATION_SET);
 
         Set<String> names =
@@ -328,7 +328,7 @@ public class GenerationJdkToEcRefactorWithMemoryTest
     {
         Stream<List<Generation>> windowFixedGenerations =
                 GenerationJdk.windowFixedGenerations(3);
-        // Calculate memory of stream minus memory requred for GENERATION_SET
+        // Calculate memory of stream minus memory required for GENERATION_SET
         JolMemoryTestUtil.assertGraphMemoryEqualsAdjusted(264L, 208L, windowFixedGenerations, GENERATION_SET);
         String generationsAsString = windowFixedGenerations.map(Object::toString)
                 .collect(Collectors.joining(", "));
@@ -343,7 +343,7 @@ public class GenerationJdkToEcRefactorWithMemoryTest
                 .boxed()
                 .gather(Gatherers.windowFixed(4))
                 .map(Object::toString);
-        // Calculate memory of stream minus memory requred for GENERATION_SET
+        // Calculate memory of stream
         JolMemoryTestUtil.assertGraphMemoryEquals(456L, 392L, stream);
         String yearsAsString = stream
                 .collect(Collectors.joining(", "));
