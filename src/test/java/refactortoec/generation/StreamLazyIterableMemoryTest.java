@@ -1,20 +1,35 @@
 package refactortoec.generation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.ToLongFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Gatherers;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.eclipse.collections.api.LazyIterable;
+import org.eclipse.collections.api.block.function.primitive.LongFunction;
 import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.factory.primitive.IntLists;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.primitive.MutableIntList;
+import org.eclipse.collections.impl.list.Interval;
 import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.list.primitive.IntInterval;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.openjdk.jol.info.ClassLayout;
 import org.openjdk.jol.info.GraphLayout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StreamLazyIterableMemoryTest
 {
@@ -192,6 +207,73 @@ public class StreamLazyIterableMemoryTest
         System.out.printf(
                 "Stream.gather(Gatherers.fold()) | %s | LazyIterable.injectInto() | 0 \n",
                 GraphLayout.parseInstance(streamGatherFold).totalSize() - listSize);
+    }
+
+    @ParameterizedTest
+    @MethodSource("jdkListProvider")
+    public void javaTypesForImmutableListAndStream(List<String> list)
+    {
+        var stream = list.stream();
+        var filter = stream.filter(i -> true);
+        var map = filter.map(Object::toString);
+        var mapToLong = map.mapToLong(String::length);
+        IO.println(GraphLayout.parseInstance(mapToLong).toFootprint());
+        assertTrue(mapToLong.allMatch(each -> each == 1));
+        IO.println("** stream = " + stream.getClass().getTypeName());
+        IO.println("** filter = " + filter.getClass().getTypeName());
+        IO.println("** map = " + map.getClass().getTypeName());
+        IO.println("** mapToLong = " + mapToLong.getClass().getTypeName());
+        IO.println("** Size of -> " + list.getClass().getSimpleName() + " = " + list.size());
+        IO.println("=======================");
+    }
+
+    static Stream<Arguments> jdkListProvider()
+    {
+        // Returns a Stream of Arguments containing List.of() from size 0 to 9
+        // e.g. List.of(), List.of("1"), List.of("1", "2"), etc.
+        var list = Stream.concat(
+                        Stream.of(Arguments.of(List.of())),
+                        IntStream.range(2, 11)
+                                .mapToObj(i -> IntStream.range(1, i))
+                                .map(s -> s.mapToObj(Integer::toString))
+                                .map(Stream::toList)
+                                .map(List::copyOf)
+                                .map(Arguments::of))
+                .collect(Collectors.toList());
+        Collections.shuffle(list);
+        return list.stream();
+    }
+
+    @ParameterizedTest
+    @MethodSource("ecImmutableListProvider")
+    public void eclipseCollectionTypesForImmutableListAndLazyIterable(ImmutableList<String> list)
+    {
+        var lazy = list.asLazy();
+        var select = lazy.select(i -> true);
+        var collect = select.collect(Object::toString);
+        var collectLong = collect.collectLong(String::length);
+        IO.println(GraphLayout.parseInstance(collectLong).toFootprint());
+        assertTrue(collectLong.allSatisfy(each -> each == 1));
+        // IO.println("** lazy = " + lazy.getClass().getSimpleName());
+        // IO.println("** select = " + select.getClass().getSimpleName());
+        // IO.println("** collect = " + collect.getClass().getSimpleName());
+        // IO.println("** collectLong = " + collectLong.getClass().getSimpleName());
+        // IO.println("** Size of -> " + list.getClass().getSimpleName() + " = " + list.size());
+        // IO.println("=======================");
+    }
+
+    static Stream<Arguments> ecImmutableListProvider()
+    {
+        // Returns a Stream of Arguments containing Lists.immutable.of() from size 0 to 9
+        // e.g. Lists.immutable.of(), Lists.immutable.of("1"), Lists.immutable.of("1", "2"), etc.
+        return Lists.mutable.of(Arguments.of(Lists.immutable.of()))
+                .withAll(
+                        IntInterval.oneTo(9)
+                                .collect(IntInterval::oneTo)
+                                .collect(interval -> interval.collect(Integer::toString))
+                                .collect(Arguments::of))
+                .shuffleThis()
+                .stream();
     }
 }
 
